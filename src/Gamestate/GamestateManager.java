@@ -31,7 +31,9 @@ public class GamestateManager extends JPanel {
 	public final static int adminState = 8;
 	public final static int rankingState = 9;
 	public final static int mainMenuState = 10;
-	public final static int infoUserState = 11;
+	public final static int spectatorCompetitionState = 11;
+	public final static int spectatorGameOverviewState = 12;
+
 
 	// displays the current state of the game
 	private int currentState;
@@ -60,7 +62,8 @@ public class GamestateManager extends JPanel {
 		this.gamestates.add(new AdminState(this, db_c));
 		this.gamestates.add(new RankingState(this, db_c));
 		this.gamestates.add(new MainMenuState(this, db_c));
-//		this.gamestates.add(new InfoUserState(this, db_c));
+		this.gamestates.add(new SpectatorCompetitionState(this, db_c));
+		this.gamestates.add(new SpectatorGameOverviewState(this, db_c));
 		// state you want to start with
 		this.setGamestate(loginState);
 		/*
