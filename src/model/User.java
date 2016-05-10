@@ -18,6 +18,7 @@ public class User {
 	private int spel_id = 500;
 	private int turnNumber;
 	private int competitionNumber;
+	private int gameNumber;
 	private int amountOfRoles;
 
 	private GamestateManager gsm;
@@ -70,7 +71,11 @@ public class User {
 	}
 
 	public int getGameNumber() {
-		return 511;
+		return gameNumber;
+	}
+	
+	public void setGameNumber(int gameNumber){
+		this.gameNumber = gameNumber;
 	}
 
 	public void setPassword(String passwordOfUsername) {
@@ -190,6 +195,10 @@ public class User {
 			e.printStackTrace();
 		}
 		return description;
+	}
+	
+	public void setCompetitionNumber(int competitionNumber){
+		this.competitionNumber = competitionNumber;
 	}
 	
 	public int getAmountOfRoles(String nameUser){
