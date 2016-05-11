@@ -48,15 +48,15 @@ public class CompetitionFrame extends JFrame {
 	public CompetitionFrame(DatabaseController db_c, GamestateManager gsm) {
 		this.db_c = db_c;
 		this.gsm = gsm;
-		this.setLocation((int) (GUI.WIDTH / 3), (int) GUI.HEIGHT / 3);
 		this.setResizable(false);
 		this.setTitle("Wordfeud Competities");
 		panel = new JPanel(new BorderLayout());
 		isOnRanking = false;
-		panel.setPreferredSize(new Dimension((int) (GUI.WIDTH / 3), (int) (GUI.HEIGHT / 2)));
+		panel.setPreferredSize(new Dimension((int) (GUI.WIDTH / 1.5), (int) (GUI.HEIGHT / 2)));
 		this.setContentPane(panel);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Resources/wordfeudLogo.png"));
 		this.pack();
+		this.setLocationRelativeTo(null);
 	}
 
 	public void loadCompetitionFrame(int competitionNumber) {
@@ -77,7 +77,7 @@ public class CompetitionFrame extends JFrame {
 	}
 
 	private void loadRankingTable() {
-		String[] header = { "Positie", "Speler", "Score" };
+		String[] header = { "Positie", "Speler", "Score", "Gespeeld", "Gewonnen", "Verloren","Gelijk" };
 		DefaultTableModel rankingModel = new DefaultTableModel(header, 0);
 		String query = "SELECT * FROM competitiestand WHERE competitie_id = " + competitionNumber
 				+ " ORDER BY gemidddelde_score DESC";
@@ -85,8 +85,9 @@ public class CompetitionFrame extends JFrame {
 		try {
 			int counter = 1;
 			while (rs.next()) {
-				rankingModel.addRow(
-						new Object[] { counter, rs.getString("account_naam"), rs.getString("gemidddelde_score") });
+				rankingModel.addRow(new Object[] { counter, rs.getString("account_naam"),
+						rs.getString("gemidddelde_score"), rs.getString("aantal_gespeelde_spellen"),
+						rs.getString("aantal_gewonnen_spellen"), rs.getString("aantal_verloren_spellen"),rs.getString("aantal_gelijke_spellen") });
 				counter++;
 			}
 		} catch (SQLException e) {
@@ -141,7 +142,7 @@ public class CompetitionFrame extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					boolean userIsPlayer = false;
 					for (int i = 0; i < model.getRowCount(); i++) {
-						if(model.getValueAt(i, 0).equals(gsm.getUser().getUsername())){
+						if (model.getValueAt(i, 0).equals(gsm.getUser().getUsername())) {
 							userIsPlayer = true;
 						}
 					}
@@ -150,14 +151,16 @@ public class CompetitionFrame extends JFrame {
 						gsm.setGamestate(gsm.gameOverviewState);
 						setVisible(false);
 					} else {
-						int option = JOptionPane.showConfirmDialog(null, "U bent nog geen deelnemer. Wilt u een deelnemen aan deze competitie?", "Wordfeud", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+						int option = JOptionPane.showConfirmDialog(null,
+								"U bent nog geen deelnemer. Wilt u een deelnemen aan deze competitie?", "Wordfeud",
+								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 						if (option == JOptionPane.OK_OPTION) {
-							String query = "INSERT INTO deelnemer VALUES ('"+gsm.getUser().getUsername()+"', "+competitionNumber+")";
+							String query = "INSERT INTO deelnemer VALUES ('" + gsm.getUser().getUsername() + "', "
+									+ competitionNumber + ")";
 							db_c.queryUpdate(query);
-							db_c.closeConnection();
 						}
 					}
-					
+
 				}
 			});
 			panel.add(playButton);
