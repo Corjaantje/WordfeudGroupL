@@ -75,9 +75,8 @@ public class InfoUserState extends Gamestate{
 					infoC.setPassword(currentUsername, password);
 					passwordLabel.setText("Wachtwoord: " + password);
 				}else{
-					JOptionPane.showMessageDialog(null, "Wachtwoord kan alleen uit letters en cijfers bestaan en moet tussen de 5 en 25 karakters lang zijn");
+					JOptionPane.showMessageDialog(null, "Wachtwoord kan alleen uit letters en cijfers bestaan en moet minimaal 5 karakters lang zijn en maximaal 25 karakters lang zijn");
 				}
-				passwordLabel.setText("Wachtwoord: " + password);
 			}
 		});
 		userInfo.add(changePassword);
