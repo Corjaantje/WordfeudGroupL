@@ -10,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -69,8 +70,13 @@ public class InfoUserState extends Gamestate{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String password = changePassword.getText();
-				infoC.setPassword(currentUsername, password);
-				passwordLabel.setText("Wachtwoord: " + password);
+				int passwordLength = password.length();
+				if(((passwordLength >= 5) && (passwordLength <= 25)) && password.matches("[A-za-z0-9]+")){
+					infoC.setPassword(currentUsername, password);
+					passwordLabel.setText("Wachtwoord: " + password);
+				}else{
+					JOptionPane.showMessageDialog(null, "Wachtwoord kan alleen uit letters en cijfers bestaan en moet minimaal 5 karakters lang zijn en maximaal 25 karakters lang zijn");
+				}
 			}
 		});
 		userInfo.add(changePassword);
