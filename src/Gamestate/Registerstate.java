@@ -70,17 +70,16 @@ public class Registerstate extends Gamestate implements ActionListener{
 		this.registerPanel.add(register);
 		this.registerPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		this.registerPanel.add(switchToLogin);
-
-		this.bgImage = getToolkit().getImage("Resources/wordfeudLogo.png");
+		this.bgImage = getToolkit().getImage("Resources/WordfeudRegister.png");
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
 
-		int width = getWidth() / 3;
-		int height = (int) (getHeight() / 1.75);
+		int width = getWidth() / 1;
+		int height = (int) (getHeight() / 1.1);
 		int x = (int) (GUI.WIDTH / 2 - (width/2));
-		int y = getWidth() / 8;
+		int y = getWidth() / 18;
 		
 		g.drawImage(bgImage, x, y, width, height, null);
 	}
