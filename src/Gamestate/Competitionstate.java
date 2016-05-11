@@ -69,6 +69,12 @@ public class Competitionstate extends Gamestate{
 			joinCompetition.addActionListener(new ActionListener(){
 
 				@Override
+				public void actionPerformed(ActionEvent e) {
+					String result = JOptionPane.showInputDialog("Geef een competitie naam !");
+					competitionController.joinCompetition(result);
+					
+					
+				}
 				
 			});
 			this.competitionPanel.add(joinCompetition, BorderLayout.LINE_END);
