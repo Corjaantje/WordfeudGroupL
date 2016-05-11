@@ -68,7 +68,7 @@ public class GamePanel extends JPanel {
 								JOptionPane.YES_NO_OPTION);
 						if (option == JOptionPane.OK_OPTION) {
 
-							gsm.getUser().setSpelID(Integer.parseInt(e.getActionCommand()));
+							gsm.getUser().setGameNumber(Integer.parseInt(e.getActionCommand()));
 							ResultSet rs = db_c
 									.query("SELECT max(id) AS id FROM beurt WHERE spel_id = " + e.getActionCommand());
 							try {
