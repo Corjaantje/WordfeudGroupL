@@ -13,10 +13,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import GameObjects.CompetitionFrame;
 import Main.GUI;
+import controller.CompetitionController;
 import controller.DatabaseController;
 
 public class SpectatorCompetitionState extends Gamestate {
@@ -24,6 +26,10 @@ public class SpectatorCompetitionState extends Gamestate {
 	private JPanel competitionPanel;
 	
 	private CompetitionFrame competitionFrame;
+	
+	private CompetitionController competitionController;
+	
+	private JButton newCompetitionButton;
 
 	private boolean isCreated;
 
@@ -37,7 +43,7 @@ public class SpectatorCompetitionState extends Gamestate {
 		// TODO Auto-generated method stub
 		g.setColor(Color.white);
 		g.setFont(new Font("Arial", Font.BOLD, 35));
-		g.drawString("Competities om te observeren", (int)GUI.WIDTH/3,75) ;
+		g.drawString("Competities", (int)(GUI.WIDTH/2.25),75) ;
 	}
 
 	@Override
@@ -49,13 +55,14 @@ public class SpectatorCompetitionState extends Gamestate {
 	@Override
 	public void create() {
 		if (!isCreated) {
+			competitionController = new CompetitionController(gsm);
 			this.setLayout(new GridBagLayout());
 			competitionFrame = new CompetitionFrame(db_c,gsm);
 			this.createCompetitionPanel();
-
+			this.createButton();
 			isCreated = true;
 		} else {
-
+			
 		}
 
 	}
@@ -82,6 +89,21 @@ public class SpectatorCompetitionState extends Gamestate {
 			e.printStackTrace();
 		}
 		this.add(competitionPanel, new GridBagConstraints());
+	}
+	
+	private void createButton(){
+		newCompetitionButton = new JButton("Nieuwe Competitie");
+		newCompetitionButton.setPreferredSize(new Dimension(150, 250));
+		newCompetitionButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				String result = JOptionPane.showInputDialog("Geef een competitie naam !");
+				competitionController.addCompetition(result);
+			}
+		});
+		this.add(newCompetitionButton);
 	}
 
 
