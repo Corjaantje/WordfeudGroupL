@@ -114,19 +114,8 @@ public class GUI extends JFrame {
 			}
 		});
 		
-		JMenuItem Notification = new JMenuItem("Notifications");
-		Notification.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				NotificationFrame frame = new NotificationFrame(gsm);
-			}
-		});
-		
 		menu.add(exit);
-		menu.add(mainMenu);
-		menu.add(Notification);
+		menu.add(mainMenu);;
 		bar.add(menu);
 		
 		this.setJMenuBar(bar);

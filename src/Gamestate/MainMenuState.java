@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import GameObjects.NotificationFrame;
 import model.User;
 import controller.AdminDBController;
 import controller.DatabaseController;
@@ -39,6 +40,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 	private JLabel adminText;
 	private JLabel moderatorText;
 	private JLabel playerText;
+	private JLabel spectatorText;
 	
 	private JButton goToLogout;
 	private JButton goToCompetitionState;
@@ -47,14 +49,16 @@ public class MainMenuState extends Gamestate implements ActionListener
 	private JButton openModeratorNewWord;
 	private JButton showPersonalInfo;
 	private JButton playerNewWord;
+	private JButton playerNotifications;
+	private JButton spectatorCompetition;
 	
+	private NotificationFrame Notify;
 	
 	public  MainMenuState(GamestateManager gsmanager,DatabaseController db_controller)
 	{
 		super(gsmanager,db_controller);
 		this.gsm = gsmanager;
 		this.db_c = db_controller;
-		
 	}
 	
 	private void welcomeUser()
@@ -65,21 +69,15 @@ public class MainMenuState extends Gamestate implements ActionListener
 		welcomeText.setFont(new Font("Verdana", Font.BOLD, 32));
 		welcomeText.setText("Welkom " + currentUser.getUsername() + "!");
 		welcomeText.setAlignmentX(CENTER_ALIGNMENT);
-		this.add(Box.createRigidArea(new Dimension(0,50)));
+		this.add(Box.createRigidArea(new Dimension(0,25)));
 		this.add(welcomeText);
 	}
 	
 	private void addGeneralButtons()
 	{
 		goToLogout = new JButton();
-		goToCompetitionState = new JButton();
 		showPersonalInfo = new JButton();
 		openSettings = new JButton();
-		
-		goToCompetitionState.setText("Competitie Overzicht");
-		goToCompetitionState.setAlignmentX(CENTER_ALIGNMENT);
-		goToCompetitionState.setActionCommand("competition");
-		goToCompetitionState.addActionListener(this);
 		
 		openSettings.setText("Applicatie Instellingen");
 		openSettings.setAlignmentX(CENTER_ALIGNMENT);
@@ -96,14 +94,13 @@ public class MainMenuState extends Gamestate implements ActionListener
 		goToLogout.setActionCommand("logout");
 		goToLogout.addActionListener(this);
 		
-		this.add(Box.createRigidArea(new Dimension(0,50)));
-		this.add(goToCompetitionState);	
-		this.add(Box.createRigidArea(new Dimension(0,25)));
+		this.add(Box.createRigidArea(new Dimension(0,10)));
 		this.add(showPersonalInfo);
 		this.add(Box.createRigidArea(new Dimension(0,25)));
 		this.add(openSettings);
 		this.add(Box.createRigidArea(new Dimension(0,25)));
 		this.add(goToLogout);
+		this.add(Box.createRigidArea(new Dimension(0,10)));
 	}
 	
 	private void addAdministratorButtons()
@@ -123,11 +120,10 @@ public class MainMenuState extends Gamestate implements ActionListener
 			openAdminSetRole.setActionCommand("adminrole");
 			openAdminSetRole.addActionListener(this);		
 			
-			this.add(Box.createRigidArea(new Dimension(0,25)));
 			this.add(adminText);
 			this.add(Box.createRigidArea(new Dimension(0,25)));
 			this.add(openAdminSetRole);
-			this.add(Box.createRigidArea(new Dimension(0,25)));
+			this.add(Box.createRigidArea(new Dimension(0,10)));
 		}
 	}
 	
@@ -135,6 +131,8 @@ public class MainMenuState extends Gamestate implements ActionListener
 	{
 		if(currentUser.checkRole("moderator"))
 		{
+			Notify = new NotificationFrame(gsm);
+			
 			moderatorText = new JLabel();
 			openModeratorNewWord = new JButton();
 			
@@ -148,11 +146,10 @@ public class MainMenuState extends Gamestate implements ActionListener
 			openModeratorNewWord.setActionCommand("moderatorNew");
 			openModeratorNewWord.addActionListener(this);	
 			
-			this.add(Box.createRigidArea(new Dimension(0,25)));
 			this.add(moderatorText);
 			this.add(Box.createRigidArea(new Dimension(0,25)));
 			this.add(openModeratorNewWord);
-			this.add(Box.createRigidArea(new Dimension(0,25)));
+			this.add(Box.createRigidArea(new Dimension(0,10)));
 		}
 	}
 	
@@ -162,22 +159,61 @@ public class MainMenuState extends Gamestate implements ActionListener
 		{
 			playerText = new JLabel();
 			playerNewWord = new JButton();
+			playerNotifications = new JButton();
+			goToCompetitionState = new JButton();
 			
 			playerText.setForeground(Color.WHITE);
 			playerText.setFont(new Font("Verdana", Font.BOLD, 24));
 			playerText.setAlignmentX(CENTER_ALIGNMENT);
 			playerText.setText("Speler Opties");
 			
+			goToCompetitionState.setText("Competitie Overzicht");
+			goToCompetitionState.setAlignmentX(CENTER_ALIGNMENT);
+			goToCompetitionState.setActionCommand("competition");
+			goToCompetitionState.addActionListener(this);
+			
 			playerNewWord.setText("Woord aanvraag");
 			playerNewWord.setAlignmentX(CENTER_ALIGNMENT);
 			playerNewWord.setActionCommand("wordNew");
 			playerNewWord.addActionListener(this);	
 			
-			this.add(Box.createRigidArea(new Dimension(0,25)));
+			playerNotifications.setText("Spel aanvraag meldingen");
+			playerNotifications.setAlignmentX(CENTER_ALIGNMENT);
+			playerNotifications.setActionCommand("notifications");
+			playerNotifications.addActionListener(this);
+			
 			this.add(playerText);
+			this.add(Box.createRigidArea(new Dimension(0,25)));
+			this.add(goToCompetitionState);	
 			this.add(Box.createRigidArea(new Dimension(0,25)));
 			this.add(playerNewWord);
 			this.add(Box.createRigidArea(new Dimension(0,25)));
+			this.add(playerNotifications);
+			this.add(Box.createRigidArea(new Dimension(0,10)));
+		}
+	}
+	
+	private void addSpectatorButtons()
+	{
+		if(currentUser.checkRole("observer"))
+		{
+			playerText = new JLabel();
+			spectatorCompetition = new JButton();
+			
+			playerText.setForeground(Color.WHITE);
+			playerText.setFont(new Font("Verdana", Font.BOLD, 24));
+			playerText.setAlignmentX(CENTER_ALIGNMENT);
+			playerText.setText("Toeschouwer Opties");
+			
+			spectatorCompetition.setText("Competitie Overzicht");
+			spectatorCompetition.setAlignmentX(CENTER_ALIGNMENT);
+			spectatorCompetition.setActionCommand("spectator");
+			spectatorCompetition.addActionListener(this);
+			
+			this.add(playerText);
+			this.add(Box.createRigidArea(new Dimension(0,25)));
+			this.add(spectatorCompetition);
+			this.add(Box.createRigidArea(new Dimension(0,10)));
 		}
 	}
 	
@@ -196,13 +232,16 @@ public class MainMenuState extends Gamestate implements ActionListener
 	{		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		currentUser = gsm.getUser();
+		
 		this.welcomeUser();
 		this.addGeneralButtons();
 		this.addPlayerButtons();
+		this.addSpectatorButtons();
 		this.addAdministratorButtons();
 		this.addModeratorButtons();
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -235,6 +274,14 @@ public class MainMenuState extends Gamestate implements ActionListener
 		else if("wordNew".equals(e.getActionCommand()))
 		{
 			gsm.setGamestate(gsm.playerNewWordState);
+		}
+		else if("notifications".equals(e.getActionCommand()))
+		{
+			Notify.setVisible(true);
+		}
+		else if("spectator".equals(e.getActionCommand()))
+		{
+			gsm.setGamestate(gsm.spectatorCompetitionState);
 		}
 	}
 	
