@@ -22,7 +22,7 @@ public class GameOverviewState extends Gamestate {
 	private int x;
 	private int y;
 
-	private String description = "Test";
+	private String description;
 
 	private GamePanel gamePanel;
 
