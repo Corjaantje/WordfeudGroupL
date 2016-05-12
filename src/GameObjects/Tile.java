@@ -14,6 +14,9 @@ public class Tile implements Drawable {
 	private int width;
 	private int height;
 	
+	private int bordX;
+	private int bordY;
+
 	private String score;
 
 	private Image image;
@@ -103,5 +106,21 @@ public class Tile implements Drawable {
 	
 	public boolean getIsEmpty(){
 		return isEmpty;
+	}
+	
+	public int getBordX() {
+		return bordX;
+	}
+
+	public void setBordX(int bordX) {
+		this.bordX = bordX;
+	}
+
+	public int getBordY() {
+		return bordY;
+	}
+
+	public void setBordY(int bordY) {
+		this.bordY = bordY;
 	}
 }

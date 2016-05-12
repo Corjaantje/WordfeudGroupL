@@ -29,6 +29,7 @@ public class User {
 		roles = new ArrayList<>();
 		this.username = username;
 		turnNumber = 19;
+		gameNumber = 511;
 		competitionNumber = 1;
 		addRoles();
 	}
@@ -176,7 +177,10 @@ public class User {
 	}
 
 	public void setTurnNumber(int turnNumber) {
-		this.turnNumber = turnNumber;
+		if (turnNumber > 0) {
+			this.turnNumber = turnNumber;
+		}
+		
 	}
 	
 	public int getCompetitionNumber(){

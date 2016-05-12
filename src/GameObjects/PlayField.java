@@ -103,7 +103,11 @@ public class PlayField implements Drawable {
 				}
 				int score = rs.getInt("waarde");
 				Letter letter = new Letter(x + (letterX * (size + space))-36, y + (letterY * (size + space))-25, size, size,letterType,score);
-				
+				//test v
+				letter.setBordX(letterX);
+				letter.setBordY(letterY);
+				letter.setPlayfieldX(x);
+				//test ^
 				playedLetters.add(letter);
 				
 				for (Tile tile:tiles) {
@@ -134,7 +138,10 @@ public class PlayField implements Drawable {
 				int j = Integer.parseInt(rs.getString(1));
 				int i = Integer.parseInt(rs.getString(2));
 				String score = rs.getString(4);
-				tiles.add(new Tile(x + (j * (size + space))-36, y + (i * (size + space))-25, size, size, score));
+				Tile tile = new Tile(x + (j * (size + space))-36, y + (i * (size + space))-25, size, size, score);
+				tile.setBordX(j);
+				tile.setBordY(i);
+				tiles.add(tile);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
