@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import GameObjects.NotificationFrame;
+import GameObjects.NotificationPanel;
 import model.User;
 import controller.AdminDBController;
 import controller.DatabaseController;
@@ -53,6 +54,9 @@ public class MainMenuState extends Gamestate implements ActionListener
 	private JButton spectatorCompetition;
 	
 	private NotificationFrame Notify;
+	
+	private boolean notifyCreated;
+	private boolean mainMenuCreated;
 	
 	public  MainMenuState(GamestateManager gsmanager,DatabaseController db_controller)
 	{
@@ -230,15 +234,28 @@ public class MainMenuState extends Gamestate implements ActionListener
 	@Override
 	public void create()
 	{		
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		currentUser = gsm.getUser();
-		
+		if(!mainMenuCreated)
+		{
+			currentUser = gsm.getUser();
+			this.createMenu();
+		}
+		else if(!currentUser.equals(gsm.getUser()))
+		{
+			currentUser = gsm.getUser();
+			this.createMenu();
+		}
+	}
+	
+	private void createMenu()
+	{
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));	
 		this.welcomeUser();
 		this.addGeneralButtons();
 		this.addPlayerButtons();
 		this.addSpectatorButtons();
 		this.addAdministratorButtons();
 		this.addModeratorButtons();
+		mainMenuCreated = true;
 	}
 
 	@SuppressWarnings("static-access")
@@ -277,7 +294,15 @@ public class MainMenuState extends Gamestate implements ActionListener
 		}
 		else if("notifications".equals(e.getActionCommand()))
 		{
-			Notify.setVisible(true);
+			if(!notifyCreated)
+			{
+				Notify = new NotificationFrame(gsm);
+				Notify.setVisible(true);
+			}
+			else
+			{
+				Notify.setVisible(true);
+			}
 		}
 		else if("spectator".equals(e.getActionCommand()))
 		{

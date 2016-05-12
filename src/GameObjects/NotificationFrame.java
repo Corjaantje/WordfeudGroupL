@@ -14,8 +14,8 @@ public class NotificationFrame extends JFrame
 {
 	public NotificationFrame(GamestateManager gsm)
 	{
-		this.setPreferredSize(new Dimension((int) (GUI.WIDTH/3), (int) (GUI.HEIGHT/1.5)));;
-		this.setLocation((int)(GUI.WIDTH/3), (int)(GUI.HEIGHT/6));
+		this.setPreferredSize(new Dimension((int) (GUI.WIDTH/2.8), (int) (GUI.HEIGHT/1.5)));;
+		this.setLocation((int)(GUI.WIDTH/3.1), (int)(GUI.HEIGHT/6));
 		this.setResizable(false);
 		this.setTitle("Meldingen");
 		this.setLayout(new BorderLayout());
