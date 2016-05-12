@@ -5,13 +5,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
+
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -22,9 +22,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-
 import GameObjects.NotificationFrame;
-import GameObjects.NotificationPanel;
+import Main.GUI;
 import model.User;
 import controller.AdminDBController;
 import controller.DatabaseController;
@@ -36,6 +35,8 @@ public class MainMenuState extends Gamestate implements ActionListener
 	private DatabaseController db_c;
 	
 	private User currentUser;
+	
+	private Image bgImage;
 	
 	private JLabel welcomeText;
 	private JLabel adminText;
@@ -201,29 +202,36 @@ public class MainMenuState extends Gamestate implements ActionListener
 	{
 		if(currentUser.checkRole("observer"))
 		{
-			playerText = new JLabel();
+			spectatorText = new JLabel();
 			spectatorCompetition = new JButton();
 			
-			playerText.setForeground(Color.WHITE);
-			playerText.setFont(new Font("Verdana", Font.BOLD, 24));
-			playerText.setAlignmentX(CENTER_ALIGNMENT);
-			playerText.setText("Toeschouwer Opties");
+			spectatorText.setForeground(Color.WHITE);
+			spectatorText.setFont(new Font("Verdana", Font.BOLD, 24));
+			spectatorText.setAlignmentX(CENTER_ALIGNMENT);
+			spectatorText.setText("Toeschouwer Opties");
 			
 			spectatorCompetition.setText("Competitie Overzicht");
 			spectatorCompetition.setAlignmentX(CENTER_ALIGNMENT);
 			spectatorCompetition.setActionCommand("spectator");
 			spectatorCompetition.addActionListener(this);
 			
-			this.add(playerText);
+			this.add(spectatorText);
 			this.add(Box.createRigidArea(new Dimension(0,25)));
 			this.add(spectatorCompetition);
 			this.add(Box.createRigidArea(new Dimension(0,10)));
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	@Override
 	public void draw(Graphics2D g)
 	{
+		int width = getWidth() / 1;
+		int height = (int) (getHeight() / 0.95);
+		int x = (int) (GUI.WIDTH / 2 - (width/2));
+		int y = getWidth()/21;
+		
+		g.drawImage(bgImage, -3, 0, width, height, null);
 	}
 
 	@Override
@@ -244,6 +252,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 			currentUser = gsm.getUser();
 			this.createMenu();
 		}
+		this.bgImage = getToolkit().getImage("Resources/MainMenu.png");
 	}
 	
 	private void createMenu()
@@ -258,7 +267,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 		mainMenuCreated = true;
 	}
 
-	@SuppressWarnings("static-access")
+	@SuppressWarnings({ "static-access", "unused" })
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -369,7 +378,8 @@ public class MainMenuState extends Gamestate implements ActionListener
 				    
 				  
 				    adminOption.addItemListener(new ItemListener(){
-				    	@Override
+				    	@SuppressWarnings("unused")
+						@Override
 				    	public void itemStateChanged(ItemEvent ie) {
 				    		JCheckBox adminOption = (JCheckBox) ie.getItem();
 				    		int state = ie.getStateChange();
@@ -389,6 +399,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 					});
 				    
 					moderatorOption.addItemListener(new ItemListener(){
+						@SuppressWarnings("unused")
 						@Override
 						public void itemStateChanged(ItemEvent ie) {
 							JCheckBox moderatorOption = (JCheckBox) ie.getItem();
@@ -409,6 +420,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 					});
 
 					observerOption.addItemListener(new ItemListener(){
+						@SuppressWarnings("unused")
 						@Override
 						public void itemStateChanged(ItemEvent ie) {
 							JCheckBox observerOption = (JCheckBox) ie.getItem();
@@ -429,6 +441,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 					});
 					    
 					playerOption.addItemListener(new ItemListener(){
+						@SuppressWarnings("unused")
 						@Override
 						public void itemStateChanged(ItemEvent ie) {
 							JCheckBox playerOption = (JCheckBox) ie.getItem();
