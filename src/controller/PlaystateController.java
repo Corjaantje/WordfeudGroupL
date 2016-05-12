@@ -1,7 +1,8 @@
 package controller;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
@@ -546,6 +547,41 @@ public class PlaystateController
 		return verticalWord;
 	}
 	
+	private String getConvertedWordArrayListToString(ArrayList<Letter> foundWordArraylist)
+	{
+		String foundWordString = "";
+		for (Letter letter : foundWordArraylist)
+		{
+			foundWordString += letter.getLetterChar();
+		}
+		return foundWordString;
+	}
+	
+	private boolean isInDictionary(ArrayList<Letter> foundWordArraylist)
+	{
+		String foundWord = getConvertedWordArrayListToString(foundWordArraylist);
+		//TODO letterset_code ophalen via het spel_id/gameNumber en in de query plaatsen.
+		ResultSet rs = databaseController.query("select woord from woordenboek where woord = '" + foundWord + "' and letterset_code = '" + "NL" + "' and status = 'accepted'");
+		try{
+			if(rs.next()){
+				return true;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	//return the value of the word in points (int)
+	private int getWordValue(ArrayList<Letter> foundWordArraylist)
+	{
+		// TODO hier ben ik ook (marc)
+		// TODO get the score from the tile the letter is placed on
+		// TODO make a switch statement for every scorecode and multiply the letter score by that number
+		return 0;
+	}
+	
 	public void doPlay() {
 		// INSTEAD OF THIS IF THE WORD IS NOT ATTACHED TO ANY LETTERS, CHECK IF ONE OF THE LETTERS IS ON THE STARTSTAR
 		
@@ -608,18 +644,34 @@ public class PlaystateController
 						if (isWordAttached(wordArrayList))
 						{
 							System.out.println("Word is attached to existing letter.");
-							
+							boolean placementIsValid = true;
+							String wrongWordsString = "Dit woord kan niet geplaatst worden omdat de volgende woorden niet in het woordenboek staan: ";
+							int points = 0;
 							// get the first letter of the horizontal word
 							Letter firstLetterInWordArrayList = getLowestXLetter(wordArrayList);
 							Letter firstLetterOnGameBoard = getFirstHorizontalWordLetter(firstLetterInWordArrayList);
-							String horizontalWordString = "";
+							
 							ArrayList<Letter> horizontalWordArraylist = getHorizontalWord(firstLetterOnGameBoard, wordArrayList);
-							for (Letter letter : horizontalWordArraylist)
-							{
-								horizontalWordString += letter.getLetterChar();
-							}
+							String horizontalWordString = getConvertedWordArrayListToString(horizontalWordArraylist);
+							
 							System.out.println(firstLetterOnGameBoard.getLetterChar() + " is the first letter of the horizontal word");
 							System.out.println(horizontalWordString + " Is the horizontal word");
+							
+							// check if the horizontal word is in the dictionary
+							if (!isInDictionary(horizontalWordArraylist))
+							{
+								// if it's not placement isn't valid
+								placementIsValid = false;
+								//add word to list of wrong words
+								wrongWordsString += getConvertedWordArrayListToString(horizontalWordArraylist) + ", ";
+								System.out.println(wrongWordsString);
+							} else 
+							{
+								System.out.println("Woord " + getConvertedWordArrayListToString(horizontalWordArraylist) + " staat in het woordenboek!");
+								// if it is add points for every letter in the word (also get multipliers from tiles (DW DL TW TL etc)
+								// TODO hier was ik (marc)
+								points += getWordValue(horizontalWordArraylist);
+							}
 							
 							// Now get all vertical words.
 							// for every letter that's been placed down, see if it forms a vertical word that is bigger than 1 character.
@@ -741,5 +793,6 @@ public class PlaystateController
 							
 		//}
 	}
+
+	
 }
-// Test marc pull request new private repo
