@@ -29,6 +29,7 @@ public class User {
 		roles = new ArrayList<>();
 		this.username = username;
 		turnNumber = 19;
+		gameNumber = 511;
 		competitionNumber = 1;
 		addRoles();
 	}
