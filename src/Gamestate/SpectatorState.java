@@ -41,7 +41,7 @@ public class SpectatorState extends Gamestate{
 	public void create() {
 		if (!isCreated) {
 			playField = new PlayField(db_c, gsm);
-			letterBox1 = new LetterBox(0, playField.getX(), db_c, gsm,"marijntje42");
+			letterBox1 = new LetterBox(0, playField.getX(), db_c, gsm,gsm.getUser().getChallengerName());
 			letterBox2 = new LetterBox(playField.getX()+playField.getFieldWidth()-5, (int)(GUI.WIDTH - (playField.getX()+playField.getFieldWidth())), db_c, gsm,gsm.getUser().getOpponentName());
 			infoPanel = new InfoPanel(playField.getX(), playField.getFieldWidth()+5, playField.getFieldWidth(), 75, db_c, gsm);
 			this.createButtons();
@@ -60,7 +60,7 @@ public class SpectatorState extends Gamestate{
 			infoPanel.draw(g);
 			g.setColor(Color.red);
 			g.setFont(new Font("Arial", Font.ITALIC, 30));
-			g.drawString("marijntje42", playField.getX()/3, letterBox1.getEndY()/3);
+			g.drawString(gsm.getUser().getChallengerName(), playField.getX()/3, letterBox1.getEndY()/3);
 			g.drawString(gsm.getUser().getOpponentName(), playField.getX()+playField.getFieldWidth()+(playField.getFieldWidth()/3), letterBox2.getEndY()/3);
 		}
 	}

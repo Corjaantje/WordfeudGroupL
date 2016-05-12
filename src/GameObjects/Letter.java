@@ -44,6 +44,12 @@ public class Letter implements Drawable {
 	private Image bgImage;
 
 	private Font font;
+	
+	private int bordX;
+	private int bordY;
+	
+	private double playfieldX;
+	private int playfieldSpace;
 
 	public Letter(double x, double y, int width, int height, String letter, int score) {
 		this.x = x;
@@ -78,6 +84,8 @@ public class Letter implements Drawable {
 		// TODO Auto-generated method stub
 		if (x <= headingX + vectorX && x >= headingX - vectorX && y <= headingY + vectorY && y >= headingY - vectorY) {
 			rightLocation = true;
+			x = headingX;
+			y = headingY;
 		} else {
 			if (x <= headingX && y <= headingY) {
 				x += vectorX;
@@ -188,4 +196,28 @@ public class Letter implements Drawable {
 		}
 		return false;
 	}
+
+	//test v
+	
+	public int getBordX() {
+		return bordX;
+	}
+
+	public void setBordX(int bordX) {
+		this.bordX = bordX;
+	}
+
+	public int getBordY() {
+		return bordY;
+	}
+
+	public void setBordY(int bordY) {
+		this.bordY = bordY;
+	}
+	
+	public void setPlayfieldX(double x){
+		playfieldX = x;
+		playfieldSpace = 2;
+	}
+	
 }

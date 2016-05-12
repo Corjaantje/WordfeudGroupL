@@ -36,8 +36,8 @@ public class LetterBox implements Drawable {
 		startY = fieldWidth + 5;
 		startX = x;
 		this.player = player;
-		createTiles();
-		createLetters();
+		this.createTiles();
+		this.createLetters();
 		isCreated = true;
 	}
 
@@ -56,32 +56,34 @@ public class LetterBox implements Drawable {
 		int turn = 0;
 		int game = gsm.getUser().getGameNumber();
 		if (player.equals(gsm.getUser().getPlayerTurn())) {
-			turn = gsm.getUser().getTurnNumber()-2;//strange!!
+			turn = gsm.getUser().getTurnNumber();//strange!!
 		} else {
-			turn = gsm.getUser().getTurnNumber()-3;//strange!!
+			turn = gsm.getUser().getTurnNumber();//strange!!
 		}
-		String query = "SELECT lt.karakter,b.account_naam,lt.waarde  FROM letterbakjeletter AS lb  INNER JOIN letter AS l  ON l.id = lb.letter_id  INNER JOIN lettertype AS lt  ON lt.karakter = l.lettertype_karakter  INNER JOIN beurt AS b ON b.id = lb.beurt_id WHERE lb.spel_id = "
-				+ game + " AND lb.beurt_id = " + turn + " AND letterset_code = 'NL';";
+		String query = "SELECT * FROM plankje WHERE spel_id = "+game+" AND beurt_id = "+turn;
 		ResultSet rs = db_c.query(query);
+		String letterboxLetters = "";
 		try {
-			int i = 0;
 			while (rs.next()) {
-				double x = tiles.get(i).getX();
-				double y = tiles.get(i).getY();
-				int width = tiles.get(i).getWidth();
-				int height = tiles.get(i).getHeight();
-				String letterSign = rs.getString("karakter");
-				int score = rs.getInt("waarde");
-				Letter letter = new Letter(x, y, width, height, letterSign, score);
-				letters.add(letter);
-				tiles.get(i).setLetter(letter);
-				i++;
+				letterboxLetters = rs.getString("inhoud");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Something went wrong in the LetterBox: " + e.getMessage());
 		}
 		db_c.closeConnection();
+		letterboxLetters = letterboxLetters.replaceAll(",", "");
+		for (int i = 0; i < letterboxLetters.length(); i++) {
+			double x = tiles.get(i).getX();
+			double y = tiles.get(i).getY();
+			int width = tiles.get(i).getWidth();
+			int height = tiles.get(i).getHeight();
+			String letterSign = "" + letterboxLetters.charAt(i);
+			int score = -1;
+			Letter letter = new Letter(x, y, width, height, letterSign, score);
+			letters.add(letter);
+			tiles.get(i).setLetter(letter);
+		}
 	}
 
 	@Override
