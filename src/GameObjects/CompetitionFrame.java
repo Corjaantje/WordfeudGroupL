@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Gamestate.GamestateManager;
 import Main.GUI;
+import controller.CompetitionController;
 import controller.DatabaseController;
 
 public class CompetitionFrame extends JFrame {
@@ -37,17 +38,19 @@ public class CompetitionFrame extends JFrame {
 
 	private JTable table;
 
-	private DefaultTableModel model;
+	private DefaultTableModel participantModel;
 
 	private GamestateManager gsm;
 
 	private int competitionNumber;
 
 	private boolean isOnRanking;
+	
+	private CompetitionController competitionController;
 
-	public CompetitionFrame(DatabaseController db_c, GamestateManager gsm) {
-		this.db_c = db_c;
+	public CompetitionFrame(GamestateManager gsm, CompetitionController competitionController) {
 		this.gsm = gsm;
+		this.competitionController = competitionController;
 		this.setResizable(false);
 		this.setTitle("Wordfeud Competities");
 		panel = new JPanel(new BorderLayout());
@@ -63,15 +66,15 @@ public class CompetitionFrame extends JFrame {
 		if (!isCreated) {
 			this.createButtons();
 			String[] header = { "Deelnemer" };
-			model = new DefaultTableModel(header, 0);
-			table = new JTable(model);
+			participantModel = new DefaultTableModel(header, 0);
+			table = new JTable(participantModel);
 			table.setEnabled(false);
 			JScrollPane scrollPane = new JScrollPane(table);
 			scrollPane.setVisible(true);
 			this.add(scrollPane);
 			isCreated = true;
 		}
-		this.loadTable(competitionNumber);
+		this.loadParticipantTable(competitionNumber);
 		setVisible(true);
 		this.competitionNumber = competitionNumber;
 	}
@@ -79,44 +82,19 @@ public class CompetitionFrame extends JFrame {
 	private void loadRankingTable() {
 		String[] header = { "Positie", "Speler", "Score", "Gespeeld", "Gewonnen", "Verloren","Gelijk" };
 		DefaultTableModel rankingModel = new DefaultTableModel(header, 0);
-		String query = "SELECT * FROM competitiestand WHERE competitie_id = " + competitionNumber
-				+ " ORDER BY gemidddelde_score DESC";
-		ResultSet rs = db_c.query(query);
-		try {
-			int counter = 1;
-			while (rs.next()) {
-				rankingModel.addRow(new Object[] { counter, rs.getString("account_naam"),
-						rs.getString("gemidddelde_score"), rs.getString("aantal_gespeelde_spellen"),
-						rs.getString("aantal_gewonnen_spellen"), rs.getString("aantal_verloren_spellen"),rs.getString("aantal_gelijke_spellen") });
-				counter++;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		db_c.closeConnection();
+		rankingModel = competitionController.loadRankingModel(rankingModel, competitionNumber);
 		table.setModel(rankingModel);
 		seeRankingButton.setText("Bekijk Ranking");
 	}
 
-	private void loadTable(int competitionNumber) {
-		if (model.getRowCount() > 0) {
-			for (int i = model.getRowCount() - 1; i > -1; i--) {
-				model.removeRow(i);
+	private void loadParticipantTable(int competitionNumber) {
+		if (participantModel.getRowCount() > 0) {
+			for (int i = participantModel.getRowCount() - 1; i > -1; i--) {
+				participantModel.removeRow(i);
 			}
 		}
-		table.setModel(model);
-		String query = "SELECT * FROM deelnemer WHERE competitie_id = " + competitionNumber;
-		ResultSet rs = db_c.query(query);
-		try {
-			while (rs.next()) {
-				model.addRow(new Object[] { rs.getString("account_naam") });
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		db_c.closeConnection();
+		participantModel = competitionController.loadParticipantModel(participantModel, competitionNumber);
+		table.setModel(participantModel);
 	}
 
 	private void createButtons() {
@@ -141,8 +119,8 @@ public class CompetitionFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					boolean userIsPlayer = false;
-					for (int i = 0; i < model.getRowCount(); i++) {
-						if (model.getValueAt(i, 0).equals(gsm.getUser().getUsername())) {
+					for (int i = 0; i < participantModel.getRowCount(); i++) {
+						if (participantModel.getValueAt(i, 0).equals(gsm.getUser().getUsername())) {
 							userIsPlayer = true;
 						}
 					}

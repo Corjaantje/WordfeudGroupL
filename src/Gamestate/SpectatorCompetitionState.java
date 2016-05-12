@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -32,6 +33,8 @@ public class SpectatorCompetitionState extends Gamestate {
 	private JButton newCompetitionButton;
 
 	private boolean isCreated;
+	
+	private ArrayList<JButton> competitions;
 
 	public SpectatorCompetitionState(GamestateManager gsm, DatabaseController db_c) {
 		super(gsm, db_c);
@@ -57,37 +60,31 @@ public class SpectatorCompetitionState extends Gamestate {
 		if (!isCreated) {
 			competitionController = new CompetitionController(gsm);
 			this.setLayout(new GridBagLayout());
-			competitionFrame = new CompetitionFrame(db_c,gsm);
+			competitionFrame = new CompetitionFrame(gsm,competitionController);
 			this.createCompetitionPanel();
 			this.createButton();
 			isCreated = true;
 		} else {
-			
+			this.loadCompetitions();
 		}
 
 	}
+	
+	private void loadCompetitions(){
+		competitionPanel.removeAll();
+		competitions = competitionController.updateCompetitions(competitions, competitionFrame);
+		for (JButton button : competitions) {
+			competitionPanel.add(button);
+		}
+		this.validate();
+	}
 
 	private void createCompetitionPanel() {
+		competitions = new ArrayList<JButton>();
 		competitionPanel = new JPanel(new GridLayout(10, 10));
 		competitionPanel.setBackground(Color.gray);
 		competitionPanel.setPreferredSize(new Dimension((int)GUI.WIDTH/2, (int) ((int)GUI.HEIGHT/1.5)));
-		ResultSet rs = db_c.query("SELECT * FROM competitie");
-		try {
-			while(rs.next()){
-				int competitionNumber = rs.getInt("id");
-				String string = rs.getString("id")+". "+rs.getString("omschrijving");
-				JButton button = new JButton(string);
-				button.addActionListener(new ActionListener() {
-					
-					public void actionPerformed(ActionEvent e) {
-						competitionFrame.loadCompetitionFrame(competitionNumber);
-					}
-				});
-				competitionPanel.add(button);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		this.loadCompetitions();
 		this.add(competitionPanel, new GridBagConstraints());
 	}
 	
@@ -101,6 +98,7 @@ public class SpectatorCompetitionState extends Gamestate {
 				// TODO Auto-generated method stub
 				String result = JOptionPane.showInputDialog("Geef een competitie naam !");
 				competitionController.addCompetition(result);
+				loadCompetitions();
 			}
 		});
 		this.add(newCompetitionButton);
