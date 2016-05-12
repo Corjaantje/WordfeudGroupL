@@ -45,7 +45,9 @@ public class Loginstate extends Gamestate implements ActionListener{
 		this.add(loginPanel);
 
 		user = new JTextField(10);
+		user.setText("allrights");			//For Testing Only!
 		password = new JPasswordField(10);
+		password.setText("12345");			//For Testing Only!
 
 		JButton login = new JButton("Login");	
 		login.setBackground(Color.lightGray);

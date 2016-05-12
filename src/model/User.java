@@ -176,7 +176,10 @@ public class User {
 	}
 
 	public void setTurnNumber(int turnNumber) {
-		this.turnNumber = turnNumber;
+		if (turnNumber > 0) {
+			this.turnNumber = turnNumber;
+		}
+		
 	}
 	
 	public int getCompetitionNumber(){
