@@ -14,9 +14,8 @@ public class NotificationFrame extends JFrame
 {
 	public NotificationFrame(GamestateManager gsm)
 	{
-		this.setPreferredSize(new Dimension((int) (GUI.WIDTH/3), (int) (GUI.HEIGHT/1.5)));;
-		this.setLocation((int)(GUI.WIDTH/3), (int)(GUI.HEIGHT/6));
-		this.setUndecorated(true);
+		this.setPreferredSize(new Dimension((int) (GUI.WIDTH/2.8), (int) (GUI.HEIGHT/1.5)));;
+		this.setLocation((int)(GUI.WIDTH/3.1), (int)(GUI.HEIGHT/6));
 		this.setResizable(false);
 		this.setTitle("Meldingen");
 		this.setLayout(new BorderLayout());
@@ -25,6 +24,5 @@ public class NotificationFrame extends JFrame
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		this.add(scrollPane);
 		this.pack();
-		this.setVisible(true);
 	}
 }

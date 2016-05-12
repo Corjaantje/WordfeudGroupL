@@ -36,8 +36,8 @@ public class LetterBox implements Drawable {
 		startY = fieldWidth + 5;
 		startX = x;
 		this.player = player;
-		createTiles();
-		createLetters();
+		this.createTiles();
+		this.createLetters();
 		isCreated = true;
 	}
 
