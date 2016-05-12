@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -25,6 +26,7 @@ import javax.swing.SwingUtilities;
 
 import GameObjects.NotificationFrame;
 import GameObjects.NotificationPanel;
+import Main.GUI;
 import model.User;
 import controller.AdminDBController;
 import controller.DatabaseController;
@@ -36,6 +38,8 @@ public class MainMenuState extends Gamestate implements ActionListener
 	private DatabaseController db_c;
 	
 	private User currentUser;
+	
+	private Image bgImage;
 	
 	private JLabel welcomeText;
 	private JLabel adminText;
@@ -224,6 +228,12 @@ public class MainMenuState extends Gamestate implements ActionListener
 	@Override
 	public void draw(Graphics2D g)
 	{
+		int width = getWidth() / 1;
+		int height = (int) (getHeight() / 0.95);
+		int x = (int) (GUI.WIDTH / 2 - (width/2));
+		int y = getWidth()/21;
+		
+		g.drawImage(bgImage, -3, 0, width, height, null);
 	}
 
 	@Override
@@ -244,6 +254,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 			currentUser = gsm.getUser();
 			this.createMenu();
 		}
+		this.bgImage = getToolkit().getImage("Resources/MainMenu.png");
 	}
 	
 	private void createMenu()
