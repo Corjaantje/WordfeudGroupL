@@ -25,20 +25,20 @@ import controller.DatabaseController;
 public class SpectatorCompetitionState extends Gamestate {
 
 	private JPanel competitionPanel;
-	
+
 	private CompetitionFrame competitionFrame;
-	
+
 	private CompetitionController competitionController;
-	
+
 	private JButton newCompetitionButton;
 
 	private boolean isCreated;
-	
+
 	private ArrayList<JButton> competitions;
 
 	public SpectatorCompetitionState(GamestateManager gsm, DatabaseController db_c) {
 		super(gsm, db_c);
-		
+
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class SpectatorCompetitionState extends Gamestate {
 		// TODO Auto-generated method stub
 		g.setColor(Color.white);
 		g.setFont(new Font("Arial", Font.BOLD, 35));
-		g.drawString("Competities", (int)(GUI.WIDTH/2.25),75) ;
+		g.drawString("Competities", (int) (GUI.WIDTH / 2.25), 75);
 	}
 
 	@Override
@@ -60,17 +60,19 @@ public class SpectatorCompetitionState extends Gamestate {
 		if (!isCreated) {
 			competitionController = new CompetitionController(gsm);
 			this.setLayout(new GridBagLayout());
-			competitionFrame = new CompetitionFrame(gsm,competitionController);
+			competitionFrame = new CompetitionFrame(gsm, competitionController);
 			this.createCompetitionPanel();
-			this.createButton();
+			if (gsm.getUser().checkRole("player")) {
+				this.createButton();
+			}
 			isCreated = true;
 		} else {
 			this.loadCompetitions();
 		}
 
 	}
-	
-	private void loadCompetitions(){
+
+	private void loadCompetitions() {
 		competitionPanel.removeAll();
 		competitions = competitionController.updateCompetitions(competitions, competitionFrame);
 		for (JButton button : competitions) {
@@ -83,16 +85,16 @@ public class SpectatorCompetitionState extends Gamestate {
 		competitions = new ArrayList<JButton>();
 		competitionPanel = new JPanel(new GridLayout(10, 10));
 		competitionPanel.setBackground(Color.gray);
-		competitionPanel.setPreferredSize(new Dimension((int)GUI.WIDTH/2, (int) ((int)GUI.HEIGHT/1.5)));
+		competitionPanel.setPreferredSize(new Dimension((int) GUI.WIDTH / 2, (int) ((int) GUI.HEIGHT / 1.5)));
 		this.loadCompetitions();
 		this.add(competitionPanel, new GridBagConstraints());
 	}
-	
-	private void createButton(){
+
+	private void createButton() {
 		newCompetitionButton = new JButton("Nieuwe Competitie");
 		newCompetitionButton.setPreferredSize(new Dimension(150, 250));
 		newCompetitionButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -103,6 +105,5 @@ public class SpectatorCompetitionState extends Gamestate {
 		});
 		this.add(newCompetitionButton);
 	}
-
 
 }
