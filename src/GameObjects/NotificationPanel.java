@@ -116,7 +116,7 @@ public class NotificationPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				db_c.queryUpdate("DELETE FROM spel WHERE id = " + gameID + ";");
+				db_c.queryUpdate("UPDATE spel SET reaktie_type = 'rejected' WHERE id = " + gameID + ";");
 				removeAll();
 				updateNotifications();
 				fr.pack();
