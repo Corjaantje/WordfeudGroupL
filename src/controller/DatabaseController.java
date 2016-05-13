@@ -39,7 +39,6 @@ public class DatabaseController
 			// TODO Update connection to exam server on exam day.
 			connection = DriverManager.getConnection(
 					"jdbc:mysql://databases.aii.avans.nl:3306/mjschink_db?user=mjschink&password=Ab12345");
-			System.out.println("Connection successful");
 		} catch (SQLException ex)
 		{
 			// handle any errors
@@ -98,7 +97,6 @@ public class DatabaseController
 	public void closeConnection(){
 		try {
 			connection.close();
-			System.out.println("Connection with database is closed");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
