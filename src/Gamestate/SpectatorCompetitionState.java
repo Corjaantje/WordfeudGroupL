@@ -11,25 +11,34 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import GameObjects.CompetitionFrame;
 import Main.GUI;
+import controller.CompetitionController;
 import controller.DatabaseController;
 
 public class SpectatorCompetitionState extends Gamestate {
 
 	private JPanel competitionPanel;
-	
+
 	private CompetitionFrame competitionFrame;
+
+	private CompetitionController competitionController;
+
+	private JButton newCompetitionButton;
 
 	private boolean isCreated;
 
+	private ArrayList<JButton> competitions;
+
 	public SpectatorCompetitionState(GamestateManager gsm, DatabaseController db_c) {
 		super(gsm, db_c);
-		
+
 	}
 
 	@Override
@@ -37,7 +46,7 @@ public class SpectatorCompetitionState extends Gamestate {
 		// TODO Auto-generated method stub
 		g.setColor(Color.white);
 		g.setFont(new Font("Arial", Font.BOLD, 35));
-		g.drawString("Competities om te observeren", (int)GUI.WIDTH/3,75) ;
+		g.drawString("Competities", (int) (GUI.WIDTH / 2.25), 75);
 	}
 
 	@Override
@@ -49,40 +58,52 @@ public class SpectatorCompetitionState extends Gamestate {
 	@Override
 	public void create() {
 		if (!isCreated) {
+			competitionController = new CompetitionController(gsm);
 			this.setLayout(new GridBagLayout());
-			competitionFrame = new CompetitionFrame(db_c,gsm);
+			competitionFrame = new CompetitionFrame(gsm, competitionController);
 			this.createCompetitionPanel();
-
+			if (gsm.getUser().checkRole("player")) {
+				this.createButton();
+			}
 			isCreated = true;
 		} else {
-
+			this.loadCompetitions();
 		}
 
+	}
+
+	private void loadCompetitions() {
+		competitionPanel.removeAll();
+		competitions = competitionController.updateCompetitions(competitions, competitionFrame);
+		for (JButton button : competitions) {
+			competitionPanel.add(button);
+		}
+		this.validate();
 	}
 
 	private void createCompetitionPanel() {
+		competitions = new ArrayList<JButton>();
 		competitionPanel = new JPanel(new GridLayout(10, 10));
 		competitionPanel.setBackground(Color.gray);
-		competitionPanel.setPreferredSize(new Dimension((int)GUI.WIDTH/2, (int) ((int)GUI.HEIGHT/1.5)));
-		ResultSet rs = db_c.query("SELECT * FROM competitie");
-		try {
-			while(rs.next()){
-				int competitionNumber = rs.getInt("id");
-				String string = rs.getString("id")+". "+rs.getString("omschrijving");
-				JButton button = new JButton(string);
-				button.addActionListener(new ActionListener() {
-					
-					public void actionPerformed(ActionEvent e) {
-						competitionFrame.loadCompetitionFrame(competitionNumber);
-					}
-				});
-				competitionPanel.add(button);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		competitionPanel.setPreferredSize(new Dimension((int) GUI.WIDTH / 2, (int) ((int) GUI.HEIGHT / 1.5)));
+		this.loadCompetitions();
 		this.add(competitionPanel, new GridBagConstraints());
 	}
 
+	private void createButton() {
+		newCompetitionButton = new JButton("Nieuwe Competitie");
+		newCompetitionButton.setPreferredSize(new Dimension(150, 250));
+		newCompetitionButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				String result = JOptionPane.showInputDialog("Geef een competitie naam !");
+				competitionController.addCompetition(result);
+				loadCompetitions();
+			}
+		});
+		this.add(newCompetitionButton);
+	}
 
 }

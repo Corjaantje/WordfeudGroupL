@@ -2,11 +2,12 @@ package Gamestate;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -23,7 +24,7 @@ import controller.DatabaseController;
 
 @SuppressWarnings("serial")
 
-public class Loginstate extends Gamestate implements ActionListener{
+public class Loginstate extends Gamestate implements ActionListener, KeyListener{
 
 	private JPanel loginPanel;
 	private Image bgImage;
@@ -45,8 +46,12 @@ public class Loginstate extends Gamestate implements ActionListener{
 		this.add(loginPanel);
 
 		user = new JTextField(10);
+		user.setText("allrights");			//For Testing Only!
 		password = new JPasswordField(10);
+		password.setText("12345");			//For Testing Only!
 
+		password.addKeyListener(this); //Hit enter while in password to activate the login
+		
 		JButton login = new JButton("Login");	
 		login.setBackground(Color.lightGray);
 		login.setActionCommand("login");
@@ -62,6 +67,7 @@ public class Loginstate extends Gamestate implements ActionListener{
 		passwordBox.setBorder(BorderFactory.createLineBorder(Color.darkGray, 4, true));
 		passwordBox.add(new JLabel("Wachtwoord:"));
 		passwordBox.add(password);
+		
 		
 		switchToRegister = new JButton();
 		switchToRegister.setText("Nieuw Account?");	
@@ -101,19 +107,42 @@ public class Loginstate extends Gamestate implements ActionListener{
 
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		if("login".equals(e.getActionCommand()))
 		{
-			String usernameField = user.getText();
-			@SuppressWarnings("deprecation")
-			String passwordField = password.getText();
-			loginController.login(usernameField, passwordField);
+			this.excecuteLogin();
 		}
 		else if("switchRegister".equals(e.getActionCommand()))
 		{
 			gsm.setGamestate(gsm.registerState);
 		}
 	}
+	
+	private void excecuteLogin()
+	{
+		String usernameField = user.getText();
+		@SuppressWarnings("deprecation")
+		String passwordField = password.getText();
+		loginController.login(usernameField, passwordField);	
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+		{
+			this.excecuteLogin();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{}
 }

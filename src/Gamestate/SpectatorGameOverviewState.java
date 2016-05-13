@@ -14,6 +14,7 @@ import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Main.GUI;
@@ -47,8 +48,6 @@ public class SpectatorGameOverviewState extends Gamestate {
 	@Override
 	public void update() {
 
-
-
 	}
 
 	@Override
@@ -56,7 +55,7 @@ public class SpectatorGameOverviewState extends Gamestate {
 		description = gsm.getUser().getCompetitionDescription();
 		if (!isCreated) {
 			this.setLayout(new BorderLayout());
-			x = (int)(GUI.WIDTH / 2.5);
+			x = (int) (GUI.WIDTH / 2.5);
 			y = 100;
 			unfinishedGamesPanel = new JPanel(new GridLayout(10, 10));
 			this.createUnfinishedGamesPanel();
@@ -72,44 +71,32 @@ public class SpectatorGameOverviewState extends Gamestate {
 			this.createUnfinishedGamesPanel();
 		}
 	}
-	
-	private void createUnfinishedGamesPanel(){
-		unfinishedGamesPanel.setPreferredSize(new Dimension((int)(GUI.WIDTH/3), (int)(GUI.HEIGHT / 1.5)));
-		unfinishedGamesPanel.add(new JLabel("Bezige spellen"));
-		String query = "SELECT * FROM spel WHERE competitie_id = " + gsm.getUser().getCompetitionNumber()+" AND toestand_type = 'playing';";
-		ResultSet rs = db_c.query(query);
-		try {
-			while (rs.next()) {
-				int r = (int) (Math.random() * 100);
-				int g = (int) (Math.random() * 100);
-				int b = (int) (Math.random() * 100);
-				String challenger = rs.getString("account_naam_uitdager");
-				String opponent = rs.getString("account_naam_tegenstander");
 
-				JButton button = new JButton(challenger + " - VS - " + opponent);
-				button.setBackground(new Color(r, g, b));
-				button.setForeground(Color.white);
-				int gameNumber = rs.getInt("id");
-				button.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
-						gsm.getUser().setGameNumber(gameNumber);
-						gsm.setGamestate(gsm.spectatorState);
-					}
-				});
-				unfinishedGamesPanel.add(button);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		this.add(unfinishedGamesPanel,BorderLayout.WEST);
+	private void createUnfinishedGamesPanel() {
+		unfinishedGamesPanel.setPreferredSize(new Dimension((int) (GUI.WIDTH / 3), (int) (GUI.HEIGHT / 1.5)));
+		JLabel label = new JLabel("Bezige spellen");
+		label.setFont(new Font("Comic Sans", Font.BOLD, 30));
+		label.setBackground(Color.lightGray);
+		unfinishedGamesPanel.add(label);
+		String query = "SELECT * FROM spel WHERE competitie_id = " + gsm.getUser().getCompetitionNumber()
+				+ " AND toestand_type = 'playing';";
+		this.executeQuery(query, unfinishedGamesPanel);
+		this.add(unfinishedGamesPanel, BorderLayout.WEST);
 	}
 
-	private void createFinishedGamesPanel(){
-		finishedGamesPanel.setPreferredSize(new Dimension((int)(GUI.WIDTH/3), (int)(GUI.HEIGHT / 1.5)));
-		finishedGamesPanel.add(new JLabel("Geëindigde spellen"));
-		String query = "SELECT * FROM spel WHERE competitie_id = " + gsm.getUser().getCompetitionNumber()+" AND toestand_type = 'finished';";
+	private void createFinishedGamesPanel() {
+		finishedGamesPanel.setPreferredSize(new Dimension((int) (GUI.WIDTH / 3), (int) (GUI.HEIGHT / 1.5)));
+		JLabel label = new JLabel("Geëindigde spellen");
+		label.setFont(new Font("Comic Sans", Font.BOLD, 30));
+		label.setBackground(Color.lightGray);
+		finishedGamesPanel.add(label);
+		String query = "SELECT * FROM spel WHERE competitie_id = " + gsm.getUser().getCompetitionNumber()
+				+ " AND toestand_type = 'finished';";
+		executeQuery(query, finishedGamesPanel);
+		this.add(finishedGamesPanel, BorderLayout.EAST);
+	}
+
+	private void executeQuery(String query, JPanel panel) {
 		ResultSet rs = db_c.query(query);
 		try {
 			while (rs.next()) {
@@ -127,15 +114,20 @@ public class SpectatorGameOverviewState extends Gamestate {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						gsm.getUser().setGameNumber(gameNumber);
-						gsm.setGamestate(gsm.spectatorState);
+						int option = JOptionPane.showConfirmDialog(null,
+								"Weet u zeker dat u naar het spel: " + button.getText() + " wilt gaan?", "Wordfeud",
+								JOptionPane.YES_NO_OPTION);
+						if (option == JOptionPane.OK_OPTION) {
+							gsm.getUser().setGameNumber(gameNumber);
+							gsm.getUser().setTurnNumber(1);
+							gsm.setGamestate(gsm.spectatorState);
+						}
 					}
 				});
-				finishedGamesPanel.add(button);
+				panel.add(button);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		this.add(finishedGamesPanel,BorderLayout.EAST);
 	}
 }

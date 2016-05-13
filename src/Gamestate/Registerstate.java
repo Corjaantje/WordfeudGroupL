@@ -20,6 +20,7 @@ import Main.GUI;
 import controller.DatabaseController;
 import controller.RegisterController;
 
+@SuppressWarnings("serial")
 public class Registerstate extends Gamestate implements ActionListener{
 	private JPanel registerPanel;
 	private Image bgImage;
@@ -95,6 +96,7 @@ public class Registerstate extends Gamestate implements ActionListener{
 
 	}
 
+	@SuppressWarnings({ "deprecation", "static-access" })
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{

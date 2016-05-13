@@ -1,5 +1,7 @@
 package controller;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -187,6 +189,39 @@ public class PlaystateController
 		return highestXLetter;
 	}
 	
+	private Letter getLowestYLetter(ArrayList<Letter> wordArrayList) {
+		Letter lowestYLetter = null;
+		for (Letter letter : wordArrayList)
+		{
+			
+			if (lowestYLetter == null)
+			{
+				lowestYLetter = letter;
+			}
+			// if the new letter has a lower x make that letter the new lowestXLetter
+			if (letter.getCorrectedYInt() < lowestYLetter.getCorrectedYInt()) {
+				lowestYLetter = letter;
+			}
+		}
+		return lowestYLetter;
+	}
+	
+	private Letter getHighestYLetter(ArrayList<Letter> wordArrayList) {
+		Letter highestYLetter = null;
+		for (Letter letter : wordArrayList)
+		{
+			if (highestYLetter == null)
+			{
+				highestYLetter = letter;
+			}
+			// if the new letter had a higher x make that letter the new highestXLetter
+			if (letter.getCorrectedYInt() > highestYLetter.getCorrectedYInt()) {
+				highestYLetter = letter;
+			}
+		}
+		return highestYLetter;
+	}
+	
 	private Letter getFirstHorizontalWordLetter(Letter firstLetterInWord) {
 		
 		Letter currentLetter = null;
@@ -265,8 +300,58 @@ public class PlaystateController
 		}
 		return true;
 	}
-	
-	private String getHorizontalWord(Letter firstLetter, ArrayList<Letter> wordArrayList )
+	private boolean isVerticalWordPlacedWithoutGaps(ArrayList<Letter> wordArrayList) {
+		// first check if the letters are all attached (in a line to either each other or a letter in the playfield
+		// find the played letter with the lowest Y and the played letter with the highest Y
+		Letter lowestYLetter = getLowestYLetter(wordArrayList);
+		Letter highestYLetter = getHighestYLetter(wordArrayList);
+		
+		// get the amount of letters after the first letter (= highestx - lowestx)
+		int amountOfLetters = highestYLetter.getCorrectedYInt() - lowestYLetter.getCorrectedYInt();
+		
+		// grab the first letter
+		Letter currentLetter = null;
+		Letter nextLetter = lowestYLetter;
+		for (int i = 0; i < amountOfLetters; i++)
+		{
+			currentLetter = nextLetter;
+			
+			//check if the next letter is in the wordArrayList
+			for (Letter letter : wordArrayList)
+			{
+				// if it contains the next letter
+				if ((letter.getCorrectedYInt() == currentLetter.getCorrectedYInt()+1) && letter.getCorrectedXInt() == currentLetter.getCorrectedXInt())
+				{
+					nextLetter = letter;
+					break;
+				}
+			}
+			// if it's not check if the next letter is already on the playfield
+			if (currentLetter.equals(nextLetter))
+			{
+				
+				for (Letter letter : playField.getPlayedLetters())
+				{
+					if ((letter.getCorrectedYInt() == currentLetter.getCorrectedYInt()+1) && letter.getCorrectedXInt() == currentLetter.getCorrectedXInt())
+					{
+						nextLetter = letter;
+						break;
+					}
+				}
+			}
+			
+			// if the next letter is still the same as the current letter it means
+			// there isn't a letter at y+1 which means the letters have been placed incorrectly
+			if (currentLetter.equals(nextLetter)) 
+			{
+				return false;
+				
+			}
+		}
+		return true;
+	}
+	@Deprecated
+	private String oldGetHorizontalWord(Letter firstLetter, ArrayList<Letter> wordArrayList )
 	{
 		
 		
@@ -319,6 +404,182 @@ public class PlaystateController
 				}
 		
 		return horizontalWord;
+	}
+	
+	private ArrayList<Letter> getHorizontalWord(Letter anyLetter, ArrayList<Letter> wordArrayList )
+	{
+		// make an arrayList
+		ArrayList<Letter> horizontalWord = new ArrayList<>();
+		// find the first letter in the word and add it to the arrayList
+		Letter firstLetter = getFirstHorizontalWordLetter(anyLetter);
+		horizontalWord.add(firstLetter);
+		
+		// keep checking if there's a letter at x+1, if yes add it to the arrayList
+		
+		Letter currentLetter = null;
+		Letter nextLetter = firstLetter;
+		boolean lastLetterFound = false;
+				
+		while(!lastLetterFound)
+		{
+			currentLetter = nextLetter;
+			
+			//check if the next letter is in the wordArrayList
+			for (Letter letter : wordArrayList)
+			{
+				// if it contains the next letter
+				if ((letter.getCorrectedXInt() == currentLetter.getCorrectedXInt()+1) && letter.getCorrectedYInt() == currentLetter.getCorrectedYInt())
+				{
+							
+					nextLetter = letter;
+					horizontalWord.add(nextLetter);
+					break;
+				}
+			}
+			// if it's not check if the next letter is already on the playfield
+			if (currentLetter.equals(nextLetter))
+			{
+				
+				for (Letter letter : playField.getPlayedLetters())
+				{
+					if ((letter.getCorrectedXInt() == currentLetter.getCorrectedXInt()+1) && letter.getCorrectedYInt() == currentLetter.getCorrectedYInt())
+					{
+						nextLetter = letter;
+						horizontalWord.add(nextLetter);
+						break;
+					}
+				}
+			}
+					
+			// if the next letter is still the same as the current letter it means
+			// there isn't a letter at x+1 which means the letters have been placed incorrectly
+			if (currentLetter.equals(nextLetter))
+			{
+				lastLetterFound = true;
+			}
+		}
+		
+		return horizontalWord;
+	}
+	
+	private Letter getFirstVerticalWordLetter(Letter firstLetterInWord) {
+		
+		Letter currentLetter = null;
+		Letter newLowestLetter = firstLetterInWord;
+		boolean firstLetterFound = false;
+		
+		while(!firstLetterFound)
+		{
+			currentLetter = newLowestLetter;
+			for (Letter letter : playField.getPlayedLetters())
+			{
+				// if there's a letter at y-=1 take that letter and break out of this loop
+				if ((letter.getCorrectedYInt() == currentLetter.getCorrectedYInt()-1) && letter.getCorrectedXInt() == currentLetter.getCorrectedXInt())
+				{
+					
+					newLowestLetter = letter;
+					break;
+				}
+				
+			}
+			if (currentLetter.equals(newLowestLetter))
+			{
+				firstLetterFound = true;
+			}
+		}
+		return newLowestLetter;
+		
+	}
+	
+	private ArrayList<Letter> getVerticalWord(Letter anyLetter, ArrayList<Letter> wordArrayList )
+	{
+		// make an arrayList
+		ArrayList<Letter> verticalWord = new ArrayList<>();
+		// find the first letter in the word and add it to the arrayList
+		Letter firstLetter = getFirstVerticalWordLetter(anyLetter);
+		verticalWord.add(firstLetter);
+		
+		// keep checking if there's a letter at y+1, if yes add it to the arrayList
+		
+		Letter currentLetter = null;
+		Letter nextLetter = firstLetter;
+		boolean lastLetterFound = false;
+				
+		while(!lastLetterFound)
+		{
+			currentLetter = nextLetter;
+			
+			//check if the next letter is in the wordArrayList
+			for (Letter letter : wordArrayList)
+			{
+				// if it contains the next letter
+				if ((letter.getCorrectedYInt() == currentLetter.getCorrectedYInt()+1) && letter.getCorrectedXInt() == currentLetter.getCorrectedXInt())
+				{
+							
+					nextLetter = letter;
+					verticalWord.add(nextLetter);
+					break;
+				}
+			}
+			// if it's not check if the next letter is already on the playfield
+			if (currentLetter.equals(nextLetter))
+			{
+				
+				for (Letter letter : playField.getPlayedLetters())
+				{
+					if ((letter.getCorrectedYInt() == currentLetter.getCorrectedYInt()+1) && letter.getCorrectedXInt() == currentLetter.getCorrectedXInt())
+					{
+						nextLetter = letter;
+						verticalWord.add(nextLetter);
+						break;
+					}
+				}
+			}
+					
+			// if the next letter is still the same as the current letter it means
+			// there isn't a letter at x+1 which means the letters have been placed incorrectly
+			if (currentLetter.equals(nextLetter))
+			{
+				lastLetterFound = true;
+			}
+		}
+		
+		return verticalWord;
+	}
+	
+	private String getConvertedWordArrayListToString(ArrayList<Letter> foundWordArraylist)
+	{
+		String foundWordString = "";
+		for (Letter letter : foundWordArraylist)
+		{
+			foundWordString += letter.getLetterChar();
+		}
+		return foundWordString;
+	}
+	
+	private boolean isInDictionary(ArrayList<Letter> foundWordArraylist)
+	{
+		String foundWord = getConvertedWordArrayListToString(foundWordArraylist);
+		//TODO letterset_code ophalen via het spel_id/gameNumber en in de query plaatsen.
+		ResultSet rs = databaseController.query("select woord from woordenboek where woord = '" + foundWord + "' and letterset_code = '" + "NL" + "' and status = 'accepted'");
+		try{
+			if(rs.next()){
+				return true;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	//return the value of the word in points (int)
+	private int getWordValue(ArrayList<Letter> foundWordArraylist)
+	{
+		// TODO hier ben ik ook (marc)
+		// TODO get the score from the tile the letter is placed on
+		// TODO make a switch statement for every scorecode and multiply the letter score by that number
+		return 0;
 	}
 	
 	public void doPlay() {
@@ -383,13 +644,51 @@ public class PlaystateController
 						if (isWordAttached(wordArrayList))
 						{
 							System.out.println("Word is attached to existing letter.");
-							
+							boolean placementIsValid = true;
+							String wrongWordsString = "Dit woord kan niet geplaatst worden omdat de volgende woorden niet in het woordenboek staan: ";
+							int points = 0;
 							// get the first letter of the horizontal word
 							Letter firstLetterInWordArrayList = getLowestXLetter(wordArrayList);
 							Letter firstLetterOnGameBoard = getFirstHorizontalWordLetter(firstLetterInWordArrayList);
-							String horizontalWord = getHorizontalWord(firstLetterOnGameBoard, wordArrayList);
+							
+							ArrayList<Letter> horizontalWordArraylist = getHorizontalWord(firstLetterOnGameBoard, wordArrayList);
+							String horizontalWordString = getConvertedWordArrayListToString(horizontalWordArraylist);
+							
 							System.out.println(firstLetterOnGameBoard.getLetterChar() + " is the first letter of the horizontal word");
-							System.out.println(horizontalWord + " Is the horizontal word");
+							System.out.println(horizontalWordString + " Is the horizontal word");
+							
+							// check if the horizontal word is in the dictionary
+							if (!isInDictionary(horizontalWordArraylist))
+							{
+								// if it's not placement isn't valid
+								placementIsValid = false;
+								//add word to list of wrong words
+								wrongWordsString += getConvertedWordArrayListToString(horizontalWordArraylist) + ", ";
+								System.out.println(wrongWordsString);
+							} else 
+							{
+								System.out.println("Woord " + getConvertedWordArrayListToString(horizontalWordArraylist) + " staat in het woordenboek!");
+								// if it is add points for every letter in the word (also get multipliers from tiles (DW DL TW TL etc)
+								// TODO hier was ik (marc)
+								points += getWordValue(horizontalWordArraylist);
+							}
+							
+							// Now get all vertical words.
+							// for every letter that's been placed down, see if it forms a vertical word that is bigger than 1 character.
+							for (Letter letter : wordArrayList)
+							{
+								String verticalWordString = "";
+								ArrayList<Letter> verticalWordArraylist = getVerticalWord(letter, wordArrayList);
+								if (verticalWordArraylist.size() > 1)
+								{
+									for (Letter letter2 : verticalWordArraylist)
+									{
+										verticalWordString+= letter2.getLetterChar();
+									}
+									System.out.println("Vertical word found: " + verticalWordString);
+								}
+								
+							}
 						}
 					}
 				}
@@ -404,6 +703,7 @@ public class PlaystateController
 							// take that letter , keep doing this until you find the first letter
 								// then take make a string variable and append the value of the first letter
 								// keep checking if there's a letter at x+1, if yes append it to the word
+				// -- done above
 						// METHOD: checkIfWordInDictionary(String word, String game.getLetterSet())
 							// check if the word is in the dictionary
 							// if it is add the points to the player in the game
@@ -415,6 +715,44 @@ public class PlaystateController
 				else if (wordOrientation == 1) 
 				{
 					System.out.println("Word orientation is vertical");
+					// Check if there's no gaps in the placement (no empty tiles between letters)
+					if (isVerticalWordPlacedWithoutGaps(wordArrayList)) 
+					{
+						System.out.println("Vertical word is placed without gaps");
+						if (isWordAttached(wordArrayList))
+						{
+							System.out.println("Word is attached to existing letter.");
+							
+							// get the first letter of the vertical word
+							Letter firstLetterInWordArrayList = getLowestYLetter(wordArrayList);
+							Letter firstLetterOnGameBoard = getFirstVerticalWordLetter(firstLetterInWordArrayList);
+							String verticalWordString = "";
+							ArrayList<Letter> verticalWordArraylist = getVerticalWord(firstLetterOnGameBoard, wordArrayList);
+							for (Letter letter : verticalWordArraylist)
+							{
+								verticalWordString += letter.getLetterChar();
+							}
+							System.out.println(firstLetterOnGameBoard.getLetterChar() + " is the first letter of the vertical word");
+							System.out.println(verticalWordString + " Is the vertical word");
+							
+							// Now get all horizontal words.
+							// for every letter that's been placed down, see if it forms a horizonal word that is bigger than 1 character.
+							for (Letter letter : wordArrayList)
+							{
+								String horizontalWordString = "";
+								ArrayList<Letter> horizontalWordArraylist = getHorizontalWord(letter, wordArrayList);
+								if (horizontalWordArraylist.size() > 1)
+								{
+									for (Letter letter2 : horizontalWordArraylist)
+									{
+										horizontalWordString+= letter2.getLetterChar();
+									}
+									System.out.println("Horizontal word found: " + horizontalWordString);
+								}
+								
+							}
+						}
+					}
 				}
 			
 				// METHOD: boolean checkIfVerticalWordIsAttached(ArrayList<Letter> word)
@@ -455,5 +793,6 @@ public class PlaystateController
 							
 		//}
 	}
+
+	
 }
-// Test marc pull request new private repo

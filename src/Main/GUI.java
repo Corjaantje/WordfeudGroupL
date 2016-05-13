@@ -114,21 +114,23 @@ public class GUI extends JFrame {
 			}
 		});
 		
-		JMenuItem Notification = new JMenuItem("Notifications");
-		Notification.addActionListener(new ActionListener() {
+		
+		JMenuItem backButton = new JMenuItem();
+		backButton.setText("Terug");
+		backButton.addActionListener(new ActionListener(){
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				NotificationFrame frame = new NotificationFrame(gsm);
+				gsm.goToLastState();
 			}
+			
 		});
 		
 		menu.add(exit);
 		menu.add(mainMenu);
-		menu.add(Notification);
+		menu.add(backButton);
 		bar.add(menu);
-		
 		this.setJMenuBar(bar);
 	}
 

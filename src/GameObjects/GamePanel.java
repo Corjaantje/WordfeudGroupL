@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.JobAttributes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Gamestate.GamestateManager;
@@ -21,7 +23,6 @@ import controller.DatabaseController;
 public class GamePanel extends JPanel {
 
 	private DatabaseController db_c;
-
 
 	private GamestateManager gsm;
 
@@ -44,7 +45,7 @@ public class GamePanel extends JPanel {
 	}
 
 	private void createButtons() {
-		String query = "SELECT * FROM spel WHERE competitie_id = "+gsm.getUser().getCompetitionNumber();
+		String query = "SELECT * FROM spel WHERE competitie_id = " + gsm.getUser().getCompetitionNumber();
 		ResultSet rs = db_c.query(query);
 		try {
 			while (rs.next()) {
@@ -62,17 +63,24 @@ public class GamePanel extends JPanel {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						gsm.getUser().setSpelID(Integer.parseInt(e.getActionCommand()));
-						ResultSet rs = db_c.query("SELECT max(id) AS id FROM beurt WHERE spel_id = "+e.getActionCommand());
-						try {
-							while(rs.next()){
-								gsm.getUser().setTurnNumber(rs.getInt("id"));
+						int option = JOptionPane.showConfirmDialog(null,
+								"Weet u zeker dat u naar het spel: " + button.getText() + " wilt gaan?", "Wordfeud",
+								JOptionPane.YES_NO_OPTION);
+						if (option == JOptionPane.OK_OPTION) {
+
+							gsm.getUser().setGameNumber(Integer.parseInt(e.getActionCommand()));
+							ResultSet rs = db_c
+									.query("SELECT max(id) AS id FROM beurt WHERE spel_id = " + e.getActionCommand());
+							try {
+								while (rs.next()) {
+									gsm.getUser().setTurnNumber(rs.getInt("id"));
+								}
+							} catch (SQLException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
 							}
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							gsm.setGamestate(gsm.playState);
 						}
-						gsm.setGamestate(gsm.playState);
 					}
 				});
 				buttons.add(button);
@@ -81,7 +89,7 @@ public class GamePanel extends JPanel {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void gamePanelReload() {

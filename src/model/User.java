@@ -20,6 +20,9 @@ public class User {
 	private int competitionNumber;
 	private int gameNumber;
 	private int amountOfRoles;
+	
+	private String opponent;
+	private String challenger;
 
 	private GamestateManager gsm;
 	private DatabaseController databaseController;
@@ -29,6 +32,7 @@ public class User {
 		roles = new ArrayList<>();
 		this.username = username;
 		turnNumber = 19;
+		gameNumber = 511;
 		competitionNumber = 1;
 		addRoles();
 	}
@@ -155,10 +159,19 @@ public class User {
 			// TODO: handle exception
 		}
 		if (challenger.equals(this.getUsername())) {
+			this.challenger = challenger;
+			this.opponent = opponent;
 			return opponent;
 		} else {
+			this.challenger = opponent;
+			this.opponent = challenger;
 			return challenger;
 		}
+	}
+	
+	public String getChallengerName(){
+		this.getOpponentName();
+		return challenger;
 	}
 
 	public String getPlayerTurn() {
@@ -176,7 +189,10 @@ public class User {
 	}
 
 	public void setTurnNumber(int turnNumber) {
-		this.turnNumber = turnNumber;
+		if (turnNumber > 1) {
+			this.turnNumber = turnNumber;
+		}
+		
 	}
 	
 	public int getCompetitionNumber(){
