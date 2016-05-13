@@ -131,6 +131,12 @@ public class CompetitionController {
 		return participantModel;
 	}
 	
+	public void addUserAsParticipant(int competitionNumber){
+		String query = "INSERT INTO deelnemer VALUES ('" + gsm.getUser().getUsername() + "', "
+				+ competitionNumber + ")";
+		databaseController.queryUpdate(query);
+	}
+	
 	public DefaultTableModel loadRankingModel(DefaultTableModel rankingModel,int competitionNumber){
 		String query = "SELECT * FROM competitiestand WHERE competitie_id = " + competitionNumber
 				+ " ORDER BY gemidddelde_score DESC";
