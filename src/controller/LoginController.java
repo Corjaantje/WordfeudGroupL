@@ -30,6 +30,7 @@ public class LoginController {
 		this.password = password;
 	}
 	
+	@SuppressWarnings("static-access")
 	public void login(String username, String password){
 		ResultSet rs = databaseController.query("select * from account where naam = '" + username + "'and wachtwoord = '" + password + "'");
 		try{

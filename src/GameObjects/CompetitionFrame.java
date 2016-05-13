@@ -32,8 +32,6 @@ public class CompetitionFrame extends JFrame {
 
 	private JButton seeRankingButton;
 
-	private DatabaseController db_c;
-
 	private boolean isCreated = false;
 
 	private JTable table;
@@ -83,22 +81,6 @@ public class CompetitionFrame extends JFrame {
 		String[] header = { "Positie", "Speler", "Score", "Gespeeld", "Gewonnen", "Verloren","Gelijk" };
 		DefaultTableModel rankingModel = new DefaultTableModel(header, 0);
 		rankingModel = competitionController.loadRankingModel(rankingModel, competitionNumber);
-		String query = "SELECT * FROM competitiestand WHERE competitie_id = " + competitionNumber
-				+ " ORDER BY gemidddelde_score DESC";
-		ResultSet rs = db_c.query(query);
-		try {
-			int counter = 1;
-			while (rs.next()) {
-				rankingModel.addRow(new Object[] { counter, rs.getString("account_naam"),
-						rs.getString("gemidddelde_score"), rs.getString("aantal_gespeelde_spellen"),
-						rs.getString("aantal_gewonnen_spellen"), rs.getString("aantal_verloren_spellen"),rs.getString("aantal_gelijke_spellen") });
-				counter++;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		db_c.closeConnection();
 		table.setModel(rankingModel);
 		seeRankingButton.setText("Bekijk Ranking");
 	}
@@ -150,9 +132,8 @@ public class CompetitionFrame extends JFrame {
 								"U bent nog geen deelnemer. Wilt u een deelnemen aan deze competitie?", "Wordfeud",
 								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 						if (option == JOptionPane.OK_OPTION) {
-							String query = "INSERT INTO deelnemer VALUES ('" + gsm.getUser().getUsername() + "', "
-									+ competitionNumber + ")";
-							db_c.queryUpdate(query);
+							competitionController.addUserAsParticipant(competitionNumber);
+							loadParticipantTable(competitionNumber);
 						}
 					}
 

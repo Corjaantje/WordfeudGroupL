@@ -273,11 +273,11 @@ public class MainMenuState extends Gamestate implements ActionListener
 	{
 		if("competition".equals(e.getActionCommand()))
 		{
-			gsm.setGamestate(gsm.competitionState);
+			gsm.setGamestate(gsm.spectatorCompetitionState);
 		}
 		else if("settings".equals(e.getActionCommand()))
 		{
-			
+			this.makeSettingPopup();
 		}
 		else if("userinfo".equals(e.getActionCommand()))
 		{
@@ -317,6 +317,10 @@ public class MainMenuState extends Gamestate implements ActionListener
 		{
 			gsm.setGamestate(gsm.spectatorCompetitionState);
 		}
+	}
+	
+	private void makeSettingPopup(){
+		
 	}
 	
 	private void makeAdminPopup()

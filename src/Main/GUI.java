@@ -2,10 +2,12 @@ package Main;
 
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Label;
 import java.awt.List;
+import java.awt.Point;
 import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -57,6 +59,9 @@ public class GUI extends JFrame {
 		this.setUndecorated(true);
 		Image image = Toolkit.getDefaultToolkit().getImage("Resources/wordfeudlogo.png");
 		this.setIconImage(image);
+		Image cursorImage = Toolkit.getDefaultToolkit().getImage("Resources/cursor.png");
+		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(this.getX(), this.getY()), "cursorImg");
+		this.setCursor(cursor);
 		this.setTitle("Wordfeud");
 		this.gsm = new GamestateManager(this);
 		this.setVisible(true);
@@ -114,10 +119,23 @@ public class GUI extends JFrame {
 			}
 		});
 		
-		menu.add(exit);
-		menu.add(mainMenu);;
-		bar.add(menu);
 		
+		JMenuItem backButton = new JMenuItem();
+		backButton.setText("Terug");
+		backButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				gsm.goToLastState();
+			}
+			
+		});
+		
+		menu.add(exit);
+		menu.add(mainMenu);
+		menu.add(backButton);
+		bar.add(menu);
 		this.setJMenuBar(bar);
 	}
 
