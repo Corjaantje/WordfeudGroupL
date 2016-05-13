@@ -119,10 +119,23 @@ public class GUI extends JFrame {
 			}
 		});
 		
-		menu.add(exit);
-		menu.add(mainMenu);;
-		bar.add(menu);
 		
+		JMenuItem backButton = new JMenuItem();
+		backButton.setText("Terug");
+		backButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				gsm.goToLastState();
+			}
+			
+		});
+		
+		menu.add(exit);
+		menu.add(mainMenu);
+		menu.add(backButton);
+		bar.add(menu);
 		this.setJMenuBar(bar);
 	}
 

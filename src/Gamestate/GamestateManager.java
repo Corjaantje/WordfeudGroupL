@@ -18,7 +18,8 @@ public class GamestateManager extends JPanel {
 	private GUI gui;
 	// keeps track of all gamestates
 	private ArrayList<Gamestate> gamestates;
-
+	private ArrayList<Integer> usedGamestates = new ArrayList<Integer>();
+	
 	// different types of gamestates
 	public final static int loginState = 0;
 	public final static int playState = 1;
@@ -65,20 +66,29 @@ public class GamestateManager extends JPanel {
 		this.gamestates.add(new SpectatorCompetitionState(this, db_c));
 		this.gamestates.add(new SpectatorGameOverviewState(this, db_c));
 		// state you want to start with
-		this.setGamestate(loginState);
+		this.setGamestate(loginState, true);
 		/*
 		 * add all gamestates to the array list
 		 */
 	}
-
+	
 	public void setGamestate(int gamestate) {
-		if (currentState != -1) {
+		setGamestate(gamestate, true);
+	}
 
+	public void setGamestate(int gamestate, boolean addToUsedGameStates) {
+		
+		if (currentState != -1) {
 			this.remove(gamestates.get(currentState));
+		}	
+		if(addToUsedGameStates){
+			usedGamestates.add(currentState);
 		}
+		
 		this.currentState = gamestate;
 		//TODO array loop gamestates, betere manier vinden
 		this.add(gamestates.get(currentState));
+		
 		this.gamestates.get(currentState).create();
 		this.validate();
 	}
@@ -115,5 +125,18 @@ public class GamestateManager extends JPanel {
 	public int getCurrentState()
 	{
 		return currentState;
+	}
+	
+	public void goToLastState(){
+		if(usedGamestates.size() == 1){
+			return;
+		}
+		this.setGamestate(usedGamestates.get(usedGamestates.size() - 1), false);
+											
+		if (usedGamestates.get(usedGamestates.size() - 1)==loginState){
+			this.setUser(null);
+		}
+		this.usedGamestates.remove(usedGamestates.size() - 1);
+		this.validate();
 	}
 }
