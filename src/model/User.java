@@ -15,7 +15,6 @@ public class User {
 	private String username;
 	private String password;
 	private final String errorNotificationNotFoundPassword = "Not found password for this user";
-	private int spel_id = 500;
 	private int turnNumber;
 	private int competitionNumber;
 	private int gameNumber;
@@ -56,14 +55,6 @@ public class User {
 			e.printStackTrace();
 		}
 		databaseController.closeConnection();
-	}
-
-	public void setSpelID(int spelnummer) {
-		this.spel_id = spelnummer;
-	}
-
-	public int getSpelID() {
-		return this.spel_id;
 	}
 
 	public String getUsername() {
