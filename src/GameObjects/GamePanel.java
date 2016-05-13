@@ -31,9 +31,12 @@ public class GamePanel extends JPanel {
 
 	private ArrayList<JButton> buttons;
 
+	private GameOverviewInfoFrame frame;
+
 	public GamePanel(DatabaseController db_c, GamestateManager gsm) {
 		this.db_c = db_c;
 		this.gsm = gsm;
+		frame = new GameOverviewInfoFrame(gsm, db_c);
 		x = 100;
 		y = 100;
 		this.setLocation(x, y);
@@ -45,13 +48,16 @@ public class GamePanel extends JPanel {
 	}
 
 	private void createButtons() {
-		String query = "SELECT * FROM spel WHERE competitie_id = " + gsm.getUser().getCompetitionNumber();
-		ResultSet rs = db_c.query(query);
+		String query = "SELECT * FROM spel WHERE competitie_id = " + gsm.getUser().getCompetitionNumber()
+				+ " AND toestand_type = 'playing' AND account_naam_uitdager = '" + gsm.getUser().getUsername()
+				+ "' OR account_naam_tegenstander = '" + gsm.getUser().getUsername() + "';";
+
 		try {
+			ResultSet rs = db_c.query(query);
 			while (rs.next()) {
-				int r = (int) (Math.random() * 100);
-				int g = (int) (Math.random() * 100);
-				int b = (int) (Math.random() * 100);
+				int r = 0;
+				int g = (int) ((Math.random() + 0.3) * 75);
+				int b = 0;
 				String challenger = rs.getString("account_naam_uitdager");
 				String opponent = rs.getString("account_naam_tegenstander");
 
@@ -63,25 +69,10 @@ public class GamePanel extends JPanel {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						int option = JOptionPane.showConfirmDialog(null,
-								"Weet u zeker dat u naar het spel: " + button.getText() + " wilt gaan?", "Wordfeud",
-								JOptionPane.YES_NO_OPTION);
-						if (option == JOptionPane.OK_OPTION) {
-
-							gsm.getUser().setGameNumber(Integer.parseInt(e.getActionCommand()));
-							ResultSet rs = db_c
-									.query("SELECT max(id) AS id FROM beurt WHERE spel_id = " + e.getActionCommand());
-							try {
-								while (rs.next()) {
-									gsm.getUser().setTurnNumber(rs.getInt("id"));
-								}
-							} catch (SQLException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-							gsm.setGamestate(gsm.playState);
-						}
+						gsm.getUser().setGameNumber(Integer.parseInt(e.getActionCommand()));
+						frame.loadFrame(Integer.parseInt(e.getActionCommand()));
 					}
+
 				});
 				buttons.add(button);
 				this.add(button);
