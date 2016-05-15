@@ -63,12 +63,11 @@ public class SpectatorGameOverviewState extends Gamestate {
 			this.createFinishedGamesPanel();
 			isCreated = true;
 		} else {
-			this.remove(unfinishedGamesPanel);
+			this.removeAll();
 			unfinishedGamesPanel.removeAll();
 			this.createUnfinishedGamesPanel();
-			this.remove(unfinishedGamesPanel);
 			finishedGamesPanel.removeAll();
-			this.createUnfinishedGamesPanel();
+			this.createFinishedGamesPanel();
 		}
 	}
 
