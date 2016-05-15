@@ -3,16 +3,21 @@ package Gamestate;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import GameObjects.ChallengeFrame;
 import Main.GUI;
 import model.User;
 import controller.DatabaseController;
 
 @SuppressWarnings("serial")
-public class GamestateManager extends JPanel {
+public class GamestateManager extends JPanel implements ActionListener{
 	
 	private DatabaseController db_c;
 	private GUI gui;
@@ -40,6 +45,12 @@ public class GamestateManager extends JPanel {
 	private int currentState;
 	
 	private User user;
+	
+	private boolean invitePlayerInMenu;
+	private boolean invitePlayerInitialized;
+	private  JMenu challenge;
+	private JMenuItem mainMenu;
+	private ChallengeFrame challengeFrame;
 
 	public GamestateManager(GUI gui) {
 		this.gui = gui;
@@ -70,6 +81,8 @@ public class GamestateManager extends JPanel {
 		/*
 		 * add all gamestates to the array list
 		 */
+		
+		
 	}
 	
 	public void setGamestate(int gamestate) {
@@ -77,7 +90,7 @@ public class GamestateManager extends JPanel {
 	}
 
 	public void setGamestate(int gamestate, boolean addToUsedGameStates) {
-		
+	
 		if (currentState != -1) {
 			this.remove(gamestates.get(currentState));
 		}	
@@ -90,6 +103,44 @@ public class GamestateManager extends JPanel {
 		this.add(gamestates.get(currentState));
 		
 		this.gamestates.get(currentState).create();
+		
+		//Request game invite 
+		if(gamestate == gameOverviewState)
+		{
+			if(!invitePlayerInitialized)
+			{
+				challenge = new JMenu("Uitdagen");
+				mainMenu = new JMenuItem("Nieuwe speler uitdagen");		
+				invitePlayerInitialized = true;
+				
+				mainMenu.addActionListener(this);
+				mainMenu.setActionCommand("invitePlayer");
+				
+				challengeFrame = new ChallengeFrame(this, db_c);
+			}
+			if(user.checkRole("player"))
+			{
+				if(!invitePlayerInMenu)
+				{		
+					gui.bar.add(challenge);
+					challenge.add(mainMenu);
+					gui.repaint();
+					gui.pack();
+					this.validate();
+					invitePlayerInMenu = true;
+				}
+			}
+		}
+		else
+		{
+			if(invitePlayerInMenu)
+			{
+				gui.bar.remove(this.challenge);
+				invitePlayerInMenu = false;
+			}
+		}
+		//End of game request
+		
 		this.validate();
 	}
 
@@ -138,5 +189,15 @@ public class GamestateManager extends JPanel {
 		}
 		this.usedGamestates.remove(usedGamestates.size() - 1);
 		this.validate();
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if("invitePlayer".equals(e.getActionCommand()))
+		{
+			challengeFrame.setVisible(true);
+		}
 	}
 }
