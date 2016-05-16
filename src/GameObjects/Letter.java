@@ -220,4 +220,8 @@ public class Letter implements Drawable {
 		playfieldSpace = 2;
 	}
 	
+	public int getScore()
+	{
+		return score;
+	}
 }
