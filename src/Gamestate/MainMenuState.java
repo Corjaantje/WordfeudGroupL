@@ -46,7 +46,6 @@ public class MainMenuState extends Gamestate implements ActionListener
 	
 	private JButton goToLogout;
 	private JButton goToCompetitionState;
-	private JButton openSettings;
 	private JButton openAdminSetRole;
 	private JButton openModeratorNewWord;
 	private JButton showPersonalInfo;
@@ -82,12 +81,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 	{
 		goToLogout = new JButton();
 		showPersonalInfo = new JButton();
-		openSettings = new JButton();
 		
-		openSettings.setText("Applicatie Instellingen");
-		openSettings.setAlignmentX(CENTER_ALIGNMENT);
-		openSettings.setActionCommand("settings");
-		openSettings.addActionListener(this);
 		
 		showPersonalInfo.setText("Gebruiker Gegevens");
 		showPersonalInfo.setAlignmentX(CENTER_ALIGNMENT);
@@ -101,8 +95,6 @@ public class MainMenuState extends Gamestate implements ActionListener
 		
 		this.add(Box.createRigidArea(new Dimension(0,10)));
 		this.add(showPersonalInfo);
-		this.add(Box.createRigidArea(new Dimension(0,25)));
-		this.add(openSettings);
 		this.add(Box.createRigidArea(new Dimension(0,25)));
 		this.add(goToLogout);
 		this.add(Box.createRigidArea(new Dimension(0,10)));
@@ -274,10 +266,6 @@ public class MainMenuState extends Gamestate implements ActionListener
 		if("competition".equals(e.getActionCommand()))
 		{
 			gsm.setGamestate(gsm.spectatorCompetitionState);
-		}
-		else if("settings".equals(e.getActionCommand()))
-		{
-			this.makeSettingPopup();
 		}
 		else if("userinfo".equals(e.getActionCommand()))
 		{
