@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.IconifyAction;
+
 import Main.Drawable;
 
 public class Letter implements Drawable {
@@ -50,6 +52,8 @@ public class Letter implements Drawable {
 	
 	private double playfieldX;
 	private int playfieldSpace;
+	
+	private int letter_id;
 
 	public Letter(double x, double y, int width, int height, String letter, int score) {
 		this.x = x;
@@ -218,6 +222,14 @@ public class Letter implements Drawable {
 	public void setPlayfieldX(double x){
 		playfieldX = x;
 		playfieldSpace = 2;
+	}
+
+	public void setLetterID(int id){
+		letter_id = id;
+	}
+	
+	public int getLetterID(){
+		return letter_id;
 	}
 	
 	public int getScore()

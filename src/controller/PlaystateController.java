@@ -934,6 +934,7 @@ public class PlaystateController
 								{
 									wrongWordsString = wrongWordsString.substring(0, wrongWordsString.length() - 2);
 								}
+
 								JOptionPane.showMessageDialog(null, wrongWordsString);
 							}
 							
