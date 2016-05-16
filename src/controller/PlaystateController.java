@@ -1,15 +1,21 @@
 package controller;
 
+import java.awt.Graphics2D;
+import java.nio.channels.SelectableChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 import javax.swing.JOptionPane;
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 import GameObjects.Letter;
 import GameObjects.LetterBox;
 import GameObjects.PlayField;
+import GameObjects.Tile;
 import Gamestate.GamestateManager;
+import Gamestate.Playstate;
 
 public class PlaystateController
 {
@@ -17,11 +23,13 @@ public class PlaystateController
 	private DatabaseController databaseController;
 	private PlayField playField;
 	private LetterBox letterBox;
+	private Playstate playstate;
 	
-	public PlaystateController(GamestateManager gsm, PlayField playField, LetterBox letterBox){
+	public PlaystateController(GamestateManager gsm, PlayField playField, LetterBox letterBox, Playstate playstate){
 		this.gsm = gsm;
 		this.playField = playField;
 		this.letterBox = letterBox;
+		this.playstate = playstate;
 		databaseController = gsm.getDatabaseController();
 	}
 	
@@ -82,14 +90,39 @@ public class PlaystateController
 	
 	private boolean isOnStartStar(ArrayList<Letter> letterArrayList) 
 	{
-		//TODO
-		//loop through all letters in arrayList
-		for (Letter letter : letterArrayList)
+		// get the coordinates of the startstar
+		String getStartStarQuery = "SELECT x, y FROM tegel LEFT JOIN bord ON tegel.bord_naam = bord.naam LEFT JOIN spel ON bord.naam = spel.bord_naam WHERE spel.id = " + gsm.getUser().getGameNumber() +" AND tegel.tegeltype_soort = '*'";
+		int x = -1;
+		int y = -1;
+		try
 		{
-			// check if the letter is on the startstar
-			// if yes
-				//return true;
+			ResultSet rSet = databaseController.query(getStartStarQuery);
+			if (rSet.next())
+			{
+				x = rSet.getInt("x");
+				y = rSet.getInt("y");
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
 		}
+		if (x != -1 && y != -1)
+		{
+			//loop through all letters in arrayList
+			for (Letter letter : letterArrayList)
+			{
+				// check if the letter is on the startstar
+				if (letter.getCorrectedXInt() == x && letter.getCorrectedYInt() == y)
+				{
+					// if it is
+					return true;
+				}
+			}
+		} else 
+		{
+			System.err.println("Something went wrong with the isOnStartStar method");
+		}
+		
 		return false;
 	}
 	
@@ -560,8 +593,23 @@ public class PlaystateController
 	private boolean isInDictionary(ArrayList<Letter> foundWordArraylist)
 	{
 		String foundWord = getConvertedWordArrayListToString(foundWordArraylist);
-		//TODO letterset_code ophalen via het spel_id/gameNumber en in de query plaatsen.
-		ResultSet rs = databaseController.query("select woord from woordenboek where woord = '" + foundWord + "' and letterset_code = '" + "NL" + "' and status = 'accepted'");
+		
+		// get the game's letterset_code
+		String letterSetCode = new String();
+		String getLetterSetCodeQuery = "SELECT letterset_code FROM spel WHERE id =" + gsm.getUser().getGameNumber();
+		try
+		{
+			ResultSet rSet = databaseController.query(getLetterSetCodeQuery);
+			if (rSet.next())
+			{
+				letterSetCode = rSet.getString("letterset_naam");
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		ResultSet rs = databaseController.query("select woord from woordenboek where woord = '" + foundWord + "' and letterset_code = '" + letterSetCode + "' and status = 'accepted'");
 		try{
 			if(rs.next()){
 				return true;
@@ -574,12 +622,144 @@ public class PlaystateController
 	}
 	
 	//return the value of the word in points (int)
-	private int getWordValue(ArrayList<Letter> foundWordArraylist)
+	private int getWordValue(ArrayList<Letter> foundWordArraylist, ArrayList<Letter> wordArraylist)
 	{
-		// TODO hier ben ik ook (marc)
-		// TODO get the score from the tile the letter is placed on
-		// TODO make a switch statement for every scorecode and multiply the letter score by that number
-		return 0;
+		int wordMultiplier = 1;
+		int score = 0;
+		
+		// Letters already on the board only give their letter value and their tile score multiplier doesn't apply.
+		// get these letters and add their score to the score
+		for (Letter letter : foundWordArraylist)
+		{
+			// loop through all letters on the playfield
+			for (Letter playfieldLetter : playField.getPlayedLetters())
+			{
+				// if letter x and y match that of a letter already on the playfield
+				if (letter.getCorrectedXInt() == playfieldLetter.getCorrectedXInt() && letter.getCorrectedYInt() == playfieldLetter.getCorrectedYInt())
+				{
+					// take their score and add to the totalscore
+					score += letter.getScore();
+					break;
+				}	
+				
+			}
+			
+		}
+		// Letters from the hand do apply score multipliers.
+		
+		for (Letter letter : wordArraylist)
+		{
+			
+			for (Tile tile : playField.getTiles())
+			{
+				// if the tile and letter have the same x and y
+				if(letter.getCorrectedXInt() == tile.getBordX() && letter.getCorrectedYInt() == tile.getBordY())
+				{
+					int letterMultiplier = 1;
+					// get the score from the tile the letter is placed on and apply the multiplier
+					String tileScore = tile.getScore();
+					switch (tileScore)
+					{
+					case "--":
+						break;
+					case "DL":
+						letterMultiplier *= 2;
+						break;
+					case "TL":
+						letterMultiplier *= 3;
+						break;
+					case "DW":
+						wordMultiplier *= 2;
+						break;
+					case "TW":
+						wordMultiplier *= 2;
+						break;
+					default:
+						break;
+					}
+					// add the letter score
+					score += letter.getScore() * letterMultiplier;
+				}
+					
+			}
+		}
+		
+		int totalScore = score * wordMultiplier;
+		
+		return totalScore;
+	}
+	
+	private void updateDatabase(int points, ArrayList<Letter> wordArrayList)
+	{
+		
+		// get number of last turn
+		int lastTurnNumber = -1;
+		try
+		{
+			
+			ResultSet rSet = databaseController.query("SELECT MAX(id) FROM beurt WHERE spel_id =" + gsm.getUser().getGameNumber());
+			if (rSet.next())
+			{
+				lastTurnNumber = rSet.getInt(1);
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		if (lastTurnNumber != -1)
+		{
+			// insert the turn into the database
+			// update beurt
+			String beurtUpdateQuery = "INSERT INTO beurt (`id`, `spel_id`,`account_naam`,`score`,aktie_type) VALUES(" + lastTurnNumber+1 + "," + gsm.getUser().getGameNumber() +", '" +gsm.getUser().getUsername() +"'," + points + ", word)";
+			databaseController.queryUpdate(beurtUpdateQuery);
+			
+			// update letterbakjeletter
+			// TODO als er letters zijn geplaatst moet
+			// TODO voor het einde van de beurt (HIER)  het letterbakje weer worden aangevuld
+			
+			// TODO if the player hand and deck are empty the action_type is "end"
+			// TODO not sure if letterbakjeletter will need to be updated if action_type is "end"
+			
+			// get the letters that are in the letterBox at the end of the turn, loop through them
+			// and insert them into the database
+			for (Letter letter : letterBox.getLetters())
+			{
+				String letterBakjeLetterUpdateQuery = "INSERT INTO letterbakjeletter (`spel_id`,`beurt_id`,`Letter_id`) VALUES (" + gsm.getUser().getGameNumber() +"," + lastTurnNumber+1 + ",-1)";
+				databaseController.queryUpdate(letterBakjeLetterUpdateQuery);
+			}
+			
+			//TODO letter_id?
+			// update gelegde letter
+			
+			String tegelBordNaam = "";
+			try
+			{
+				ResultSet rSet = databaseController.query("SELECT bord_naam FROM spel WHERE spel_id =" + gsm.getUser().getGameNumber());
+				if (rSet.next())
+				{
+					tegelBordNaam = rSet.getString(1);
+				}
+			} catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+			for (Letter letter : wordArrayList)
+			{
+				//TODO letter_id
+				String blancoLetterCharacter = "NULL";
+				// if letter is joker/jester/wild card change blancoLetterCharacter to the character it became.
+				if (letter.getLetterChar().equals("?"))
+				{
+					//TODO getJokerLetterChar() ~~
+					//blancoLetterCharacter = letter.getJokerLetterChar();
+				}
+				String gelegdeLetterUpdateQuery = ("INSERT INTO gelegdeletter (tegel_bord_naam,spel_id,beurt_id,letter_id,tegel_x,tegel_y,blancoletterkarakter) VALUES ('"+ tegelBordNaam +"'," + gsm.getUser().getGameNumber() +","+ lastTurnNumber+1 +",-1,"+ letter.getCorrectedXInt() +","+ letter.getCorrectedYInt() +"," + blancoLetterCharacter +")");
+				databaseController.queryUpdate(gelegdeLetterUpdateQuery);
+			}
+			
+		} else {
+			System.err.println("Something's gone wrong with the lastTurnNumber in the PlaystateController");
+		}
 	}
 	
 	public void doPlay() {
@@ -658,37 +838,70 @@ public class PlaystateController
 							System.out.println(horizontalWordString + " Is the horizontal word");
 							
 							// check if the horizontal word is in the dictionary
-							if (!isInDictionary(horizontalWordArraylist))
+							if (isInDictionary(horizontalWordArraylist))
+							{
+								System.out.println("Word " + getConvertedWordArrayListToString(horizontalWordArraylist) + " is in the dictionary!");
+								// if it is add the value of the word to the total score.
+								int horizontalWordValue = getWordValue(horizontalWordArraylist, wordArrayList);
+								points += horizontalWordValue;
+								System.out.println("The word " + horizontalWordString + " is worth " + horizontalWordValue + " points.");
+								
+								// if entire hand is placed add 40 points to the score
+								if (letterBox.getTiles().size() == wordArrayList.size())
+								{
+									points += 40;
+								}
+								
+								// Now get all vertical words.
+								// for every letter that's been placed down, see if it forms a vertical word that is bigger than 1 character.
+								for (Letter letter : wordArrayList)
+								{
+									ArrayList<Letter> verticalWordArraylist = getVerticalWord(letter, wordArrayList);
+									// it can only be a word if it's bigger than one letter
+									if (verticalWordArraylist.size() > 1)
+									{
+										// check if the vertical word is in the dictionary
+										if (isInDictionary(verticalWordArraylist))
+										{
+											System.out.println("Word " + getConvertedWordArrayListToString(verticalWordArraylist) + " is in the dictionary!");
+											// if it is add the value of the word to the total score.
+											int verticalWordValue = getWordValue(horizontalWordArraylist, wordArrayList);
+											points += verticalWordValue;
+											System.out.println("The word " + horizontalWordString + " is worth " + verticalWordValue + " points.");
+										} else 
+										{
+											// if it's not placement isn't valid
+											placementIsValid = false;
+											//add word to list of wrong words
+											wrongWordsString += getConvertedWordArrayListToString(horizontalWordArraylist) + ", ";
+											System.out.println(wrongWordsString);
+										}
+										
+										
+									}
+									
+								}
+								
+							} else 
 							{
 								// if it's not placement isn't valid
 								placementIsValid = false;
 								//add word to list of wrong words
 								wrongWordsString += getConvertedWordArrayListToString(horizontalWordArraylist) + ", ";
 								System.out.println(wrongWordsString);
-							} else 
-							{
-								System.out.println("Woord " + getConvertedWordArrayListToString(horizontalWordArraylist) + " staat in het woordenboek!");
-								// if it is add points for every letter in the word (also get multipliers from tiles (DW DL TW TL etc)
-								// TODO hier was ik (marc)
-								points += getWordValue(horizontalWordArraylist);
 							}
 							
-							// Now get all vertical words.
-							// for every letter that's been placed down, see if it forms a vertical word that is bigger than 1 character.
-							for (Letter letter : wordArrayList)
+							if (placementIsValid)
 							{
-								String verticalWordString = "";
-								ArrayList<Letter> verticalWordArraylist = getVerticalWord(letter, wordArrayList);
-								if (verticalWordArraylist.size() > 1)
-								{
-									for (Letter letter2 : verticalWordArraylist)
-									{
-										verticalWordString+= letter2.getLetterChar();
-									}
-									System.out.println("Vertical word found: " + verticalWordString);
-								}
-								
+								// update the database
+								updateDatabase(points, wordArrayList);
+								// TODO repaint the playstate or leave the playstate
+								gsm.setGamestate(gsm.gameOverviewState);
+							} else
+							{
+								JOptionPane.showMessageDialog(null, wrongWordsString);
 							}
+							
 						}
 					}
 				}

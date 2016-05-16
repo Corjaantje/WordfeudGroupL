@@ -87,7 +87,7 @@ public class Playstate extends Gamestate implements MouseListener {
 			chatArea = new Chat(db_c, gsm);
 			this.add(chatArea, BorderLayout.EAST);
 			filledTiles = new ArrayList<Tile>();
-			playstateController = new PlaystateController(gsm, playField, letterBox);
+			playstateController = new PlaystateController(gsm, playField, letterBox, this);
 			isCreated = true;
 		} else {
 			playField.reloadPlayfield();
@@ -214,8 +214,8 @@ public class Playstate extends Gamestate implements MouseListener {
 					} else if (button.getText().equals("Shuffle")) {
 						letterBox.shuffleLetters();
 					} else if (button.getText().equals("Play")) {
-						this.checkCorrectPlacedLetters();
-						// playstateController.doPlay();
+						// this.checkCorrectPlacedLetters();
+						playstateController.doPlay();
 					} else if (button.getText().equals("Swap")) {
 						swapFrame.setVisible(true);
 					} else if (button.getText().equals("Pass")) {
