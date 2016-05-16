@@ -710,7 +710,7 @@ public class PlaystateController
 		{
 			// insert the turn into the database
 			// update beurt
-			String beurtUpdateQuery = "INSERT INTO beurt (`id`, `spel_id`,`account_naam`,`score`,aktie_type) VALUES(" + lastTurnNumber+1 + "," + gsm.getUser().getGameNumber() +", '" +gsm.getUser().getUsername() +"'," + points + ", word)";
+			String beurtUpdateQuery = "INSERT INTO beurt (`id`, `spel_id`,`account_naam`,`score`,aktie_type) VALUES(" + lastTurnNumber+1 + "," + gsm.getUser().getGameNumber() +", '" +gsm.getUser().getUsername() +"'," + points + ", 'word')";
 			databaseController.queryUpdate(beurtUpdateQuery);
 			
 			// update letterbakjeletter
