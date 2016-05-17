@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.IconifyAction;
+
 import Main.Drawable;
 
 public class Letter implements Drawable {
@@ -234,4 +236,5 @@ public class Letter implements Drawable {
 	{
 		return score;
 	}
+
 }
