@@ -273,7 +273,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 	{
 		if("competition".equals(e.getActionCommand()))
 		{
-			gsm.setGamestate(gsm.competitionState);
+			gsm.setGamestate(gsm.spectatorCompetitionState);
 		}
 		else if("settings".equals(e.getActionCommand()))
 		{

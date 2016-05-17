@@ -34,7 +34,7 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 
 	private boolean FilledChat = false;
 	private String LastTimeMessage;
-	private int spel_id;
+	private int savedGameNumber;
 
 	Timer timer = new Timer();
 	TimerTask task = new TimerTask()
@@ -110,7 +110,7 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 
 		try
 		{
-			database.queryUpdate("INSERT INTO chatregel VALUES ('" + userName + "', " + this.spel_id + ", " + dateFormat.format(date) + ", '" + bericht + "')");
+			database.queryUpdate("INSERT INTO chatregel VALUES ('" + userName + "', " + this.savedGameNumber + ", " + dateFormat.format(date) + ", '" + bericht + "')");
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -125,12 +125,12 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 		{
 			if (gamestateMananger.getUser() != null)
 			{
-				spel_id = gamestateMananger.getUser().getSpelID();
-				ResultSet resultFull = database.query("SELECT * FROM chatregel WHERE spel_id = " + this.spel_id + " ORDER BY tijdstip");
+				savedGameNumber = gamestateMananger.getUser().getGameNumber();
+				ResultSet resultFull = database.query("SELECT * FROM chatregel WHERE spel_id = " + this.savedGameNumber + " ORDER BY tijdstip");
 
 				if (!FilledChat) // Chat already filled with previous messages?
 				{				
-					output.addLine("Console", "Ingelogd als "+ gamestateMananger.getUser().getUsername()+ ". Huidig spelnummer "+ this.spel_id);
+					output.addLine("Console", "Ingelogd als "+ gamestateMananger.getUser().getUsername()+ ". Huidig spelnummer "+ this.savedGameNumber);
 					LastTimeMessage = "00000000";
 					while (resultFull.next())
 					{
@@ -147,7 +147,7 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 			 else	// Chat has been filled
 			{
 				ResultSet resultPartial;
-				resultPartial = database.query("SELECT * FROM chatregel WHERE spel_id = " + this.spel_id + " ORDER BY tijdstip DESC LIMIT 1");
+				resultPartial = database.query("SELECT * FROM chatregel WHERE spel_id = " + this.savedGameNumber + " ORDER BY tijdstip DESC LIMIT 1");
 				if (resultPartial.next())
 				{
 					if (!LastTimeMessage.equals(resultPartial.getString("tijdstip")))
@@ -179,6 +179,12 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 			}
 		}
 		return finalName;
+	}
+	
+	public void reloadChat()
+	{
+		this.FilledChat = false;
+		this.output.chatOutput.setText("");
 	}
 
 }
