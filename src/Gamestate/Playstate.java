@@ -248,7 +248,7 @@ public class Playstate extends Gamestate implements MouseListener {
 			int game = gsm.getUser().getGameNumber();
 			String username = gsm.getUser().getUsername();
 			db_c.query("INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'resign');");
-			db_c.closeConnection();
+			db_c.closeConnection(); // TODO waarom de connection closen? - Marc
 			// TODO set end of game
 		}
 	}
