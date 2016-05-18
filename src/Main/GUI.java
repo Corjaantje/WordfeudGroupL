@@ -44,9 +44,10 @@ public class GUI extends JFrame {
 
 	private int FPS = 60;
 	private long targetTime = 1000 / FPS;
-	JMenuBar bar;
+	public JMenu menu;
+	public JMenuBar bar;
 	private GamestateManager gsm;
-	//player menu for adding words.
+	//player menu for adding words.	
 	JMenu playerMenu = new JMenu("Player Menu");
 	//end
 	public GUI() {
@@ -73,7 +74,7 @@ public class GUI extends JFrame {
 
 	private void createMenu() {
 		bar = new JMenuBar();
-		JMenu menu = new JMenu("Menu");
+		menu = new JMenu("Menu");
 	
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.addActionListener(new ActionListener() {
