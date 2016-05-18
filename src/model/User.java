@@ -143,7 +143,7 @@ public class User {
 			rs = databaseController
 					.query("SELECT account_naam_tegenstander  FROM spel WHERE id = " + this.getGameNumber());
 			while (rs.next()) {
-				opponent = rs.getString("account_naam_uitdager");
+				opponent = rs.getString("account_naam_tegenstander");
 			}
 			databaseController.closeConnection();
 		} catch (Exception e) {
