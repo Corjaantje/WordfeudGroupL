@@ -223,6 +223,14 @@ public class Letter implements Drawable {
 		playfieldX = x;
 		playfieldSpace = 2;
 	}
+
+	public void setLetterID(int id){
+		letter_id = id;
+	}
+	
+	public int getLetterID(){
+		return letter_id;
+	}
 	
 
 	public void setLetterID(int id){
