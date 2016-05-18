@@ -40,7 +40,7 @@ public class SpectatorGameOverviewState extends Gamestate {
 	public void draw(Graphics2D g) {
 		if (isCreated) {
 			g.setColor(Color.lightGray);
-			g.setFont(new Font("Comic Sans mt", Font.ITALIC, 50));
+			g.setFont(new Font("Comic Sans mt", Font.ITALIC, 45));
 			g.drawString(description, x, y);
 		}
 	}
@@ -55,12 +55,12 @@ public class SpectatorGameOverviewState extends Gamestate {
 		description = gsm.getUser().getCompetitionDescription();
 		if (!isCreated) {
 			this.setLayout(new BorderLayout());
-			x = (int) (GUI.WIDTH / 2.5);
 			y = 100;
 			unfinishedGamesPanel = new JPanel(new GridLayout(10, 10));
 			this.createUnfinishedGamesPanel();
 			finishedGamesPanel = new JPanel(new GridLayout(10, 10));
 			this.createFinishedGamesPanel();
+			x = (int) (unfinishedGamesPanel.getPreferredSize().getWidth() + 10);
 			isCreated = true;
 		} else {
 			this.removeAll();
