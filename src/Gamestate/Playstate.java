@@ -90,13 +90,17 @@ public class Playstate extends Gamestate implements MouseListener {
 			playstateController = new PlaystateController(gsm, playField, letterBox, this);
 			isCreated = true;
 		} else {
-			playField.reloadPlayfield();
-			letterBox.reloadLetterBox();
-			infoPanel.reloadInfoPanel();
-			swapFrame.reloadSwapFrame();
-			filledTiles.clear();
-			chatArea.reloadChat();
+			this.reloadPlaystate();
 		}
+	}
+	
+	public void reloadPlaystate(){
+		playField.reloadPlayfield();
+		letterBox.reloadLetterBox();
+		infoPanel.reloadInfoPanel();
+		swapFrame.reloadSwapFrame();
+		filledTiles.clear();
+		chatArea.reloadChat();
 	}
 
 	@Override
