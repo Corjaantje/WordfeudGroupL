@@ -103,15 +103,6 @@ public class Playstate extends Gamestate implements MouseListener {
 		chatArea.reloadChat();
 	}
 
-	public void reloadPlaystate() {
-		playField.reloadPlayfield();
-		letterBox.reloadLetterBox();
-		infoPanel.reloadInfoPanel();
-		swapFrame.reloadSwapFrame();
-		filledTiles.clear();
-		chatArea.reloadChat();
-	}
-
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
