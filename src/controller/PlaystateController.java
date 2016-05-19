@@ -984,4 +984,174 @@ public class PlaystateController
 				}
 			}
 	}
+	// methods for Mathijs' score indicator: (getTotalScore() and getMainWord())
+	// to get the orientation of the mainWord use the existing method getWordOrientation()
+	
+	// get the score; if the letter placement is in any way invalid return -1
+	public int getTotalScore()
+	{
+		// TODO en de score; misschien door variabelen te setten en daar getters voor maken.
+		int points = 0;
+		
+		ArrayList<Letter> wordArrayList = getPlacedLetters();
+		// get number of letters placed down (woordArrayList.size())
+		int wordSize = wordArrayList.size();
+			// if number == 0 return -1
+			if (wordSize == 0) 
+			{
+				return -1;
+			}
+			// if number == 1 
+			else if (wordSize == 1) 
+			{
+				// if isLetterAttached returns true
+				if (isLetterAttached(wordArrayList.get(0))) 
+				{
+					// get the horizontal word
+					ArrayList<Letter> horizontalWordArraylist = getHorizontalWord(wordArrayList.get(0), wordArrayList);
+					// it can only be a word if it's bigger than one letter	
+					if (horizontalWordArraylist.size() > 1)
+					{
+							int horizontalWordValue = getWordValue(horizontalWordArraylist, wordArrayList);
+							points += horizontalWordValue;
+					}
+					// get the vertical word
+					ArrayList<Letter> verticalWordArraylist = getVerticalWord(wordArrayList.get(0), wordArrayList);
+					// it can only be a word if it's bigger than one letter	
+					if (verticalWordArraylist.size() > 1)
+					{
+						int verticalWordValue = getWordValue(verticalWordArraylist, wordArrayList);
+						points += verticalWordValue;
+					}
+				}
+			}
+			
+			
+			
+			// if number > 1	
+			else if (wordSize > 1)	
+			{	
+				// determine word orientation
+				int wordOrientation = getWordOrientation(wordArrayList);
+				// if horizontal
+				if (wordOrientation == 0) 
+				{
+					// Check if there's no gaps in the placement (no empty tiles between letters)
+					if (isHorizontalWordPlacedWithoutGaps(wordArrayList)) 
+					{
+						if (isWordAttached(wordArrayList))
+						{
+							// get the first letter of the horizontal word
+							Letter firstLetterInWordArrayList = getLowestXLetter(wordArrayList);
+							Letter firstLetterOnGameBoard = getFirstHorizontalWordLetter(firstLetterInWordArrayList);
+							
+							ArrayList<Letter> horizontalWordArraylist = getHorizontalWord(firstLetterOnGameBoard, wordArrayList);
+							String horizontalWordString = getConvertedWordArrayListToString(horizontalWordArraylist);
+							
+							int horizontalWordValue = getWordValue(horizontalWordArraylist, wordArrayList);
+							points += horizontalWordValue;
+								
+							// if entire hand is placed add 40 points to the score
+							if (letterBox.getTiles().size() == wordArrayList.size())
+							{
+								points += 40;
+							}
+								
+							// Now get all vertical words.
+							// for every letter that's been placed down, see if it forms a vertical word that is bigger than 1 character.
+							for (Letter letter : wordArrayList)
+							{
+								ArrayList<Letter> verticalWordArraylist = getVerticalWord(letter, wordArrayList);
+								String verticalWordString = getConvertedWordArrayListToString(verticalWordArraylist);
+								// it can only be a word if it's bigger than one letter
+								if (verticalWordArraylist.size() > 1)
+								{
+									int verticalWordValue = getWordValue(verticalWordArraylist, wordArrayList);
+									points += verticalWordValue;
+								}
+							}
+						} else
+						{
+							return -1;
+						}
+					} else
+					{
+						return -1;
+					}
+				}
+				
+				
+				
+				// if vertical
+				else if (wordOrientation == 1) 
+				{
+					// Check if there's no gaps in the placement (no empty tiles between letters)
+					if (isVerticalWordPlacedWithoutGaps(wordArrayList)) 
+					{
+						if (isWordAttached(wordArrayList))
+						{
+							// get the first letter of the vertical word
+							Letter firstLetterInWordArrayList = getLowestYLetter(wordArrayList);
+							Letter firstLetterOnGameBoard = getFirstVerticalWordLetter(firstLetterInWordArrayList);
+							
+							ArrayList<Letter> verticalWordArraylist = getVerticalWord(firstLetterOnGameBoard, wordArrayList);
+							String verticalWordString = getConvertedWordArrayListToString(verticalWordArraylist);
+							
+							
+							int verticalWordValue = getWordValue(verticalWordArraylist, wordArrayList);
+							points += verticalWordValue;
+								
+							// if entire hand is placed add 40 points to the score
+							if (letterBox.getTiles().size() == wordArrayList.size())
+							{
+								points += 40;
+							}
+							
+							// Now get all horizontal words.
+							// for every letter that's been placed down, see if it forms a horizontal word that is bigger than 1 character.
+							for (Letter letter : wordArrayList)
+							{
+								ArrayList<Letter> horizontalWordArraylist = getHorizontalWord(letter, wordArrayList);
+								String horizontalWordString = getConvertedWordArrayListToString(horizontalWordArraylist);
+								// it can only be a word if it's bigger than one letter
+								if (horizontalWordArraylist.size() > 1)
+								{
+									int horizontalWordValue = getWordValue(horizontalWordArraylist, wordArrayList);
+									points += horizontalWordValue;
+								}
+							}
+						} else
+						{
+							return -1;
+						}
+					} else
+					{
+						return -1;
+					}
+				}
+			
+				
+				
+				// else if wordOrientation is invalid
+				else if (wordOrientation == -1)
+				{
+					return -1;
+				}
+			}
+			return points;
+	}
+	
+	// get the word
+	public ArrayList<Letter> getMainWord()
+	{
+		// TODO moet arraylist van het totale woord teruggeven, en of die horizontaal of verticaal is
+		
+		// get number of letters placed down (woordArrayList.size())
+		ArrayList<Letter> wordArrayList = getPlacedLetters();
+		int wordSize = wordArrayList.size();
+		
+		return null;
+	}
+	
+	
 }
