@@ -27,7 +27,7 @@ public class NotificationPanel extends JPanel
 	private DatabaseController db_c = new DatabaseController();
 	private int NotificationTotal;
 	
-	public NotificationPanel(GamestateManager gsm, NotificationFrame frame)
+	public NotificationPanel(GamestateManager gsm, NotificationFrame frame, DatabaseController dbc)
 	{
 		this.gsm = gsm;
 		this.fr = frame;
