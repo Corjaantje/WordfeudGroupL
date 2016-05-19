@@ -2,6 +2,7 @@ package Gamestate;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.ResultSet;
@@ -23,6 +24,7 @@ import GameObjects.LetterBox;
 import GameObjects.PlayField;
 import GameObjects.SwapFrame;
 import GameObjects.Tile;
+import GameObjects.TurnIndicator;
 import Main.GUI;
 import controller.DatabaseController;
 import controller.PlaystateController;
@@ -32,6 +34,8 @@ public class Playstate extends Gamestate implements MouseListener {
 
 	private Letter moveLetter;
 
+	private TurnIndicator turnIndicator;
+	
 	private PlayField playField;
 
 	private LetterBox letterBox;
@@ -61,6 +65,7 @@ public class Playstate extends Gamestate implements MouseListener {
 			letterBox.draw(g);
 			buttonPanel.draw(g);
 			infoPanel.draw(g);
+			turnIndicator.draw(g);
 		}
 	}
 
@@ -88,13 +93,14 @@ public class Playstate extends Gamestate implements MouseListener {
 			this.add(chatArea, BorderLayout.EAST);
 			filledTiles = new ArrayList<Tile>();
 			playstateController = new PlaystateController(gsm, playField, letterBox, this);
+			turnIndicator = new TurnIndicator(gsm, playField.getTiles().get(0).getWidth());
 			isCreated = true;
 		} else {
 			this.reloadPlaystate();
 		}
 	}
-	
-	public void reloadPlaystate(){
+
+	public void reloadPlaystate() {
 		playField.reloadPlayfield();
 		letterBox.reloadLetterBox();
 		infoPanel.reloadInfoPanel();
@@ -157,7 +163,7 @@ public class Playstate extends Gamestate implements MouseListener {
 									if (!tileIsFilled && moveLetter.getX() != tile.getX()
 											&& moveLetter.getBordY() != tile.getY()) {
 										if (!moveLetter.isOnStartPosition()) {
-											filledTiles.remove(filledTiles.size()-1);//test
+											filledTiles.remove(filledTiles.size()-1);//TODO test
 										}
 										filledTiles.add(tile);
 										moveLetter.calculateRoute(tile.getX(), tile.getY());
@@ -290,7 +296,7 @@ public class Playstate extends Gamestate implements MouseListener {
 			}
 		}
 		filledTiles.clear();
-
+		turnIndicator.resetTurnIndicator();
 		moveLetter = null;
 	}
 

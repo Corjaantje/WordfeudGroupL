@@ -37,12 +37,7 @@ public class InfoPanel implements Drawable {
 		this.width = width;
 		this.db_c = db_c;
 		this.gsm = gsm;
-		username = gsm.getUser().getUsername();
-		userscore = gsm.getUser().getUserScore();
-		opponentname = gsm.getUser().getOpponentName();
-		opponentscore = gsm.getUser().getOpponentScore();
-		playerTurn = gsm.getUser().getPlayerTurn();
-		db_c.closeConnection();
+		this.reloadInfoPanel();
 	}
 
 	@Override
@@ -64,15 +59,14 @@ public class InfoPanel implements Drawable {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-
 	}
 	
 	public void reloadInfoPanel(){
-		username = gsm.getUser().getUsername();
+		playerTurn = gsm.getUser().getPlayerTurn();
 		userscore = gsm.getUser().getUserScore();
 		opponentname = gsm.getUser().getOpponentName();
 		opponentscore = gsm.getUser().getOpponentScore();
-		playerTurn = gsm.getUser().getPlayerTurn();
+		username = gsm.getUser().getChallengerName();
 		db_c.closeConnection();
 	}
 }
