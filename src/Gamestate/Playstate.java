@@ -103,6 +103,15 @@ public class Playstate extends Gamestate implements MouseListener {
 		chatArea.reloadChat();
 	}
 
+	public void reloadPlaystate() {
+		playField.reloadPlayfield();
+		letterBox.reloadLetterBox();
+		infoPanel.reloadInfoPanel();
+		swapFrame.reloadSwapFrame();
+		filledTiles.clear();
+		chatArea.reloadChat();
+	}
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -154,12 +163,27 @@ public class Playstate extends Gamestate implements MouseListener {
 											}
 										}
 									}
-									if (!tileIsFilled) {
+									if (!tileIsFilled && moveLetter.getX() != tile.getX()
+											&& moveLetter.getBordY() != tile.getY()) {
+										if (!moveLetter.isOnStartPosition()) {
+											filledTiles.remove(filledTiles.size()-1);//test
+										}
 										filledTiles.add(tile);
 										moveLetter.calculateRoute(tile.getX(), tile.getY());
 										moveLetter.setWantedSize(tile.getWidth(), tile.getHeight());
+										if (moveLetter.getLetterChar().equals("?")) {
+											String option = JOptionPane
+													.showInputDialog("Vul hier de gewenste letter in: ");
+											if (option.length() == 1 && Character.isLetter(option.charAt(0))) {
+												moveLetter.setLetterChar(option.toUpperCase());
+											} else {
+												JOptionPane.showMessageDialog(null,
+														"U heeft geen geldige letter ingevuld!", "Wordfeud",
+														JOptionPane.ERROR_MESSAGE);
+												moveLetter.reset();
+											}
+										}
 									}
-
 								}
 							}
 						}
@@ -213,19 +237,29 @@ public class Playstate extends Gamestate implements MouseListener {
 			if (buttonPanel.getButtonsAreSelected() && x > button.getX() && x < (button.getX() + button.getWidth())) {
 				if (buttonPanel.getButtonsAreSelected() && y > button.getY()
 						&& y < (button.getY() + button.getHeight())) {
-					if (button.getText().equals("Reset")) {
-						this.resetLetterBoxLetters();
-					} else if (button.getText().equals("Shuffle")) {
-						letterBox.shuffleLetters();
-					} else if (button.getText().equals("Play")) {
-						// this.checkCorrectPlacedLetters();
-						playstateController.doPlay();
-					} else if (button.getText().equals("Swap")) {
-						swapFrame.setVisible(true);
-					} else if (button.getText().equals("Pass")) {
-						this.doPass();
-					} else if (button.getText().equals("Resign")) {
-						this.doResign();
+					if (gsm.getUser().userCanPlay()) {
+						if (button.getText().equals("Reset")) {
+							this.resetLetterBoxLetters();
+						} else if (button.getText().equals("Shuffle")) {
+							letterBox.shuffleLetters();
+						} else if (button.getText().equals("Play")) {
+							// this.checkCorrectPlacedLetters();
+							playstateController.doPlay();
+						} else if (button.getText().equals("Swap")) {
+							swapFrame.setVisible(true);
+						} else if (button.getText().equals("Pass")) {
+							this.doPass();
+						} else if (button.getText().equals("Resign")) {
+							this.doResign();
+						}
+					} else {
+						if (button.getText().equals("Reset")) {
+							this.resetLetterBoxLetters();
+						} else {
+							JOptionPane.showMessageDialog(null, "De beurt is aan: " + gsm.getUser().getPlayerTurn(),
+									"Wordfeud", JOptionPane.ERROR_MESSAGE);
+						}
+
 					}
 				}
 			}
@@ -260,8 +294,12 @@ public class Playstate extends Gamestate implements MouseListener {
 	private void resetLetterBoxLetters() {
 		for (Letter letter : letterBox.getLetters()) {
 			letter.reset();
+			if (letter.getIsJoker()) {
+				letter.setLetterChar("?");
+			}
 		}
 		filledTiles.clear();
+
 		moveLetter = null;
 	}
 

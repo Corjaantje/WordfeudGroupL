@@ -140,7 +140,7 @@ public class SwapPane extends JPanel {
 				db_c.closeConnection();
 			} else {
 				db_c.queryUpdate(
-						"INSERT INTO letterbakjeletter VALUES (" + game + ", " + char_id + "," + (turn + 2) + ");");
+						"INSERT INTO letterbakjeletter VALUES (" + game + ", " + char_id + "," + (turn + 2) + ");");//TODO strange??
 				db_c.closeConnection();
 			}
 
@@ -162,7 +162,7 @@ public class SwapPane extends JPanel {
 			JOptionPane.showMessageDialog(null, "U heeft de volgende letter(s) geswapped: " + letters,
 					"U heeft geswapped!", JOptionPane.PLAIN_MESSAGE);
 
-			db_c.queryUpdate("INSERT INTO beurtVALUES (" + turn + ", " + game + ", '" + userName + "', " + score + ", "
+			db_c.queryUpdate("INSERT INTO beurt VALUES (" + turn + ", " + game + ", '" + userName + "', " + score + ", "
 					+ " '" + action + "');");
 			db_c.closeConnection();
 		} else {

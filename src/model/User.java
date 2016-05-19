@@ -19,7 +19,7 @@ public class User {
 	private int competitionNumber;
 	private int gameNumber;
 	private int amountOfRoles;
-	
+
 	private String opponent;
 	private String challenger;
 
@@ -30,7 +30,7 @@ public class User {
 		databaseController = new DatabaseController();
 		roles = new ArrayList<>();
 		this.username = username;
-		turnNumber = 19;
+		turnNumber = 25;
 		gameNumber = 511;
 		competitionNumber = 1;
 		addRoles();
@@ -68,8 +68,8 @@ public class User {
 	public int getGameNumber() {
 		return gameNumber;
 	}
-	
-	public void setGameNumber(int gameNumber){
+
+	public void setGameNumber(int gameNumber) {
 		this.gameNumber = gameNumber;
 	}
 
@@ -99,7 +99,8 @@ public class User {
 	}
 
 	public int getUserScore() {
-		 String query = "SELECT sum(score) AS totaalScore FROM beurt WHERE account_naam = 'marijntje42' AND spel_id ="+this.getGameNumber()+" AND id < "+this.getTurnNumber();
+		String query = "SELECT sum(score) AS totaalScore FROM beurt WHERE account_naam = 'marijntje42' AND spel_id ="
+				+ this.getGameNumber() + " AND id < " + this.getTurnNumber();
 		ResultSet rs = databaseController.query(query);
 		int score = -1;
 		try {
@@ -159,8 +160,8 @@ public class User {
 			return challenger;
 		}
 	}
-	
-	public String getChallengerName(){
+
+	public String getChallengerName() {
 		this.getOpponentName();
 		return challenger;
 	}
@@ -183,18 +184,18 @@ public class User {
 		if (turnNumber > 1) {
 			this.turnNumber = turnNumber;
 		}
-		
+
 	}
-	
-	public int getCompetitionNumber(){
+
+	public int getCompetitionNumber() {
 		return competitionNumber;
 	}
-	
-	public String getCompetitionDescription(){
+
+	public String getCompetitionDescription() {
 		String description = "";
-		ResultSet rs = databaseController.query("SELECT omschrijving FROM competitie WHERE id = "+competitionNumber);
+		ResultSet rs = databaseController.query("SELECT omschrijving FROM competitie WHERE id = " + competitionNumber);
 		try {
-			while(rs.next()){
+			while (rs.next()) {
 				description = rs.getString("omschrijving");
 			}
 		} catch (SQLException e) {
@@ -203,16 +204,16 @@ public class User {
 		}
 		return description;
 	}
-	
-	public void setCompetitionNumber(int competitionNumber){
+
+	public void setCompetitionNumber(int competitionNumber) {
 		this.competitionNumber = competitionNumber;
 	}
-	
-	public int getAmountOfRoles(String nameUser){
+
+	public int getAmountOfRoles(String nameUser) {
 		ResultSet rs = databaseController.query("select * from accountrol where account_naam = '" + nameUser + "'");
 		amountOfRoles = 0;
 		try {
-			while(rs.next()){
+			while (rs.next()) {
 				amountOfRoles = amountOfRoles + 1;
 			}
 		} catch (SQLException e) {
@@ -220,5 +221,13 @@ public class User {
 			e.printStackTrace();
 		}
 		return amountOfRoles;
+	}
+
+	public boolean userCanPlay() {
+		if (this.getPlayerTurn().equals(this.getUsername())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
