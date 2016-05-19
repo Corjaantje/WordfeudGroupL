@@ -19,12 +19,13 @@ public class TurnIndicator implements Drawable{
 	
 	private int location;
 	
-	private int score = 10;
+	private int score;
 	
 	public TurnIndicator(GamestateManager gsm,double tileWidth) {
 		this.gsm = gsm;
 		diameter = (int) (tileWidth / 2.5);
 		location = (int) (tileWidth / 1.3);
+		this.resetTurnIndicator();
 	}
 
 	@Override
@@ -50,14 +51,17 @@ public class TurnIndicator implements Drawable{
 	}
 	
 	public void resetTurnIndicator(){
-		x = -100;
-		y = -100;
+		this.setToPoint(new Point(-100, -100));
 		score = 0;
 	}
 	
 	public void setToPoint(Point point){
 		x = point.getX();
 		y = point.getY();
+	}
+	
+	public void setScore(int score){
+		this.score = score;
 	}
 
 }

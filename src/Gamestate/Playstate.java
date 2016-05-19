@@ -35,7 +35,7 @@ public class Playstate extends Gamestate implements MouseListener {
 	private Letter moveLetter;
 
 	private TurnIndicator turnIndicator;
-	
+
 	private PlayField playField;
 
 	private LetterBox letterBox;
@@ -53,6 +53,8 @@ public class Playstate extends Gamestate implements MouseListener {
 	private boolean isCreated = false;
 
 	private PlaystateController playstateController;
+
+	private boolean indicatorIsPlaced = false;
 
 	public Playstate(GamestateManager gsm, DatabaseController db_c) {
 		super(gsm, db_c);
@@ -73,6 +75,7 @@ public class Playstate extends Gamestate implements MouseListener {
 	public void update() {
 		if (isCreated) {
 			letterBox.update();
+			this.placeIndicator();
 		}
 	}
 
@@ -162,10 +165,8 @@ public class Playstate extends Gamestate implements MouseListener {
 									}
 									if (!tileIsFilled && moveLetter.getX() != tile.getX()
 											&& moveLetter.getBordY() != tile.getY()) {
-										if (!moveLetter.isOnStartPosition()) {
-											filledTiles.remove(filledTiles.size()-1);//TODO test
-										}
 										filledTiles.add(tile);
+										indicatorIsPlaced = true;
 										moveLetter.calculateRoute(tile.getX(), tile.getY());
 										moveLetter.setWantedSize(tile.getWidth(), tile.getHeight());
 										if (moveLetter.getLetterChar().equals("?")) {
@@ -260,6 +261,54 @@ public class Playstate extends Gamestate implements MouseListener {
 					}
 				}
 			}
+		}
+	}
+
+	private void placeIndicator() {
+		if (indicatorIsPlaced&&moveLetter.getRightLocation()) {
+			playstateController.setScoreTrackingVariables();
+			int score = playstateController.getScore();
+			// check if the word is on a wrong location
+			if (score == -1) {
+				indicatorIsPlaced = false;
+				System.out.println("The letters are not placed correctly! score = "+score);
+				return;
+			}
+			ArrayList<Letter> wordLetters = playstateController.getMainWord();
+			if (playstateController.getMainWordOrientation().equals("horizontal")) {
+				//Order the letters reversed 
+				Collections.sort(wordLetters, new Comparator<Letter>() {
+					@Override
+					public int compare(Letter a, Letter b) {
+						if (a.getBordX() < b.getBordX())
+							return 1;
+						if (a.getBordX() > b.getBordX())
+							return -1;
+						return 0;
+					}
+				});
+				System.out.println("Horizontal word ordered");
+				turnIndicator.setToPoint(new Point((int) wordLetters.get(0).getX(), (int) wordLetters.get(0).getY()));
+				turnIndicator.setScore(score);
+			} else if (playstateController.getMainWordOrientation().equals("vertical")) {
+				//Order the letters reversed
+				Collections.sort(wordLetters, new Comparator<Letter>() {
+					@Override
+					public int compare(Letter a, Letter b) {
+						if (a.getBordY() < b.getBordY())
+							return 1;
+						if (a.getBordY() > b.getBordY())
+							return -1;
+						return 0;
+					}
+				});
+				System.out.println("Vertical word ordered");
+				turnIndicator.setToPoint(new Point((int) wordLetters.get(0).getX(), (int) wordLetters.get(0).getY()));
+				turnIndicator.setScore(score);
+			} else {
+				System.out.println("Word Orientation went wrong");
+			}
+			indicatorIsPlaced = false;
 		}
 	}
 
