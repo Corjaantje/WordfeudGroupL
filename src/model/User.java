@@ -136,15 +136,11 @@ public class User {
 		String challenger = "";
 		String opponent = "";
 		ResultSet rs = databaseController
-				.query("SELECT account_naam_uitdager  FROM spel WHERE id = " + this.getGameNumber());
+				.query("SELECT account_naam_uitdager,account_naam_tegenstander  FROM spel WHERE id = " + this.getGameNumber());
 		try {
 			while (rs.next()) {
 				challenger = rs.getString("account_naam_uitdager");
-			}
-			rs = databaseController
-					.query("SELECT account_naam_tegenstander  FROM spel WHERE id = " + this.getGameNumber());
-			while (rs.next()) {
-				opponent = rs.getString("account_naam_uitdager");
+				opponent = rs.getString("account_naam_tegenstander");
 			}
 			databaseController.closeConnection();
 		} catch (Exception e) {
