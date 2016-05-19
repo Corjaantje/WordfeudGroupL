@@ -238,8 +238,9 @@ public class Letter implements Drawable {
 	public int getLetterID() {
 		return letter_id;
 	}
-
-	public int getScore() {
+	
+	public int getScore()
+	{
 		return score;
 	}
 

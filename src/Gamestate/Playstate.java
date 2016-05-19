@@ -93,6 +93,15 @@ public class Playstate extends Gamestate implements MouseListener {
 			this.reloadPlaystate();
 		}
 	}
+	
+	public void reloadPlaystate(){
+		playField.reloadPlayfield();
+		letterBox.reloadLetterBox();
+		infoPanel.reloadInfoPanel();
+		swapFrame.reloadSwapFrame();
+		filledTiles.clear();
+		chatArea.reloadChat();
+	}
 
 	public void reloadPlaystate() {
 		playField.reloadPlayfield();
