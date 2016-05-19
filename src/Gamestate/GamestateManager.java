@@ -60,7 +60,7 @@ public class GamestateManager extends JPanel implements ActionListener{
 	private boolean returnInitialized = false;
 	private JMenuItem backButton;
 	private boolean returnVisible = false;
-	
+
 	public GamestateManager(GUI gui) {
 		this.gui = gui;
 		create();
@@ -262,5 +262,6 @@ public class GamestateManager extends JPanel implements ActionListener{
 		{
 			goToLastState();
 		}
+
 	}
 }
