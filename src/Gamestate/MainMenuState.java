@@ -303,10 +303,6 @@ public class MainMenuState extends Gamestate implements ActionListener
 		}
 	}
 	
-	private void makeSettingPopup(){
-		
-	}
-	
 	private void makeAdminPopup()
 	{
 		AdminDBController db_con = new AdminDBController(gsm);
