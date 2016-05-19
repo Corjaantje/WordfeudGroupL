@@ -127,9 +127,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 	private void addModeratorButtons()
 	{
 		if(currentUser.checkRole("moderator"))
-		{
-			Notify = new NotificationFrame(gsm);
-			
+		{	
 			moderatorText = new JLabel();
 			openModeratorNewWord = new JButton();
 			
@@ -293,7 +291,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 		{
 			if(!notifyCreated)
 			{
-				Notify = new NotificationFrame(gsm);
+				Notify = new NotificationFrame(gsm, db_c);
 				Notify.setVisible(true);
 			}
 			else
