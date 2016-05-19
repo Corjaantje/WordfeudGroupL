@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import GameObjects.ChallengeFrame;
+import GameObjects.NotificationFrame;
 import Main.GUI;
 import model.User;
 import controller.DatabaseController;
@@ -48,9 +49,12 @@ public class GamestateManager extends JPanel implements ActionListener{
 	
 	private boolean invitePlayerInMenu;
 	private boolean invitePlayerInitialized;
-	private  JMenu challenge;
+	public boolean notifyCreated;
+	private JMenu challenge;
+	private JMenuItem notify;
 	private JMenuItem mainMenu;
 	private ChallengeFrame challengeFrame;
+	public NotificationFrame Notify;
 
 	public GamestateManager(GUI gui) {
 		this.gui = gui;
@@ -110,11 +114,14 @@ public class GamestateManager extends JPanel implements ActionListener{
 			if(!invitePlayerInitialized)
 			{
 				challenge = new JMenu("Uitdagen");
-				mainMenu = new JMenuItem("Nieuwe speler uitdagen");		
+				mainMenu = new JMenuItem("Nieuwe speler uitdagen");	
+				notify = new JMenuItem("Uitdaging Overzicht");
 				invitePlayerInitialized = true;
 				
 				mainMenu.addActionListener(this);
 				mainMenu.setActionCommand("invitePlayer");
+				notify.addActionListener(this);
+				notify.setActionCommand("notify");
 				
 				challengeFrame = new ChallengeFrame(this, db_c);
 			}
@@ -124,6 +131,7 @@ public class GamestateManager extends JPanel implements ActionListener{
 				{		
 					gui.bar.add(challenge);
 					challenge.add(mainMenu);
+					challenge.add(notify);
 					gui.repaint();
 					gui.pack();
 					this.validate();
@@ -198,6 +206,19 @@ public class GamestateManager extends JPanel implements ActionListener{
 		if("invitePlayer".equals(e.getActionCommand()))
 		{
 			challengeFrame.setVisible(true);
+		}
+		if("notify".equals(e.getActionCommand()))
+		{
+			if(!notifyCreated)
+			{
+				Notify = new NotificationFrame(this, db_c);
+				Notify.setVisible(true);
+				notifyCreated = true;
+			}
+			else
+			{
+				Notify.setVisible(true);
+			}
 		}
 	}
 }
