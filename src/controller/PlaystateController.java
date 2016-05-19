@@ -996,6 +996,8 @@ public class PlaystateController
 	//TODO REMOVE THIS METHOD
 	// get the score; if the letter placement is in any way invalid return -1
 	@Deprecated
+
+	// get the score; if the letter placement is in any way invalid return -1
 	public int getTotalScore()
 	{
 		// TODO en de score; misschien door variabelen te setten en daar getters voor maken.
@@ -1323,15 +1325,22 @@ public class PlaystateController
 		return score;
 	}
 	
-	// (score tracking variable 2);get the word
-	public ArrayList<Letter> getMainWord()
-	{
-		return mainWord;
-	}
-	
 	// (score tracking variable 3);get the word orientation
 	public String getMainWordOrientation()
 	{
 		return mainWordOrientation;
 	}
+	
+	// get the word
+	public ArrayList<Letter> getMainWord()
+	{
+		// TODO moet arraylist van het totale woord teruggeven, en of die horizontaal of verticaal is
+		
+		// get number of letters placed down (woordArrayList.size())
+		ArrayList<Letter> wordArrayList = getPlacedLetters();
+		int wordSize = wordArrayList.size();
+		
+		return null;
+	}
+	
 }
