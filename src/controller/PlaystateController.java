@@ -702,6 +702,25 @@ public class PlaystateController
 		}
 	}
 	
+	private void submitValidWord(int points, ArrayList<Letter> wordArrayList)
+	{
+		// show the score
+		JOptionPane.showMessageDialog(null, "Je hebt met deze zet " + points + " punten behaald.");
+		// update the database
+		updateDatabase(points, wordArrayList);
+		// TODO repaint the playstate or leave the playstate
+		gsm.setGamestate(GamestateManager.gameOverviewState);
+	}
+	
+	private void wordIsInvalid(String wrongWordsString)
+	{
+		if (wrongWordsString.endsWith(", "))
+		{
+			wrongWordsString = wrongWordsString.substring(0, wrongWordsString.length() - 2);
+		}
+		JOptionPane.showMessageDialog(null, wrongWordsString);
+	}
+	
 	public void doPlay() {
 		String wrongWordsString = "Dit woord kan niet geplaatst worden omdat de volgende woorden niet in het woordenboek staan: ";
 		ArrayList<Letter> wordArrayList = getPlacedLetters();
@@ -768,17 +787,10 @@ public class PlaystateController
 					
 					if (placementIsValid)
 					{
-						// update the database
-						updateDatabase(points, wordArrayList);
-						// TODO repaint the playstate or leave the playstate
-						gsm.setGamestate(gsm.gameOverviewState);
+						submitValidWord(points, wordArrayList);
 					} else
 					{
-						if (wrongWordsString.endsWith(", "))
-						{
-							wrongWordsString = wrongWordsString.substring(0, wrongWordsString.length() - 2);
-						}
-						JOptionPane.showMessageDialog(null, wrongWordsString);
+						wordIsInvalid(wrongWordsString);
 					}
 				}
 			}
@@ -866,17 +878,10 @@ public class PlaystateController
 							
 							if (placementIsValid)
 							{
-								// update the database
-								updateDatabase(points, wordArrayList);
-								// TODO repaint the playstate or leave the playstate
-								gsm.setGamestate(gsm.gameOverviewState);
+								submitValidWord(points, wordArrayList);
 							} else
 							{
-								if (wrongWordsString.endsWith(", "))
-								{
-									wrongWordsString = wrongWordsString.substring(0, wrongWordsString.length() - 2);
-								}
-								JOptionPane.showMessageDialog(null, wrongWordsString);
+								wordIsInvalid(wrongWordsString);
 							}
 						}
 					}
@@ -960,17 +965,10 @@ public class PlaystateController
 							
 							if (placementIsValid)
 							{
-								// update the database
-								updateDatabase(points, wordArrayList);
-								// TODO repaint the playstate or leave the playstate
-								gsm.setGamestate(gsm.gameOverviewState);
+								submitValidWord(points, wordArrayList);
 							} else
 							{
-								if (wrongWordsString.endsWith(", "))
-								{
-									wrongWordsString = wrongWordsString.substring(0, wrongWordsString.length() - 2);
-								}
-								JOptionPane.showMessageDialog(null, wrongWordsString);
+								wordIsInvalid(wrongWordsString);
 							}
 						}
 					}
