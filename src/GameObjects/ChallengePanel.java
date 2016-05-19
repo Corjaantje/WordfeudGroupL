@@ -79,34 +79,42 @@ public class ChallengePanel extends JPanel implements KeyListener
 						//TODO Self-check, cannot invite yourself
 						if(!input.toLowerCase().equals(gsm.getUser().getUsername().toLowerCase()))
 						{
-							ResultSet alreadyInviteOpen = db_c.query("SELECT * FROM spel WHERE toestand_type = 'request' AND reaktie_type = 'unknown' AND account_naam_uitdager = '" + gsm.getUser().getUsername() + "'  AND competitie_id = " + gsm.getUser().getCompetitionNumber() + " AND account_naam_tegenstander = '" + input + "'  AND account_naam_tegenstander != '" + gsm.getUser().getUsername() + "';");
-							if(!alreadyInviteOpen.next()) //If query is empty, so there is no open invite
+							ResultSet alreadyAGameWithinThisCompetition = db_c.query("SELECT * FROM spel WHERE toestand_type != 'finished' AND reaktie_type != 'rejected' AND competitie_id = "+gsm.getUser().getCompetitionNumber()+" AND account_naam_uitdager = '"+gsm.getUser().getUsername()+"' AND account_naam_tegenstander = '"+input+"';");
+							if(!alreadyAGameWithinThisCompetition.next()) //Already a game running within this competition
 							{
-								ResultSet userInCompetition = db_c.query("SELECT * FROM deelnemer WHERE account_naam = '"+input+"' AND competitie_id ="+gsm.getUser().getCompetitionNumber()+";");
-								if(userInCompetition.next()) //Is the requested user in this competition?
+								ResultSet alreadyInviteOpen = db_c.query("SELECT * FROM spel WHERE toestand_type = 'request' AND reaktie_type = 'unknown' AND account_naam_uitdager = '" + gsm.getUser().getUsername() + "'  AND competitie_id = " + gsm.getUser().getCompetitionNumber() + " AND account_naam_tegenstander = '" + input + "'  AND account_naam_tegenstander != '" + gsm.getUser().getUsername() + "';");
+								if(!alreadyInviteOpen.next()) //If query is empty, so there is no open invite
 								{
-									ResultSet getEmptyGameID = db_c.query("select * from spel ORDER BY id DESC;"); 
-									if(getEmptyGameID.next())
+									ResultSet userInCompetition = db_c.query("SELECT * FROM deelnemer WHERE account_naam = '"+input+"' AND competitie_id ="+gsm.getUser().getCompetitionNumber()+";");
+									if(userInCompetition.next()) //Is the requested user in this competition?
 									{
-										int freeGameID = (getEmptyGameID.getInt("id") + 1);
-										
-										db_c.queryUpdate("INSERT INTO spel VALUES ("+freeGameID+","+gsm.getUser().getCompetitionNumber()+", 'request', '"+gsm.getUser().getUsername()+"', 'unknown', 'standard', '"+ langCombo.getSelectedItem().toString() + "', '"+input+"');");
-										JOptionPane.showMessageDialog(null, "Uitnodiging verzonden!");
+										ResultSet getEmptyGameID = db_c.query("select * from spel ORDER BY id DESC;"); 
+										if(getEmptyGameID.next())
+										{
+											int freeGameID = (getEmptyGameID.getInt("id") + 1);
+											
+											db_c.queryUpdate("INSERT INTO spel VALUES ("+freeGameID+","+gsm.getUser().getCompetitionNumber()+", 'request', '"+gsm.getUser().getUsername()+"', 'unknown', 'standard', '"+ langCombo.getSelectedItem().toString() + "', '"+input+"');");
+											JOptionPane.showMessageDialog(null, "Uitnodiging verzonden!");
+										}
+										else
+										{
+											System.out.println("Er zijn geen game id's meer beschikbaar...");
+										}
 									}
 									else
 									{
-										System.out.println("Er zijn geen game id's meer beschikbaar...");
+										JOptionPane.showMessageDialog(null, input + " zit niet in deze competitie!");
 									}
 								}
 								else
 								{
-									JOptionPane.showMessageDialog(null, input + " zit niet in deze competitie!");
+									System.out.println(alreadyInviteOpen.getString("competitie_id"));
+									JOptionPane.showMessageDialog(null, "Er staat nog een uitnodiging open met " + input + " binnen deze competitie!");
 								}
 							}
-							else
+							else //No competition running
 							{
-								System.out.println(alreadyInviteOpen.getString("competitie_id"));
-								JOptionPane.showMessageDialog(null, "Er staat nog een uitnodiging open met " + input + " binnen deze competitie!");
+								JOptionPane.showMessageDialog(null, "Je hebt al een spel openstaan met " + input + "!");
 							}
 						}
 						else //Inviting yourself
