@@ -49,6 +49,8 @@ public class GUI extends JFrame {
 	private GamestateManager gsm;
 	//player menu for adding words.	
 	JMenu playerMenu = new JMenu("Player Menu");
+	
+	public boolean menuCreated = false;
 	//end
 	public GUI() {
 		super();
@@ -76,68 +78,26 @@ public class GUI extends JFrame {
 		bar = new JMenuBar();
 		menu = new JMenu("Menu");
 	
-		JMenuItem exit = new JMenuItem("Exit");
+		JMenuItem exit = new JMenuItem("Afsluiten");
 		exit.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ImageIcon icon = new ImageIcon("Resources/wordfeudLogo.png");
-				int option = JOptionPane.showConfirmDialog(null, "All unsaved progress wil be lost",
-						"Are you sure you want to quit?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				int option = JOptionPane.showConfirmDialog(null, "De applicatie zal nu worden afgelosten",
+						"Bent u zeker van deze keuze?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 						icon);
 				if (option == JOptionPane.OK_OPTION) {
 					System.exit(0);
 				}
 			}
-		});
-		
-		//TODO Remove Hoofdmenu State
-		JMenuItem mainMenu = new JMenuItem("Hoofdmenu");
-		mainMenu.addActionListener(new ActionListener() {
-			@SuppressWarnings("static-access")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				try{
-					if(gsm.getUser() != null)
-					{
-						if(gsm.getCurrentState() != gsm.mainMenuState)
-						{
-						gsm.setGamestate(gsm.mainMenuState);
-						}
-						else
-						{
-							JOptionPane.showMessageDialog(null, "Je bent al in het hoofdmenu!");
-						}
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "Je bent nog niet ingelogd!");
-					}
-				}
-				catch(NullPointerException npe){}
-			}
-		});
-		
-		
-		JMenuItem backButton = new JMenuItem();
-		backButton.setText("Terug");
-		backButton.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				gsm.goToLastState();
-			}
-			
-		});
+		});		
 		
 		menu.add(exit);
-		menu.add(mainMenu);
-		menu.add(backButton);
 		bar.add(menu);
 		this.setJMenuBar(bar);
+		menuCreated=true;
 	}
 
 	private void draw() {
