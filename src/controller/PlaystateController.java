@@ -651,7 +651,7 @@ public class PlaystateController
 		{
 			// insert the turn into the database
 			// update beurt
-			String beurtUpdateQuery = "INSERT INTO beurt (`id`, `spel_id`,`account_naam`,`score`,aktie_type) VALUES(" + lastTurnNumber+1 + "," + gsm.getUser().getGameNumber() +", '" +gsm.getUser().getUsername() +"'," + points + ", 'word')";
+			String beurtUpdateQuery = "INSERT INTO beurt (`id`, `spel_id`,`account_naam`,`score`,aktie_type) VALUES(" + (lastTurnNumber+1) + "," + gsm.getUser().getGameNumber() +", '" +gsm.getUser().getUsername() +"'," + points + ", 'word')";
 			databaseController.queryUpdate(beurtUpdateQuery);
 			
 			// update letterbakjeletter
@@ -665,7 +665,7 @@ public class PlaystateController
 			// and insert them into the database
 			for (Letter letter : letterBox.getLetters())
 			{
-				String letterBakjeLetterUpdateQuery = "INSERT INTO letterbakjeletter (`spel_id`,`beurt_id`,`Letter_id`) VALUES (" + gsm.getUser().getGameNumber() +"," + lastTurnNumber+1 + ","+ letter.getLetterID() +")";
+				String letterBakjeLetterUpdateQuery = "INSERT INTO letterbakjeletter (`spel_id`,`beurt_id`,`Letter_id`) VALUES (" + gsm.getUser().getGameNumber() +"," + (lastTurnNumber+1) + ","+ letter.getLetterID() +")";
 				databaseController.queryUpdate(letterBakjeLetterUpdateQuery);
 			}
 			
@@ -688,12 +688,12 @@ public class PlaystateController
 				
 				String blancoLetterCharacter = "NULL";
 				// if letter is joker/jester/wild card change blancoLetterCharacter to the character it became.
-				if (letter.getLetterChar().equals("?"))
-				{
-					//TODO getJokerLetterChar() ~~
-					//blancoLetterCharacter = letter.getJokerLetterChar();
-				}
-				String gelegdeLetterUpdateQuery = ("INSERT INTO gelegdeletter (tegel_bord_naam,spel_id,beurt_id,letter_id,tegel_x,tegel_y,blancoletterkarakter) VALUES ('"+ tegelBordNaam +"'," + gsm.getUser().getGameNumber() +","+ lastTurnNumber+1 +"," + letter.getLetterID() + ","+ letter.getCorrectedXInt() +","+ letter.getCorrectedYInt() +"," + blancoLetterCharacter +")");
+				// TODO fix letter.getIsJoker
+				//if (letter.getLetterChar().equals("?"))
+				//{
+				//	blancoLetterCharacter = letter.getJokerLetterChar();
+				//}
+				String gelegdeLetterUpdateQuery = ("INSERT INTO gelegdeletter (tegel_bord_naam,spel_id,beurt_id,letter_id,tegel_x,tegel_y,blancoletterkarakter) VALUES ('"+ tegelBordNaam +"'," + gsm.getUser().getGameNumber() +","+ (lastTurnNumber+1) +"," + letter.getLetterID() + ","+ letter.getCorrectedXInt() +","+ letter.getCorrectedYInt() +"," + blancoLetterCharacter +")");
 				databaseController.queryUpdate(gelegdeLetterUpdateQuery);
 			}
 			
@@ -708,8 +708,8 @@ public class PlaystateController
 		JOptionPane.showMessageDialog(null, "Je hebt met deze zet " + points + " punten behaald.");
 		// update the database
 		updateDatabase(points, wordArrayList);
-		// TODO repaint the playstate or leave the playstate
-		gsm.setGamestate(GamestateManager.gameOverviewState);
+		// reload the playstate
+		playstate.reloadPlaystate();
 	}
 	
 	private void wordIsInvalid(String wrongWordsString)
