@@ -53,9 +53,6 @@ public class MainMenuState extends Gamestate implements ActionListener
 	private JButton playerNotifications;
 	private JButton spectatorCompetition;
 	
-	private NotificationFrame Notify;
-	
-	private boolean notifyCreated;
 	private boolean mainMenuCreated;
 	
 	public  MainMenuState(GamestateManager gsmanager,DatabaseController db_controller)
@@ -289,14 +286,15 @@ public class MainMenuState extends Gamestate implements ActionListener
 		}
 		else if("notifications".equals(e.getActionCommand()))
 		{
-			if(!notifyCreated)
+			if(!gsm.notifyCreated)
 			{
-				Notify = new NotificationFrame(gsm, db_c);
-				Notify.setVisible(true);
+				gsm.Notify = new NotificationFrame(gsm, db_c);
+				gsm.Notify.setVisible(true);
+				gsm.notifyCreated = true;
 			}
 			else
 			{
-				Notify.setVisible(true);
+				gsm.Notify.setVisible(true);
 			}
 		}
 		else if("spectator".equals(e.getActionCommand()))
