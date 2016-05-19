@@ -1,6 +1,7 @@
 package Gamestate;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -55,6 +56,10 @@ public class GamestateManager extends JPanel implements ActionListener{
 	private JMenuItem mainMenu;
 	private ChallengeFrame challengeFrame;
 	public NotificationFrame Notify;
+	
+	private boolean returnInitialized = false;
+	private JMenuItem backButton;
+	private boolean returnVisible = false;
 
 	public GamestateManager(GUI gui) {
 		this.gui = gui;
@@ -84,9 +89,7 @@ public class GamestateManager extends JPanel implements ActionListener{
 		this.setGamestate(loginState, true);
 		/*
 		 * add all gamestates to the array list
-		 */
-		
-		
+		 */	
 	}
 	
 	public void setGamestate(int gamestate) {
@@ -108,6 +111,39 @@ public class GamestateManager extends JPanel implements ActionListener{
 		
 		this.gamestates.get(currentState).create();
 		
+		//Return button
+		if(gamestate != mainMenuState)
+		{
+			if(!returnInitialized)
+			{
+				System.out.println("init");
+				backButton = new JMenuItem();
+				backButton.setText("Terug");
+				backButton.addActionListener(this);
+				backButton.setActionCommand("return");
+				returnInitialized = true;
+				returnVisible=false;
+			}
+			if(!returnVisible && gui.menuCreated)
+			{
+				gui.bar.add(backButton);
+				returnVisible = true;
+				gui.repaint();
+				gui.pack();
+				this.validate();
+			}
+		}
+		if(gamestate == mainMenuState || gamestate == loginState)
+		{
+			if(returnVisible)
+			{
+				gui.bar.remove(backButton);
+				gui.repaint();
+				gui.pack();
+				this.validate();
+				returnVisible=false;
+			}
+		}
 		//Request game invite 
 		if(gamestate == gameOverviewState)
 		{
@@ -129,9 +165,11 @@ public class GamestateManager extends JPanel implements ActionListener{
 			{
 				if(!invitePlayerInMenu)
 				{		
+					gui.bar.remove(backButton);
 					gui.bar.add(challenge);
+					gui.bar.add(backButton);
 					challenge.add(mainMenu);
-					challenge.add(notify);
+					challenge.add(notify);		
 					gui.repaint();
 					gui.pack();
 					this.validate();
@@ -220,5 +258,10 @@ public class GamestateManager extends JPanel implements ActionListener{
 				Notify.setVisible(true);
 			}
 		}
+		if("return".equals(e.getActionCommand()))
+		{
+			goToLastState();
+		}
+
 	}
 }
