@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,6 +15,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JOptionPane;
 
 import GameObjects.Button;
@@ -266,6 +273,7 @@ public class Playstate extends Gamestate implements MouseListener {
 
 	private void placeIndicator() {
 		if (indicatorIsPlaced&&moveLetter.getRightLocation()) {
+			this.playSound("LetterDrop.wav");
 			playstateController.setScoreTrackingVariables();
 			int score = playstateController.getScore();
 			// check if the word is on a wrong location
@@ -555,8 +563,25 @@ public class Playstate extends Gamestate implements MouseListener {
 		JOptionPane.showMessageDialog(this, "U heeft '" + word + "' gespeeld");
 	}
 
-	private void checkForRightWord(ArrayList<Letter> letters) {
-
+	private void playSound(String url) {
+		File f = new File("Resources/"+url);
+		try {
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(f.getAbsoluteFile());
+			try {
+				Clip clip = AudioSystem.getClip();
+				clip.open(audioInputStream);
+				clip.start();
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
