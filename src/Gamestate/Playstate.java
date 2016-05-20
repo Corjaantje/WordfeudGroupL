@@ -174,6 +174,8 @@ public class Playstate extends Gamestate implements MouseListener {
 											&& moveLetter.getBordY() != tile.getY()) {
 										filledTiles.add(tile);
 										indicatorIsPlaced = true;
+										moveLetter.setBordX(tile.getBordX());
+										moveLetter.setBordY(tile.getBordY());
 										moveLetter.calculateRoute(tile.getX(), tile.getY());
 										moveLetter.setWantedSize(tile.getWidth(), tile.getHeight());
 										if (moveLetter.getLetterChar().equals("?")) {
@@ -349,6 +351,8 @@ public class Playstate extends Gamestate implements MouseListener {
 
 	private void resetLetterBoxLetters() {
 		for (Letter letter : letterBox.getLetters()) {
+			letter.setBordX(0);
+			letter.setBordY(0);
 			letter.reset();
 			if (letter.getIsJoker()) {
 				letter.setLetterChar("?");
