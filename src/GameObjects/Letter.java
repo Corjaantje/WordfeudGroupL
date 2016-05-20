@@ -46,14 +46,16 @@ public class Letter implements Drawable {
 	private Image bgImage;
 
 	private Font font;
-	
+
 	private int bordX;
 	private int bordY;
-	
+
 	private double playfieldX;
 	private int playfieldSpace;
-	
+
 	private int letter_id;
+
+	private boolean isJoker;
 
 	public Letter(double x, double y, int width, int height, String letter, int score) {
 		this.x = x;
@@ -61,13 +63,18 @@ public class Letter implements Drawable {
 		this.width = width;
 		this.height = height;
 		this.letter = letter;
+		if (letter.equals("?")) {
+			isJoker = true;
+		} else {
+			isJoker = false;
+		}
 		this.score = score;
 		startX = x;
 		startY = y;
 		startWidth = width;
 		startHeight = height;
 		this.setWantedSize(width, height);
-		speed = 0.2;
+		speed = 0.3;
 		rightLocation = true;
 		font = new Font("Lucida Grande", Font.BOLD, 10);
 		bgImage = Toolkit.getDefaultToolkit().getImage("Resources/backgroundTile.png");
@@ -181,28 +188,20 @@ public class Letter implements Drawable {
 		}
 		return false;
 	}
-	
-	public String getLetterChar(){
+
+	public String getLetterChar() {
 		return letter;
 	}
 	
-	public int getCorrectedXInt() {
-		return (int)(x/50-10);
-	}
-	
-	public int getCorrectedYInt() {
-		return (int)(y/50+1);
-	}
-	
 	public boolean isOnPlayField() {
-		if (getCorrectedYInt() <= 15) {
+		if (bordX != 0 && bordY != 0) {
 			return true;
 		}
 		return false;
 	}
 
-	//test v
-	
+	// test v
+
 	public int getBordX() {
 		return bordX;
 	}
@@ -218,24 +217,31 @@ public class Letter implements Drawable {
 	public void setBordY(int bordY) {
 		this.bordY = bordY;
 	}
-	
-	public void setPlayfieldX(double x){
+
+	public void setPlayfieldX(double x) {
 		playfieldX = x;
 		playfieldSpace = 2;
 	}
 
-	public void setLetterID(int id){
+	public void setLetterID(int id) {
 		letter_id = id;
 	}
-	
-	public int getLetterID(){
+
+	public int getLetterID() {
 		return letter_id;
 	}
 	
-
 	public int getScore()
 	{
 		return score;
+	}
+
+	public void setLetterChar(String letter) {
+		this.letter = letter;
+	}
+	
+	public boolean getIsJoker(){
+		return isJoker;
 	}
 
 }
