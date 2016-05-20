@@ -242,7 +242,9 @@ public class Playstate extends Gamestate implements MouseListener {
 			if (buttonPanel.getButtonsAreSelected() && x > button.getX() && x < (button.getX() + button.getWidth())) {
 				if (buttonPanel.getButtonsAreSelected() && y > button.getY()
 						&& y < (button.getY() + button.getHeight())) {
+					this.playSound("ButtonClick.wav");
 					if (gsm.getUser().userCanPlay()) {
+
 						if (button.getText().equals("Reset")) {
 							this.resetLetterBoxLetters();
 						} else if (button.getText().equals("Shuffle")) {
@@ -272,19 +274,19 @@ public class Playstate extends Gamestate implements MouseListener {
 	}
 
 	private void placeIndicator() {
-		if (indicatorIsPlaced&&moveLetter.getRightLocation()) {
+		if (indicatorIsPlaced && moveLetter.getRightLocation()) {
 			this.playSound("LetterDrop.wav");
 			playstateController.setScoreTrackingVariables();
 			int score = playstateController.getScore();
 			// check if the word is on a wrong location
 			if (score == -1) {
 				indicatorIsPlaced = false;
-				System.out.println("The letters are not placed correctly! score = "+score);
+				System.out.println("The letters are not placed correctly! score = " + score);
 				return;
 			}
 			ArrayList<Letter> wordLetters = playstateController.getMainWord();
 			if (playstateController.getMainWordOrientation().equals("horizontal")) {
-				//Order the letters reversed 
+				// Order the letters reversed
 				Collections.sort(wordLetters, new Comparator<Letter>() {
 					@Override
 					public int compare(Letter a, Letter b) {
@@ -299,7 +301,7 @@ public class Playstate extends Gamestate implements MouseListener {
 				turnIndicator.setToPoint(new Point((int) wordLetters.get(0).getX(), (int) wordLetters.get(0).getY()));
 				turnIndicator.setScore(score);
 			} else if (playstateController.getMainWordOrientation().equals("vertical")) {
-				//Order the letters reversed
+				// Order the letters reversed
 				Collections.sort(wordLetters, new Comparator<Letter>() {
 					@Override
 					public int compare(Letter a, Letter b) {
@@ -564,7 +566,7 @@ public class Playstate extends Gamestate implements MouseListener {
 	}
 
 	private void playSound(String url) {
-		File f = new File("Resources/"+url);
+		File f = new File("Resources/Sound/" + url);
 		try {
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(f.getAbsoluteFile());
 			try {
