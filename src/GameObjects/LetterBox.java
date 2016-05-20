@@ -85,6 +85,16 @@ public class LetterBox implements Drawable {
 		db_c.closeConnection();
 	}
 
+	public void replacePlacedLetters(ArrayList<Letter> placedLetters)
+	{
+		int numberOfPlacedLetters = placedLetters.size();
+		
+		// get all unused letters (not on field not in player's hands)
+		// ( letter is not in gelegdeletter and letter is not in a letterbakje letter with last two turns
+		String query = "SELECT * FROM letter WHERE NOT id = ANY( SELECT letter_id FROM gelegdeletter WHERE beurt_id <= " + gsm.getUser().getTurnNumber() + " AND spel_id = " + gsm.getUser().getGameNumber() + ") AND NOT id = ANY(";
+		// randomly take numberOfPlacedLetters unused letters
+	}
+	
 	@Override
 	public void draw(Graphics2D g) {
 		if (isCreated) {
