@@ -26,8 +26,8 @@ public class User {
 	private GamestateManager gsm;
 	private DatabaseController databaseController;
 
-	public User(String username) {
-		databaseController = new DatabaseController();
+	public User(String username, DatabaseController databaseController) {
+		this.databaseController = databaseController;
 		roles = new ArrayList<>();
 		this.username = username;
 		turnNumber = 25;
