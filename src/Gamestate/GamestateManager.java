@@ -128,9 +128,6 @@ public class GamestateManager extends JPanel implements ActionListener{
 			{
 				gui.bar.add(backButton);
 				returnVisible = true;
-				gui.repaint();
-				gui.pack();
-				this.validate();
 			}
 		}
 		if(gamestate == mainMenuState || gamestate == loginState)
@@ -138,9 +135,6 @@ public class GamestateManager extends JPanel implements ActionListener{
 			if(returnVisible)
 			{
 				gui.bar.remove(backButton);
-				gui.repaint();
-				gui.pack();
-				this.validate();
 				returnVisible=false;
 			}
 		}
@@ -169,10 +163,7 @@ public class GamestateManager extends JPanel implements ActionListener{
 					gui.bar.add(challenge);
 					gui.bar.add(backButton);
 					challenge.add(mainMenu);
-					challenge.add(notify);		
-					gui.repaint();
-					gui.pack();
-					this.validate();
+					challenge.add(notify);
 					invitePlayerInMenu = true;
 				}
 			}
@@ -185,8 +176,9 @@ public class GamestateManager extends JPanel implements ActionListener{
 				invitePlayerInMenu = false;
 			}
 		}
-		//End of game request
-		
+		//End of game request	
+		gui.repaint();
+		gui.pack();
 		this.validate();
 	}
 
