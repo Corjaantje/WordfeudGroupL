@@ -124,6 +124,8 @@ public class SwapPane extends JPanel {
 				swappedLetters.add(checkbox.getLabel());
 				String query = "SELECT * FROM letter WHERE NOT id = ANY( SELECT letter_id FROM gelegdeletter WHERE beurt_id <= "
 						+ turn + " AND spel_id = " + game + ")";
+				// TODO add this to the query above? - Marc
+				// TODO + "AND NOT id = ANY( SELECT letter_id from letterbakjeletter where beurt_id =" + (turn-1) + " OR beurt_id =" + (turn-2);
 				ArrayList<Integer> charNumberList = new ArrayList<Integer>();
 				ResultSet rs = db_c.query(query);
 				try {
