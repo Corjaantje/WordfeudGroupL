@@ -363,6 +363,7 @@ public class Playstate extends Gamestate implements MouseListener {
 		moveLetter = null;
 	}
 
+	@Deprecated
 	private void checkCorrectPlacedLetters() {
 		int counter = 0;
 		boolean isWrongTurn = false;
@@ -401,6 +402,7 @@ public class Playstate extends Gamestate implements MouseListener {
 		}
 	}
 
+	@Deprecated
 	private void checkForAxis(ArrayList<Letter> letters) {
 		boolean isVerticalLayed = true;
 		boolean isHorizontalLayed = true;
@@ -436,6 +438,7 @@ public class Playstate extends Gamestate implements MouseListener {
 		}
 	}
 
+	@Deprecated
 	private void checkYAxis(ArrayList<Letter> letters, ArrayList<Integer> letterY, int sequenceX) {
 		// orders integer array
 		Arrays.sort(letterY.toArray());
@@ -499,7 +502,8 @@ public class Playstate extends Gamestate implements MouseListener {
 		}
 		JOptionPane.showMessageDialog(this, "U heeft '" + word + "' gespeeld");
 	}
-
+	
+	@Deprecated
 	private void checkXAxis(ArrayList<Letter> letters, ArrayList<Integer> letterX, int sequenceY) {
 		// orders integer array
 		Arrays.sort(letterX.toArray());
