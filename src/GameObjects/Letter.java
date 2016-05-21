@@ -243,5 +243,9 @@ public class Letter implements Drawable {
 	public boolean getIsJoker(){
 		return isJoker;
 	}
+	
+	public void setSpeed(double speed){
+		this.speed = speed;
+	}
 
 }
