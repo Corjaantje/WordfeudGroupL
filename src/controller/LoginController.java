@@ -49,5 +49,6 @@ public class LoginController {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+		System.out.println(username + " is ingelogd met dit wachtwoord: " + password);
 	}
 }
