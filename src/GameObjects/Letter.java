@@ -200,8 +200,6 @@ public class Letter implements Drawable {
 		return false;
 	}
 
-	// test v
-
 	public int getBordX() {
 		return bordX;
 	}
