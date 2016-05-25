@@ -30,16 +30,15 @@ public class LoginController {
 		this.password = password;
 	}
 	
-	@SuppressWarnings("static-access")
 	public void login(String username, String password){
 		ResultSet rs = databaseController.query("select * from account where naam = '" + username + "'and wachtwoord = '" + password + "'");
 		try{
 			if(rs.next()){
 				if(gsm.getUser() == null){
 					System.out.println("Test database query login");
-					User user = new User(username);
+					User user = new User(username, databaseController);
 					gsm.setUser(user);
-					gsm.setGamestate(gsm.mainMenuState);
+					gsm.setGamestate(GamestateManager.mainMenuState);
 
 				} else {
 					JOptionPane.showMessageDialog(null, "Je bent al ingelogd.");
@@ -50,5 +49,6 @@ public class LoginController {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+		System.out.println(username + " is ingelogd met dit wachtwoord: " + password);
 	}
 }

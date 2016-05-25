@@ -43,7 +43,7 @@ public class PlaystateController
 			if (letter.isOnPlayField()) 
 			{
 				//testMessage
-				System.out.println("Letter " + letter.getLetterChar() + " is placed on coordinates x: " + letter.getCorrectedXInt() + ", y: " + letter.getCorrectedYInt());
+				System.out.println("Letter " + letter.getLetterChar() + " is placed on coordinates x: " + letter.getBordX() + ", y: " + letter.getBordY());
 				//add to the array
 				allPlacedLetters.add(letter);
 			}
@@ -55,30 +55,30 @@ public class PlaystateController
 		// METHOD: boolean isLetterAttached(Letter letter)
 		
 		// get the necessary objects and values
-		int letterX = letter.getCorrectedXInt();
-		int letterY = letter.getCorrectedYInt();
+		int letterX = letter.getBordX();
+		int letterY = letter.getBordY();
 		ArrayList<Letter> allPlayedLetters = playField.getPlayedLetters();
 		//	loop through all played letters
 		for (Letter playedLetter : allPlayedLetters)
 		{
 			// check if there's a playedLetter at any of these coordinates of letter 
 			//(x+=1; y= y) 
-			if (letterX == playedLetter.getCorrectedXInt()+1 && letterY == playedLetter.getCorrectedYInt())
+			if (letterX == playedLetter.getBordX()+1 && letterY == playedLetter.getBordY())
 			{
 				return true;
 			}
 			//(x-=1;y=y)  
-			if (letterX == playedLetter.getCorrectedXInt()-1 && letterY == playedLetter.getCorrectedYInt())
+			if (letterX == playedLetter.getBordX()-1 && letterY == playedLetter.getBordY())
 			{
 				return true;
 			}
 			//(x=x;y+=1)
-			if (letterX == playedLetter.getCorrectedXInt() && letterY == playedLetter.getCorrectedYInt()+1)
+			if (letterX == playedLetter.getBordX() && letterY == playedLetter.getBordY()+1)
 			{
 				return true;
 			}
 			//(x=x;y-=1)
-			if (letterX == playedLetter.getCorrectedXInt() && letterY == playedLetter.getCorrectedYInt()-1)
+			if (letterX == playedLetter.getBordX() && letterY == playedLetter.getBordY()-1)
 			{
 				return true;
 			}
@@ -114,7 +114,7 @@ public class PlaystateController
 			for (Letter letter : letterArrayList)
 			{
 				// check if the letter is on the startstar
-				if (letter.getCorrectedXInt() == x && letter.getCorrectedYInt() == y)
+				if (letter.getBordX() == x && letter.getBordY() == y)
 				{
 					// if it is
 					return true;
@@ -146,12 +146,12 @@ public class PlaystateController
 				{
 					// compare wordArrayList.get(i) and wordArrayList.get(j)
 					// if x aren't the same the word is not vertical
-					if (wordArrayList.get(i).getCorrectedXInt() != wordArrayList.get(j).getCorrectedXInt()) 
+					if (wordArrayList.get(i).getBordX() != wordArrayList.get(j).getBordX()) 
 					{
 						vertical = false;
 					}
 					// if y aren't the same the word is not horizontal
-					if (wordArrayList.get(i).getCorrectedYInt() != wordArrayList.get(j).getCorrectedYInt())
+					if (wordArrayList.get(i).getBordY() != wordArrayList.get(j).getBordY())
 					{
 						horizontal = false;
 					}
@@ -201,7 +201,7 @@ public class PlaystateController
 				lowestXLetter = letter;
 			}
 			// if the new letter has a lower x make that letter the new lowestXLetter
-			if (letter.getCorrectedXInt() < lowestXLetter.getCorrectedXInt()) {
+			if (letter.getBordX() < lowestXLetter.getBordX()) {
 				lowestXLetter = letter;
 			}
 		}
@@ -217,7 +217,7 @@ public class PlaystateController
 				highestXLetter = letter;
 			}
 			// if the new letter had a higher x make that letter the new highestXLetter
-			if (letter.getCorrectedXInt() > highestXLetter.getCorrectedXInt()) {
+			if (letter.getBordX() > highestXLetter.getBordX()) {
 				highestXLetter = letter;
 			}
 		}
@@ -234,7 +234,7 @@ public class PlaystateController
 				lowestYLetter = letter;
 			}
 			// if the new letter has a lower x make that letter the new lowestXLetter
-			if (letter.getCorrectedYInt() < lowestYLetter.getCorrectedYInt()) {
+			if (letter.getBordY() < lowestYLetter.getBordY()) {
 				lowestYLetter = letter;
 			}
 		}
@@ -250,7 +250,7 @@ public class PlaystateController
 				highestYLetter = letter;
 			}
 			// if the new letter had a higher x make that letter the new highestXLetter
-			if (letter.getCorrectedYInt() > highestYLetter.getCorrectedYInt()) {
+			if (letter.getBordY() > highestYLetter.getBordY()) {
 				highestYLetter = letter;
 			}
 		}
@@ -269,7 +269,7 @@ public class PlaystateController
 			for (Letter letter : playField.getPlayedLetters())
 			{
 				// if there's a letter at x-=1 take that letter and break out of this loop
-				if ((letter.getCorrectedXInt() == currentLetter.getCorrectedXInt()-1) && letter.getCorrectedYInt() == currentLetter.getCorrectedYInt())
+				if ((letter.getBordX() == currentLetter.getBordX()-1) && letter.getBordY() == currentLetter.getBordY())
 				{
 					
 					newLowestLetter = letter;
@@ -292,7 +292,7 @@ public class PlaystateController
 		Letter highestXLetter = getHighestXLetter(wordArrayList);
 		
 		// get the amount of letters after the first letter (= highestx - lowestx)
-		int amountOfLetters = highestXLetter.getCorrectedXInt() - lowestXLetter.getCorrectedXInt();
+		int amountOfLetters = highestXLetter.getBordX() - lowestXLetter.getBordX();
 		
 		// grab the first letter
 		Letter currentLetter = null;
@@ -305,7 +305,7 @@ public class PlaystateController
 			for (Letter letter : wordArrayList)
 			{
 				// if it contains the next letter
-				if ((letter.getCorrectedXInt() == currentLetter.getCorrectedXInt()+1) && letter.getCorrectedYInt() == currentLetter.getCorrectedYInt())
+				if ((letter.getBordX() == currentLetter.getBordX()+1) && letter.getBordY() == currentLetter.getBordY())
 				{
 					nextLetter = letter;
 					break;
@@ -317,7 +317,7 @@ public class PlaystateController
 				
 				for (Letter letter : playField.getPlayedLetters())
 				{
-					if ((letter.getCorrectedXInt() == currentLetter.getCorrectedXInt()+1) && letter.getCorrectedYInt() == currentLetter.getCorrectedYInt())
+					if ((letter.getBordX() == currentLetter.getBordX()+1) && letter.getBordY() == currentLetter.getBordY())
 					{
 						nextLetter = letter;
 						break;
@@ -342,7 +342,7 @@ public class PlaystateController
 		Letter highestYLetter = getHighestYLetter(wordArrayList);
 		
 		// get the amount of letters after the first letter (= highestx - lowestx)
-		int amountOfLetters = highestYLetter.getCorrectedYInt() - lowestYLetter.getCorrectedYInt();
+		int amountOfLetters = highestYLetter.getBordY() - lowestYLetter.getBordY();
 		
 		// grab the first letter
 		Letter currentLetter = null;
@@ -355,7 +355,7 @@ public class PlaystateController
 			for (Letter letter : wordArrayList)
 			{
 				// if it contains the next letter
-				if ((letter.getCorrectedYInt() == currentLetter.getCorrectedYInt()+1) && letter.getCorrectedXInt() == currentLetter.getCorrectedXInt())
+				if ((letter.getBordY() == currentLetter.getBordY()+1) && letter.getBordX() == currentLetter.getBordX())
 				{
 					nextLetter = letter;
 					break;
@@ -367,7 +367,7 @@ public class PlaystateController
 				
 				for (Letter letter : playField.getPlayedLetters())
 				{
-					if ((letter.getCorrectedYInt() == currentLetter.getCorrectedYInt()+1) && letter.getCorrectedXInt() == currentLetter.getCorrectedXInt())
+					if ((letter.getBordY() == currentLetter.getBordY()+1) && letter.getBordX() == currentLetter.getBordX())
 					{
 						nextLetter = letter;
 						break;
@@ -408,7 +408,7 @@ public class PlaystateController
 			for (Letter letter : wordArrayList)
 			{
 				// if it contains the next letter
-				if ((letter.getCorrectedXInt() == currentLetter.getCorrectedXInt()+1) && letter.getCorrectedYInt() == currentLetter.getCorrectedYInt())
+				if ((letter.getBordX() == currentLetter.getBordX()+1) && letter.getBordY() == currentLetter.getBordY())
 				{
 							
 					nextLetter = letter;
@@ -422,7 +422,7 @@ public class PlaystateController
 				
 				for (Letter letter : playField.getPlayedLetters())
 				{
-					if ((letter.getCorrectedXInt() == currentLetter.getCorrectedXInt()+1) && letter.getCorrectedYInt() == currentLetter.getCorrectedYInt())
+					if ((letter.getBordX() == currentLetter.getBordX()+1) && letter.getBordY() == currentLetter.getBordY())
 					{
 						nextLetter = letter;
 						horizontalWord.add(nextLetter);
@@ -454,7 +454,7 @@ public class PlaystateController
 			for (Letter letter : playField.getPlayedLetters())
 			{
 				// if there's a letter at y-=1 take that letter and break out of this loop
-				if ((letter.getCorrectedYInt() == currentLetter.getCorrectedYInt()-1) && letter.getCorrectedXInt() == currentLetter.getCorrectedXInt())
+				if ((letter.getBordY() == currentLetter.getBordY()-1) && letter.getBordX() == currentLetter.getBordX())
 				{
 					
 					newLowestLetter = letter;
@@ -493,7 +493,7 @@ public class PlaystateController
 			for (Letter letter : wordArrayList)
 			{
 				// if it contains the next letter
-				if ((letter.getCorrectedYInt() == currentLetter.getCorrectedYInt()+1) && letter.getCorrectedXInt() == currentLetter.getCorrectedXInt())
+				if ((letter.getBordY() == currentLetter.getBordY()+1) && letter.getBordX() == currentLetter.getBordX())
 				{
 							
 					nextLetter = letter;
@@ -507,7 +507,7 @@ public class PlaystateController
 				
 				for (Letter letter : playField.getPlayedLetters())
 				{
-					if ((letter.getCorrectedYInt() == currentLetter.getCorrectedYInt()+1) && letter.getCorrectedXInt() == currentLetter.getCorrectedXInt())
+					if ((letter.getBordY() == currentLetter.getBordY()+1) && letter.getBordX() == currentLetter.getBordX())
 					{
 						nextLetter = letter;
 						verticalWord.add(nextLetter);
@@ -582,7 +582,7 @@ public class PlaystateController
 			for (Letter playfieldLetter : playField.getPlayedLetters())
 			{
 				// if letter x and y match that of a letter already on the playfield
-				if (letter.getCorrectedXInt() == playfieldLetter.getCorrectedXInt() && letter.getCorrectedYInt() == playfieldLetter.getCorrectedYInt())
+				if (letter.getBordX() == playfieldLetter.getBordX() && letter.getBordY() == playfieldLetter.getBordY())
 				{
 					// take their score and add to the totalscore
 					score += letter.getScore();
@@ -600,7 +600,7 @@ public class PlaystateController
 			for (Tile tile : playField.getTiles())
 			{
 				// if the tile and letter have the same x and y
-				if(letter.getCorrectedXInt() == tile.getBordX() && letter.getCorrectedYInt() == tile.getBordY())
+				if(letter.getBordX() == tile.getBordX() && letter.getBordY() == tile.getBordY())
 				{
 					int letterMultiplier = 1;
 					// get the score from the tile the letter is placed on and apply the multiplier
@@ -661,10 +661,8 @@ public class PlaystateController
 			databaseController.queryUpdate(beurtUpdateQuery);
 			
 			// update letterbakjeletter
-			// TODO als er letters zijn geplaatst moet
-			// TODO voor het einde van de beurt (HIER)  het letterbakje weer worden aangevuld
-			
-			// TODO if the player hand and deck are empty the action_type is "end"
+			letterBox.replacePlacedLetters(wordArrayList);
+			// TODO END if the player hand and deck are empty the action_type is "end"
 			// TODO not sure if letterbakjeletter will need to be updated if action_type is "end"
 			
 			// get the letters that are in the letterBox at the end of the turn, loop through them
@@ -694,12 +692,12 @@ public class PlaystateController
 				
 				String blancoLetterCharacter = "NULL";
 				// if letter is joker/jester/wild card change blancoLetterCharacter to the character it became.
-				// TODO fix letter.getIsJoker
-				//if (letter.getLetterChar().equals("?"))
-				//{
-				//	blancoLetterCharacter = letter.getJokerLetterChar();
-				//}
-				String gelegdeLetterUpdateQuery = ("INSERT INTO gelegdeletter (tegel_bord_naam,spel_id,beurt_id,letter_id,tegel_x,tegel_y,blancoletterkarakter) VALUES ('"+ tegelBordNaam +"'," + gsm.getUser().getGameNumber() +","+ (lastTurnNumber+1) +"," + letter.getLetterID() + ","+ letter.getCorrectedXInt() +","+ letter.getCorrectedYInt() +"," + blancoLetterCharacter +")");
+				
+				if (letter.getIsJoker())
+				{
+					blancoLetterCharacter = letter.getLetterChar();
+				}
+				String gelegdeLetterUpdateQuery = ("INSERT INTO gelegdeletter (tegel_bord_naam,spel_id,beurt_id,letter_id,tegel_x,tegel_y,blancoletterkarakter) VALUES ('"+ tegelBordNaam +"'," + gsm.getUser().getGameNumber() +","+ (lastTurnNumber+1) +"," + letter.getLetterID() + ","+ letter.getBordX() +","+ letter.getBordY() +"," + blancoLetterCharacter +")");
 				databaseController.queryUpdate(gelegdeLetterUpdateQuery);
 			}
 			

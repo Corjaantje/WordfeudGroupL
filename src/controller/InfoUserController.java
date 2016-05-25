@@ -3,8 +3,6 @@ package controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JOptionPane;
-
 import Gamestate.GamestateManager;
 
 public class InfoUserController {

@@ -192,23 +192,13 @@ public class Letter implements Drawable {
 	public String getLetterChar() {
 		return letter;
 	}
-
-	public int getCorrectedXInt() {
-		return (int) (x / 50 - 10);
-	}
-
-	public int getCorrectedYInt() {
-		return (int) (y / 50 + 1);
-	}
-
+	
 	public boolean isOnPlayField() {
-		if (getCorrectedYInt() <= 15) {
+		if (bordX != 0 && bordY != 0) {
 			return true;
 		}
 		return false;
 	}
-
-	// test v
 
 	public int getBordX() {
 		return bordX;
@@ -250,6 +240,10 @@ public class Letter implements Drawable {
 	
 	public boolean getIsJoker(){
 		return isJoker;
+	}
+	
+	public void setSpeed(double speed){
+		this.speed = speed;
 	}
 
 }

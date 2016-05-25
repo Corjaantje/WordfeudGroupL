@@ -174,6 +174,8 @@ public class Playstate extends Gamestate implements MouseListener {
 											&& moveLetter.getBordY() != tile.getY()) {
 										filledTiles.add(tile);
 										indicatorIsPlaced = true;
+										moveLetter.setBordX(tile.getBordX());
+										moveLetter.setBordY(tile.getBordY());
 										moveLetter.calculateRoute(tile.getX(), tile.getY());
 										moveLetter.setWantedSize(tile.getWidth(), tile.getHeight());
 										if (moveLetter.getLetterChar().equals("?")) {
@@ -242,7 +244,9 @@ public class Playstate extends Gamestate implements MouseListener {
 			if (buttonPanel.getButtonsAreSelected() && x > button.getX() && x < (button.getX() + button.getWidth())) {
 				if (buttonPanel.getButtonsAreSelected() && y > button.getY()
 						&& y < (button.getY() + button.getHeight())) {
+					this.playSound("ButtonClick.wav");
 					if (gsm.getUser().userCanPlay()) {
+
 						if (button.getText().equals("Reset")) {
 							this.resetLetterBoxLetters();
 						} else if (button.getText().equals("Shuffle")) {
@@ -272,19 +276,19 @@ public class Playstate extends Gamestate implements MouseListener {
 	}
 
 	private void placeIndicator() {
-		if (indicatorIsPlaced&&moveLetter.getRightLocation()) {
+		if (indicatorIsPlaced && moveLetter.getRightLocation()) {
 			this.playSound("LetterDrop.wav");
 			playstateController.setScoreTrackingVariables();
 			int score = playstateController.getScore();
 			// check if the word is on a wrong location
 			if (score == -1) {
 				indicatorIsPlaced = false;
-				System.out.println("The letters are not placed correctly! score = "+score);
+				System.out.println("The letters are not placed correctly! score = " + score);
 				return;
 			}
 			ArrayList<Letter> wordLetters = playstateController.getMainWord();
 			if (playstateController.getMainWordOrientation().equals("horizontal")) {
-				//Order the letters reversed 
+				// Order the letters reversed
 				Collections.sort(wordLetters, new Comparator<Letter>() {
 					@Override
 					public int compare(Letter a, Letter b) {
@@ -299,7 +303,7 @@ public class Playstate extends Gamestate implements MouseListener {
 				turnIndicator.setToPoint(new Point((int) wordLetters.get(0).getX(), (int) wordLetters.get(0).getY()));
 				turnIndicator.setScore(score);
 			} else if (playstateController.getMainWordOrientation().equals("vertical")) {
-				//Order the letters reversed
+				// Order the letters reversed
 				Collections.sort(wordLetters, new Comparator<Letter>() {
 					@Override
 					public int compare(Letter a, Letter b) {
@@ -347,6 +351,8 @@ public class Playstate extends Gamestate implements MouseListener {
 
 	private void resetLetterBoxLetters() {
 		for (Letter letter : letterBox.getLetters()) {
+			letter.setBordX(0);
+			letter.setBordY(0);
 			letter.reset();
 			if (letter.getIsJoker()) {
 				letter.setLetterChar("?");
@@ -357,6 +363,7 @@ public class Playstate extends Gamestate implements MouseListener {
 		moveLetter = null;
 	}
 
+	@Deprecated
 	private void checkCorrectPlacedLetters() {
 		int counter = 0;
 		boolean isWrongTurn = false;
@@ -395,6 +402,7 @@ public class Playstate extends Gamestate implements MouseListener {
 		}
 	}
 
+	@Deprecated
 	private void checkForAxis(ArrayList<Letter> letters) {
 		boolean isVerticalLayed = true;
 		boolean isHorizontalLayed = true;
@@ -430,6 +438,7 @@ public class Playstate extends Gamestate implements MouseListener {
 		}
 	}
 
+	@Deprecated
 	private void checkYAxis(ArrayList<Letter> letters, ArrayList<Integer> letterY, int sequenceX) {
 		// orders integer array
 		Arrays.sort(letterY.toArray());
@@ -493,7 +502,8 @@ public class Playstate extends Gamestate implements MouseListener {
 		}
 		JOptionPane.showMessageDialog(this, "U heeft '" + word + "' gespeeld");
 	}
-
+	
+	@Deprecated
 	private void checkXAxis(ArrayList<Letter> letters, ArrayList<Integer> letterX, int sequenceY) {
 		// orders integer array
 		Arrays.sort(letterX.toArray());
@@ -564,7 +574,7 @@ public class Playstate extends Gamestate implements MouseListener {
 	}
 
 	private void playSound(String url) {
-		File f = new File("Resources/"+url);
+		File f = new File("Resources/Sound/" + url);
 		try {
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(f.getAbsoluteFile());
 			try {
