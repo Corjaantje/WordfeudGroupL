@@ -257,9 +257,9 @@ public class Playstate extends Gamestate implements MouseListener {
 						} else if (button.getText().equals("Swap")) {
 							swapFrame.setVisible(true);
 						} else if (button.getText().equals("Pass")) {
-							this.doPass();
+							playstateController.doPass();
 						} else if (button.getText().equals("Resign")) {
-							this.doResign();
+							playstateController.doResign();
 						}
 					} else {
 						if (button.getText().equals("Reset")) {
@@ -284,6 +284,7 @@ public class Playstate extends Gamestate implements MouseListener {
 			if (score == -1) {
 				indicatorIsPlaced = false;
 				System.out.println("The letters are not placed correctly! score = " + score);
+				turnIndicator.resetTurnIndicator();
 				return;
 			}
 			ArrayList<Letter> wordLetters = playstateController.getMainWord();
@@ -321,31 +322,6 @@ public class Playstate extends Gamestate implements MouseListener {
 				System.out.println("Word Orientation went wrong");
 			}
 			indicatorIsPlaced = false;
-		}
-	}
-
-	private void doPass() {
-		int option = JOptionPane.showConfirmDialog(this, "Weet je zeker dat je deze beurt wilt passen?", "Wordfeud",
-				JOptionPane.YES_NO_OPTION);
-		if (option == JOptionPane.YES_OPTION) {
-			int turn = gsm.getUser().getTurnNumber();
-			int game = gsm.getUser().getGameNumber();
-			String username = gsm.getUser().getUsername();
-			db_c.query("INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'pass');");
-			db_c.closeConnection();
-		}
-	}
-
-	private void doResign() {
-		int option = JOptionPane.showConfirmDialog(this, "Weet je zeker dat je wil opgeven?", "Wordfeud",
-				JOptionPane.YES_NO_OPTION);
-		if (option == JOptionPane.YES_OPTION) {
-			int turn = gsm.getUser().getTurnNumber();
-			int game = gsm.getUser().getGameNumber();
-			String username = gsm.getUser().getUsername();
-			db_c.query("INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'resign');");
-			db_c.closeConnection(); // TODO waarom de connection closen? - Marc
-			// TODO set end of game
 		}
 	}
 

@@ -1334,4 +1334,41 @@ public class PlaystateController
 	{
 		return mainWordOrientation;
 	}
+	
+	public void doPass(){
+		int option = JOptionPane.showConfirmDialog(null, "Weet je zeker dat je deze beurt wilt passen?", "Wordfeud",
+				JOptionPane.YES_NO_OPTION);
+		if (option == JOptionPane.YES_OPTION) {
+			int turn = gsm.getUser().getTurnNumber();
+			int game = gsm.getUser().getGameNumber();
+			String username = gsm.getUser().getUsername();
+			databaseController.queryUpdate("INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'pass');");
+			ResultSet rs = databaseController.query("SELECT * FROM beurt WHERE id = ("+turn+" - 2) OR id = ("+turn+" - 4);");
+			int counter = 1;
+			try {
+				while(rs.next()){
+					if (rs.getString("aktie_type").equals("pass")) {
+						counter++;
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if (counter == 3) {
+				//TODO: end game
+			}
+		}
+	}
+	
+	public void doResign(){
+		int option = JOptionPane.showConfirmDialog(null, "Weet je zeker dat je wil opgeven?", "Wordfeud",
+				JOptionPane.YES_NO_OPTION);
+		if (option == JOptionPane.YES_OPTION) {
+			int turn = gsm.getUser().getTurnNumber();
+			int game = gsm.getUser().getGameNumber();
+			String username = gsm.getUser().getUsername();
+			databaseController.query("INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'resign');");
+			// TODO set end of game
+		}
+	}
 }

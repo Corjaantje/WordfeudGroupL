@@ -66,6 +66,10 @@ public class LetterBox implements Drawable {
 		try {
 			int i = 0;
 			while (rs.next()) {
+				if (i == 7) {
+					break;
+				}
+				System.out.println(i);
 				double x = tiles.get(i).getX();
 				double y = tiles.get(i).getY();
 				int width = tiles.get(i).getWidth();
