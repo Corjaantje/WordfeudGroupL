@@ -240,4 +240,12 @@ public class User {
 		}
 		return maxTurn;
 	}
+	
+	public String getWinner(){
+		if (this.getOpponentScore() > this.getUserScore()) {
+			return this.getOpponentName();
+		}else{
+			return this.getChallengerName();
+		}
+	}
 }
