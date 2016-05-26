@@ -1052,7 +1052,6 @@ public class PlaystateController
 							Letter firstLetterOnGameBoard = getFirstHorizontalWordLetter(firstLetterInWordArrayList);
 							
 							ArrayList<Letter> horizontalWordArraylist = getHorizontalWord(firstLetterOnGameBoard, wordArrayList);
-							@SuppressWarnings("unused")
 							String horizontalWordString = getConvertedWordArrayListToString(horizontalWordArraylist);
 							
 							int horizontalWordValue = getWordValue(horizontalWordArraylist, wordArrayList);
@@ -1069,7 +1068,6 @@ public class PlaystateController
 							for (Letter letter : wordArrayList)
 							{
 								ArrayList<Letter> verticalWordArraylist = getVerticalWord(letter, wordArrayList);
-								@SuppressWarnings("unused")
 								String verticalWordString = getConvertedWordArrayListToString(verticalWordArraylist);
 								// it can only be a word if it's bigger than one letter
 								if (verticalWordArraylist.size() > 1)
@@ -1103,7 +1101,7 @@ public class PlaystateController
 							Letter firstLetterOnGameBoard = getFirstVerticalWordLetter(firstLetterInWordArrayList);
 							
 							ArrayList<Letter> verticalWordArraylist = getVerticalWord(firstLetterOnGameBoard, wordArrayList);
-							@SuppressWarnings("unused")
+
 							String verticalWordString = getConvertedWordArrayListToString(verticalWordArraylist);
 							
 							
@@ -1121,7 +1119,6 @@ public class PlaystateController
 							for (Letter letter : wordArrayList)
 							{
 								ArrayList<Letter> horizontalWordArraylist = getHorizontalWord(letter, wordArrayList);
-								@SuppressWarnings("unused")
 								String horizontalWordString = getConvertedWordArrayListToString(horizontalWordArraylist);
 								// it can only be a word if it's bigger than one letter
 								if (horizontalWordArraylist.size() > 1)
