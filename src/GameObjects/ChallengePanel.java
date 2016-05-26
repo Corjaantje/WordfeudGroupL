@@ -88,18 +88,8 @@ public class ChallengePanel extends JPanel implements KeyListener
 									ResultSet userInCompetition = db_c.query("SELECT * FROM deelnemer WHERE account_naam = '"+input+"' AND competitie_id ="+gsm.getUser().getCompetitionNumber()+";");
 									if(userInCompetition.next()) //Is the requested user in this competition?
 									{
-										ResultSet getEmptyGameID = db_c.query("select * from spel ORDER BY id DESC;"); 
-										if(getEmptyGameID.next())
-										{
-											int freeGameID = (getEmptyGameID.getInt("id") + 1);
-											
-											db_c.queryUpdate("INSERT INTO spel VALUES ("+freeGameID+","+gsm.getUser().getCompetitionNumber()+", 'request', '"+gsm.getUser().getUsername()+"', 'unknown', 'standard', '"+ langCombo.getSelectedItem().toString() + "', '"+input+"');");
+											db_c.queryUpdate("INSERT INTO spel (`competitie_id`, `toestand_type`, `account_naam_uitdager`,`reaktie_type`, `bord_naam`, `letterset_naam`,`account_naam_tegenstander`) VALUES ("+gsm.getUser().getCompetitionNumber()+", 'request', '"+gsm.getUser().getUsername()+"', 'unknown', 'standard', '"+langCombo.getSelectedItem().toString()+"', '"+input+"')");
 											JOptionPane.showMessageDialog(null, "Uitnodiging verzonden!");
-										}
-										else
-										{
-											System.out.println("Er zijn geen game id's meer beschikbaar...");
-										}
 									}
 									else
 									{

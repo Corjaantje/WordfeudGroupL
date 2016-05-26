@@ -42,7 +42,7 @@ public class AdminDBController {
 		ResultSet rs = gsm.getDatabaseController().query("select * from account where naam = '" + nameUser + "'");
 		try{
 			if(rs.next()){
-				System.out.println("User exists");
+				System.out.println("Gebruiker bestaat in de DB.");
 				return true;
 			}else{
 				JOptionPane.showMessageDialog(null, "Gebruiker bestaat niet. Probeer opnieuw.");

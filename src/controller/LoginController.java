@@ -10,7 +10,9 @@ import model.User;
 
 public class LoginController {
 	
+	@SuppressWarnings("unused")
 	private String username;
+	@SuppressWarnings("unused")
 	private String password;	
 	private GamestateManager gsm;
 	private DatabaseController databaseController;
@@ -49,5 +51,6 @@ public class LoginController {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+		System.out.println(username + " is ingelogd met dit wachtwoord: " + password);
 	}
 }

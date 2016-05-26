@@ -45,15 +45,16 @@ public class GameOverviewInfoFrame extends JFrame {
 	}
 
 	public void loadFrame(int gameNumber) {
-		this.setVisible(true);
+		this.gameNumber = gameNumber;
 		if (isCreated) {
-			this.removeAll();
+			panel.removeAll();
 		}
 		this.createLabel();
 		this.createButton();
 		if(!isCreated){
 			isCreated = true;
 		}
+		this.setVisible(true);
 	}
 
 	private void createLabel() {

@@ -142,7 +142,7 @@ public class SwapPane extends JPanel {
 				db_c.closeConnection();
 			} else {
 				db_c.queryUpdate(
-						"INSERT INTO letterbakjeletter VALUES (" + game + ", " + char_id + "," + (turn + 2) + ");");//TODO strange??
+						"INSERT INTO letterbakjeletter VALUES (" + game + ", " + char_id + "," + (turn + 2) + ");");
 				db_c.closeConnection();
 			}
 
