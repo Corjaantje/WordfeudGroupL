@@ -124,6 +124,8 @@ public class SwapPane extends JPanel {
 				swappedLetters.add(checkbox.getLabel());
 				String query = "SELECT * FROM letter WHERE NOT id = ANY( SELECT letter_id FROM gelegdeletter WHERE beurt_id <= "
 						+ turn + " AND spel_id = " + game + ")";
+				// TODO add this to the query above? - Marc
+				// TODO + "AND NOT id = ANY( SELECT letter_id from letterbakjeletter where beurt_id =" + (turn-1) + " OR beurt_id =" + (turn-2);
 				ArrayList<Integer> charNumberList = new ArrayList<Integer>();
 				ResultSet rs = db_c.query(query);
 				try {
@@ -140,7 +142,7 @@ public class SwapPane extends JPanel {
 				db_c.closeConnection();
 			} else {
 				db_c.queryUpdate(
-						"INSERT INTO letterbakjeletter VALUES (" + game + ", " + char_id + "," + (turn + 2) + ");");
+						"INSERT INTO letterbakjeletter VALUES (" + game + ", " + char_id + "," + (turn + 2) + ");");//TODO strange??
 				db_c.closeConnection();
 			}
 
@@ -162,7 +164,7 @@ public class SwapPane extends JPanel {
 			JOptionPane.showMessageDialog(null, "U heeft de volgende letter(s) geswapped: " + letters,
 					"U heeft geswapped!", JOptionPane.PLAIN_MESSAGE);
 
-			db_c.queryUpdate("INSERT INTO beurtVALUES (" + turn + ", " + game + ", '" + userName + "', " + score + ", "
+			db_c.queryUpdate("INSERT INTO beurt VALUES (" + turn + ", " + game + ", '" + userName + "', " + score + ", "
 					+ " '" + action + "');");
 			db_c.closeConnection();
 		} else {

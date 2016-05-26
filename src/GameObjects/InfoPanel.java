@@ -29,6 +29,8 @@ public class InfoPanel implements Drawable {
 	private int opponentscore;
 	
 	private String playerTurn;
+	
+	private int turnNumber;
 
 	public InfoPanel(int x, int y, int width, int height, DatabaseController db_c, GamestateManager gsm) {
 		this.x = x;
@@ -37,12 +39,7 @@ public class InfoPanel implements Drawable {
 		this.width = width;
 		this.db_c = db_c;
 		this.gsm = gsm;
-		username = gsm.getUser().getUsername();
-		userscore = gsm.getUser().getUserScore();
-		opponentname = gsm.getUser().getOpponentName();
-		opponentscore = gsm.getUser().getOpponentScore();
-		playerTurn = gsm.getUser().getPlayerTurn();
-		db_c.closeConnection();
+		this.reloadInfoPanel();
 	}
 
 	@Override
@@ -58,21 +55,24 @@ public class InfoPanel implements Drawable {
 		g.drawString(opponentname + " - " + opponentscore, x + 5, y + (height));
 		// Turn indicator
 		g.setFont(new Font("Arial", Font.BOLD, 20));
-		g.drawString(playerTurn + " is aan de beurt!", x + (width / 2), y + (int)(height / 1.5));
+		g.drawString(playerTurn + " is aan de beurt!", x + (width / 3), y + (height));
+		//Turn number
+		g.setFont(new Font("Arial", Font.PLAIN, 13));
+		g.drawString("Beurtnummer: "+turnNumber, x+(width-(width/4)), y+17);
 	}
 
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-
 	}
 	
 	public void reloadInfoPanel(){
-		username = gsm.getUser().getUsername();
+		playerTurn = gsm.getUser().getPlayerTurn();
 		userscore = gsm.getUser().getUserScore();
 		opponentname = gsm.getUser().getOpponentName();
 		opponentscore = gsm.getUser().getOpponentScore();
-		playerTurn = gsm.getUser().getPlayerTurn();
+		username = gsm.getUser().getChallengerName();
+		turnNumber = gsm.getUser().getTurnNumber();
 		db_c.closeConnection();
 	}
 }

@@ -1,6 +1,5 @@
 package controller;
 
-import java.nio.channels.SelectableChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,12 +9,14 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import Gamestate.GamestateManager;
-import model.User;
 
 public class NewWordController
 {
 	private GamestateManager gsm;
 	private DatabaseController databaseController;
+	
+	@SuppressWarnings("rawtypes")
+	private JList addedWordList;
 	
 	public NewWordController(GamestateManager gsm)
 	{
@@ -101,8 +102,9 @@ public class NewWordController
 		
 		return allAddedWords;
 	}
+	@SuppressWarnings("rawtypes")
 	public JList generateAddedWordsList() {
-		JList addedWordList = new JList<>(getAddedWords().toArray());
+		addedWordList = new JList<>(getAddedWords().toArray());
 		
 		return addedWordList;
 	}

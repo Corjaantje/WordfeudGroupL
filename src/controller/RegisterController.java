@@ -5,15 +5,12 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import model.User;
 import Gamestate.GamestateManager;
 
 public class RegisterController {
-	private GamestateManager gsm;
 	private DatabaseController databaseController;
 	
 	public RegisterController(GamestateManager gsm){
-		this.gsm = gsm;
 		databaseController = gsm.getDatabaseController();
 	}
 

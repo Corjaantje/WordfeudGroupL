@@ -1,6 +1,7 @@
 package Gamestate;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import GameObjects.ChallengeFrame;
+import GameObjects.NotificationFrame;
 import Main.GUI;
 import model.User;
 import controller.DatabaseController;
@@ -48,9 +50,16 @@ public class GamestateManager extends JPanel implements ActionListener{
 	
 	private boolean invitePlayerInMenu;
 	private boolean invitePlayerInitialized;
-	private  JMenu challenge;
+	public boolean notifyCreated;
+	private JMenu challenge;
+	private JMenuItem notify;
 	private JMenuItem mainMenu;
 	private ChallengeFrame challengeFrame;
+	public NotificationFrame Notify;
+	
+	private boolean returnInitialized = false;
+	private JMenuItem backButton;
+	private boolean returnVisible = false;
 
 	public GamestateManager(GUI gui) {
 		this.gui = gui;
@@ -80,9 +89,7 @@ public class GamestateManager extends JPanel implements ActionListener{
 		this.setGamestate(loginState, true);
 		/*
 		 * add all gamestates to the array list
-		 */
-		
-		
+		 */	
 	}
 	
 	public void setGamestate(int gamestate) {
@@ -104,17 +111,47 @@ public class GamestateManager extends JPanel implements ActionListener{
 		
 		this.gamestates.get(currentState).create();
 		
+		//Return button
+		if(gamestate != mainMenuState)
+		{
+			if(!returnInitialized)
+			{
+				System.out.println("init");
+				backButton = new JMenuItem();
+				backButton.setText("Terug");
+				backButton.addActionListener(this);
+				backButton.setActionCommand("return");
+				returnInitialized = true;
+				returnVisible=false;
+			}
+			if(!returnVisible && gui.menuCreated)
+			{
+				gui.bar.add(backButton);
+				returnVisible = true;
+			}
+		}
+		if(gamestate == mainMenuState || gamestate == loginState)
+		{
+			if(returnVisible)
+			{
+				gui.bar.remove(backButton);
+				returnVisible=false;
+			}
+		}
 		//Request game invite 
 		if(gamestate == gameOverviewState)
 		{
 			if(!invitePlayerInitialized)
 			{
 				challenge = new JMenu("Uitdagen");
-				mainMenu = new JMenuItem("Nieuwe speler uitdagen");		
+				mainMenu = new JMenuItem("Nieuwe speler uitdagen");	
+				notify = new JMenuItem("Uitdaging Overzicht");
 				invitePlayerInitialized = true;
 				
 				mainMenu.addActionListener(this);
 				mainMenu.setActionCommand("invitePlayer");
+				notify.addActionListener(this);
+				notify.setActionCommand("notify");
 				
 				challengeFrame = new ChallengeFrame(this, db_c);
 			}
@@ -122,11 +159,11 @@ public class GamestateManager extends JPanel implements ActionListener{
 			{
 				if(!invitePlayerInMenu)
 				{		
+					gui.bar.remove(backButton);
 					gui.bar.add(challenge);
+					gui.bar.add(backButton);
 					challenge.add(mainMenu);
-					gui.repaint();
-					gui.pack();
-					this.validate();
+					challenge.add(notify);
 					invitePlayerInMenu = true;
 				}
 			}
@@ -139,8 +176,9 @@ public class GamestateManager extends JPanel implements ActionListener{
 				invitePlayerInMenu = false;
 			}
 		}
-		//End of game request
-		
+		//End of game request	
+		gui.repaint();
+		gui.pack();
 		this.validate();
 	}
 
@@ -199,5 +237,23 @@ public class GamestateManager extends JPanel implements ActionListener{
 		{
 			challengeFrame.setVisible(true);
 		}
+		if("notify".equals(e.getActionCommand()))
+		{
+			if(!notifyCreated)
+			{
+				Notify = new NotificationFrame(this, db_c);
+				Notify.setVisible(true);
+				notifyCreated = true;
+			}
+			else
+			{
+				Notify.setVisible(true);
+			}
+		}
+		if("return".equals(e.getActionCommand()))
+		{
+			goToLastState();
+		}
+
 	}
 }

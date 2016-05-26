@@ -11,12 +11,10 @@ import Gamestate.GamestateManager;
 
 public class ReviewWordController
 {
-	private GamestateManager gsm;
 	private DatabaseController databaseController;
 
 	public ReviewWordController(GamestateManager gsm)
 	{
-		this.gsm = gsm;
 		databaseController = gsm.getDatabaseController();
 
 	}
@@ -40,6 +38,7 @@ public class ReviewWordController
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JList generatePendingWordsList(String letterset) {
 		JList addedWordList = new JList<>(getPendingWords(letterset).toArray());
 		

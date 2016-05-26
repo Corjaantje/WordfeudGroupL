@@ -77,6 +77,22 @@ public class SpectatorState extends Gamestate{
 		infoPanel.reloadInfoPanel();
 	}
 	
+	private void goToNext(){
+		gsm.getUser().setTurnNumber(gsm.getUser().getTurnNumber()+1);
+		playField.moveForward();
+		/*letterBox1.reloadLetterBox();
+		letterBox2.reloadLetterBox();
+		infoPanel.reloadInfoPanel();*/
+	}
+	
+	private void goToPrevious(){
+		gsm.getUser().setTurnNumber(gsm.getUser().getTurnNumber()-1);
+		playField.moveBackwards();
+		/*letterBox1.reloadLetterBox();
+		letterBox2.reloadLetterBox();
+		infoPanel.reloadInfoPanel();*/
+	}
+	
 	private void createButtons(){
 		JButton previous = new JButton();
 		previous.setBackground(new Color(26, 142, 76));
@@ -91,8 +107,7 @@ public class SpectatorState extends Gamestate{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gsm.getUser().setTurnNumber(gsm.getUser().getTurnNumber()-1);
-				SpectatorState.this.reloadState();
+				goToPrevious();
 			}
 		});
 		
@@ -109,8 +124,7 @@ public class SpectatorState extends Gamestate{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gsm.getUser().setTurnNumber(gsm.getUser().getTurnNumber()+1);
-				SpectatorState.this.reloadState();
+				goToNext();
 			}
 		});
 		
