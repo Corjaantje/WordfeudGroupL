@@ -60,9 +60,9 @@ public class LetterBox implements Drawable {
 		int turn = 0;
 		int game = gsm.getUser().getGameNumber();
 		if (player.equals(gsm.getUser().getPlayerTurn())) {
-			turn = gsm.getUser().getTurnNumber()-2;//strange!!
+			turn = gsm.getUser().getTurnNumber();
 		} else {
-			turn = gsm.getUser().getTurnNumber()-3;//strange!!
+			turn = gsm.getUser().getTurnNumber()-1;
 		}
 		String query = "SELECT *  FROM letterbakjeletter AS lb  INNER JOIN letter AS l  ON l.id = lb.letter_id  INNER JOIN lettertype AS lt  ON lt.karakter = l.lettertype_karakter  INNER JOIN beurt AS b ON b.id = lb.beurt_id WHERE lb.spel_id = "
 				+ game + " AND lb.beurt_id = " + turn + " AND letterset_code = 'NL';";
@@ -73,7 +73,6 @@ public class LetterBox implements Drawable {
 				if (i == 7) {
 					break;
 				}
-				System.out.println(i);
 				double x = tiles.get(i).getX();
 				double y = tiles.get(i).getY();
 				int width = tiles.get(i).getWidth();
