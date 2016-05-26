@@ -29,6 +29,8 @@ public class InfoPanel implements Drawable {
 	private int opponentscore;
 	
 	private String playerTurn;
+	
+	private int turnNumber;
 
 	public InfoPanel(int x, int y, int width, int height, DatabaseController db_c, GamestateManager gsm) {
 		this.x = x;
@@ -53,7 +55,10 @@ public class InfoPanel implements Drawable {
 		g.drawString(opponentname + " - " + opponentscore, x + 5, y + (height));
 		// Turn indicator
 		g.setFont(new Font("Arial", Font.BOLD, 20));
-		g.drawString(playerTurn + " is aan de beurt!", x + (width / 2), y + (int)(height / 1.5));
+		g.drawString(playerTurn + " is aan de beurt!", x + (width / 3), y + (height));
+		//Turn number
+		g.setFont(new Font("Arial", Font.PLAIN, 13));
+		g.drawString("Beurtnummer: "+turnNumber, x+(width-(width/4)), y+17);
 	}
 
 	@Override
@@ -67,6 +72,7 @@ public class InfoPanel implements Drawable {
 		opponentname = gsm.getUser().getOpponentName();
 		opponentscore = gsm.getUser().getOpponentScore();
 		username = gsm.getUser().getChallengerName();
+		turnNumber = gsm.getUser().getTurnNumber();
 		db_c.closeConnection();
 	}
 }

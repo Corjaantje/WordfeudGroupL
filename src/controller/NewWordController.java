@@ -14,7 +14,7 @@ public class NewWordController
 {
 	private GamestateManager gsm;
 	private DatabaseController databaseController;
-	
+
 	private JList addedWordList;
 	
 	public NewWordController(GamestateManager gsm)
@@ -83,7 +83,7 @@ public class NewWordController
 			lettersetComboBox.addItem(lettersetCode);
 		}
 		
-	}
+	}	
 	
 	private ArrayList<String> getAddedWords() {
 		ArrayList<String> allAddedWords = new ArrayList<>();
@@ -101,6 +101,7 @@ public class NewWordController
 		
 		return allAddedWords;
 	}
+	@SuppressWarnings("rawtypes")
 	public JList generateAddedWordsList() {
 		addedWordList = new JList<>(getAddedWords().toArray());
 		

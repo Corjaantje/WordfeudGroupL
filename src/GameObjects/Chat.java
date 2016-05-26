@@ -17,6 +17,8 @@ import java.util.TimerTask;
 //Maintained by Corne
 
 
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import controller.DatabaseController;
@@ -104,19 +106,25 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 			userName = gamestateMananger.getUser().getUsername();
 		}
 		String bericht = input.chatInput.getText();
-
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-		Date date = new Date();
-
-		try
+		if(!bericht.contains("\\"))
 		{
-			database.queryUpdate("INSERT INTO chatregel VALUES ('" + userName + "', " + this.savedGameNumber + ", " + dateFormat.format(date) + ", '" + bericht + "')");
-		} catch (Exception e)
-		{
-			e.printStackTrace();
+			DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+			Date date = new Date();
+	
+			try
+			{
+				database.queryUpdate("INSERT INTO chatregel VALUES ('" + userName + "', " + this.savedGameNumber + ", " + dateFormat.format(date) + ", '" + bericht + "')");
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			this.input.chatInput.setText("");
+			this.fillChatOutput();
 		}
-		this.input.chatInput.setText("");
-		this.fillChatOutput();
+		else
+		{
+			JOptionPane.showMessageDialog(null, "Het leesteken 'backslash' is niet toegestaan!");
+		}
 	}
 
 	private void fillChatOutput()

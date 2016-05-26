@@ -200,8 +200,6 @@ public class Letter implements Drawable {
 		return false;
 	}
 
-	// test v
-
 	public int getBordX() {
 		return bordX;
 	}
@@ -242,6 +240,10 @@ public class Letter implements Drawable {
 	
 	public boolean getIsJoker(){
 		return isJoker;
+	}
+	
+	public void setSpeed(double speed){
+		this.speed = speed;
 	}
 
 }
