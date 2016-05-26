@@ -26,12 +26,7 @@ public class CompetitionController {
 	public void addCompetition(String description) {
 
 		int competitieID = 0;
-		ResultSet rs = databaseController.query("select max(id) from competitie");
 		try {
-			while (rs.next()) {
-				competitieID = rs.getInt("max(id)");
-				competitieID++;
-			}
 			if (description.length() < 5 || description.length() > 25) {
 				JOptionPane.showMessageDialog(null, "Je hebt te weinig/veel karakters gebruikt probeer opnieuw.");
 				return;
@@ -49,7 +44,7 @@ public class CompetitionController {
 
 				}
 			}
-			databaseController.queryUpdate("INSERT INTO competitie VALUES (" + competitieID + ",'" + description + "','" + gsm.getUser().getUsername() + "' ) ");
+			databaseController.queryUpdate("INSERT INTO competitie (`account_naam_eigenaar`,`omschrijving`) VALUES ('"+gsm.getUser().getUsername()+"', '"+description+"');");
 			JOptionPane.showMessageDialog(null, "Je hebt een nieuwe competitie gemaakt!");
 		} catch (SQLException e) {
 			e.printStackTrace();
