@@ -69,8 +69,13 @@ public class GamePanel extends JPanel {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						gsm.getUser().setGameNumber(Integer.parseInt(e.getActionCommand()));
-						frame.loadFrame(Integer.parseInt(e.getActionCommand()));
+						int game = Integer.parseInt(e.getActionCommand());
+						gsm.getUser().setGameNumber(game);
+						gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber());
+						if (!gsm.getUser().getPlayerTurn().equals(gsm.getUser().getUsername())) {
+							gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber()-1);
+						}
+						frame.loadFrame(game);
 					}
 
 				});
