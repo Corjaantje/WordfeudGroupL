@@ -596,38 +596,43 @@ public class PlaystateController
 		
 		for (Letter letter : wordArraylist)
 		{
-			
-			for (Tile tile : playField.getTiles())
+			// check if letter is in foundWordArraylist too
+			for (Letter letter2 : foundWordArraylist)
 			{
-				// if the tile and letter have the same x and y
-				if(letter.getBordX() == tile.getBordX() && letter.getBordY() == tile.getBordY())
+				if (letter.equals(letter2)) 
 				{
-					int letterMultiplier = 1;
-					// get the score from the tile the letter is placed on and apply the multiplier
-					String tileScore = tile.getScore();
-					switch (tileScore)
+					for (Tile tile : playField.getTiles())
 					{
-					case "--":
-						break;
-					case "DL":
-						letterMultiplier *= 2;
-						break;
-					case "TL":
-						letterMultiplier *= 3;
-						break;
-					case "DW":
-						wordMultiplier *= 2;
-						break;
-					case "TW":
-						wordMultiplier *= 2;
-						break;
-					default:
-						break;
+						// if the tile and letter have the same x and y
+						if(letter.getBordX() == tile.getBordX() && letter.getBordY() == tile.getBordY())
+						{
+							int letterMultiplier = 1;
+							// get the score from the tile the letter is placed on and apply the multiplier
+							String tileScore = tile.getScore();
+							switch (tileScore)
+							{
+							case "--":
+								break;
+							case "DL":
+								letterMultiplier *= 2;
+								break;
+							case "TL":
+								letterMultiplier *= 3;
+								break;
+							case "DW":
+								wordMultiplier *= 2;
+								break;
+							case "TW":
+								wordMultiplier *= 2;
+								break;
+							default:
+								break;
+							}
+							// add the letter score
+							score += letter.getScore() * letterMultiplier;
+						}
 					}
-					// add the letter score
-					score += letter.getScore() * letterMultiplier;
 				}
-					
 			}
 		}
 		
