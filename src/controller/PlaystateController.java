@@ -1052,6 +1052,7 @@ public class PlaystateController
 							Letter firstLetterOnGameBoard = getFirstHorizontalWordLetter(firstLetterInWordArrayList);
 							
 							ArrayList<Letter> horizontalWordArraylist = getHorizontalWord(firstLetterOnGameBoard, wordArrayList);
+							@SuppressWarnings("unused")
 							String horizontalWordString = getConvertedWordArrayListToString(horizontalWordArraylist);
 							
 							int horizontalWordValue = getWordValue(horizontalWordArraylist, wordArrayList);
@@ -1068,6 +1069,7 @@ public class PlaystateController
 							for (Letter letter : wordArrayList)
 							{
 								ArrayList<Letter> verticalWordArraylist = getVerticalWord(letter, wordArrayList);
+								@SuppressWarnings("unused")
 								String verticalWordString = getConvertedWordArrayListToString(verticalWordArraylist);
 								// it can only be a word if it's bigger than one letter
 								if (verticalWordArraylist.size() > 1)
@@ -1101,6 +1103,7 @@ public class PlaystateController
 							Letter firstLetterOnGameBoard = getFirstVerticalWordLetter(firstLetterInWordArrayList);
 							
 							ArrayList<Letter> verticalWordArraylist = getVerticalWord(firstLetterOnGameBoard, wordArrayList);
+							@SuppressWarnings("unused")
 							String verticalWordString = getConvertedWordArrayListToString(verticalWordArraylist);
 							
 							
@@ -1118,6 +1121,7 @@ public class PlaystateController
 							for (Letter letter : wordArrayList)
 							{
 								ArrayList<Letter> horizontalWordArraylist = getHorizontalWord(letter, wordArrayList);
+								@SuppressWarnings("unused")
 								String horizontalWordString = getConvertedWordArrayListToString(horizontalWordArraylist);
 								// it can only be a word if it's bigger than one letter
 								if (horizontalWordArraylist.size() > 1)
@@ -1331,5 +1335,42 @@ public class PlaystateController
 	public String getMainWordOrientation()
 	{
 		return mainWordOrientation;
+	}
+	
+	public void doPass(){
+		int option = JOptionPane.showConfirmDialog(null, "Weet je zeker dat je deze beurt wilt passen?", "Wordfeud",
+				JOptionPane.YES_NO_OPTION);
+		if (option == JOptionPane.YES_OPTION) {
+			int turn = gsm.getUser().getTurnNumber();
+			int game = gsm.getUser().getGameNumber();
+			String username = gsm.getUser().getUsername();
+			databaseController.queryUpdate("INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'pass');");
+			ResultSet rs = databaseController.query("SELECT * FROM beurt WHERE id = ("+turn+" - 2) OR id = ("+turn+" - 4);");
+			int counter = 1;
+			try {
+				while(rs.next()){
+					if (rs.getString("aktie_type").equals("pass")) {
+						counter++;
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if (counter == 3) {
+				//TODO: end game
+			}
+		}
+	}
+	
+	public void doResign(){
+		int option = JOptionPane.showConfirmDialog(null, "Weet je zeker dat je wil opgeven?", "Wordfeud",
+				JOptionPane.YES_NO_OPTION);
+		if (option == JOptionPane.YES_OPTION) {
+			int turn = gsm.getUser().getTurnNumber();
+			int game = gsm.getUser().getGameNumber();
+			String username = gsm.getUser().getUsername();
+			databaseController.query("INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'resign');");
+			// TODO set end of game
+		}
 	}
 }

@@ -10,7 +10,9 @@ import model.User;
 
 public class LoginController {
 	
+	@SuppressWarnings("unused")
 	private String username;
+	@SuppressWarnings("unused")
 	private String password;	
 	private GamestateManager gsm;
 	private DatabaseController databaseController;

@@ -8,11 +8,9 @@ import javax.swing.JOptionPane;
 import Gamestate.GamestateManager;
 
 public class RegisterController {
-	private GamestateManager gsm;
 	private DatabaseController databaseController;
 	
 	public RegisterController(GamestateManager gsm){
-		this.gsm = gsm;
 		databaseController = gsm.getDatabaseController();
 	}
 
