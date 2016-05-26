@@ -116,7 +116,7 @@ public class NewWordstate extends Gamestate {
 			this.createLetterBackground();
 			isCreated = true;
 		}
-
+		
 	}
 
 	private void updateLetters() {

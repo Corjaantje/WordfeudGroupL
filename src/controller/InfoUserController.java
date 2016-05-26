@@ -20,7 +20,6 @@ public class InfoUserController {
 				return username;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return errorNotificationNotFoundUsername;
@@ -33,7 +32,6 @@ public class InfoUserController {
 				gsm.getDatabaseController().queryUpdate("update account set wachtwoord = '" + password + "' where naam = '" + username + "'");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

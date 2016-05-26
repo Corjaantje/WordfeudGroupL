@@ -15,6 +15,7 @@ public class NewWordController
 	private GamestateManager gsm;
 	private DatabaseController databaseController;
 	
+	@SuppressWarnings("rawtypes")
 	private JList addedWordList;
 	
 	public NewWordController(GamestateManager gsm)
@@ -101,6 +102,7 @@ public class NewWordController
 		
 		return allAddedWords;
 	}
+	@SuppressWarnings("rawtypes")
 	public JList generateAddedWordsList() {
 		addedWordList = new JList<>(getAddedWords().toArray());
 		

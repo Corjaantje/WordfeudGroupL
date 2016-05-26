@@ -10,7 +10,9 @@ import model.User;
 
 public class LoginController {
 	
+	@SuppressWarnings("unused")
 	private String username;
+	@SuppressWarnings("unused")
 	private String password;	
 	private GamestateManager gsm;
 	private DatabaseController databaseController;
@@ -36,7 +38,7 @@ public class LoginController {
 			if(rs.next()){
 				if(gsm.getUser() == null){
 					System.out.println("Test database query login");
-					User user = new User(username);
+					User user = new User(username, databaseController);
 					gsm.setUser(user);
 					gsm.setGamestate(GamestateManager.mainMenuState);
 

@@ -661,10 +661,8 @@ public class PlaystateController
 			databaseController.queryUpdate(beurtUpdateQuery);
 			
 			// update letterbakjeletter
-			// TODO als er letters zijn geplaatst moet
-			// TODO voor het einde van de beurt (HIER)  het letterbakje weer worden aangevuld
-			
-			// TODO if the player hand and deck are empty the action_type is "end"
+			letterBox.replacePlacedLetters(wordArrayList);
+			// TODO END if the player hand and deck are empty the action_type is "end"
 			// TODO not sure if letterbakjeletter will need to be updated if action_type is "end"
 			
 			// get the letters that are in the letterBox at the end of the turn, loop through them
@@ -694,11 +692,11 @@ public class PlaystateController
 				
 				String blancoLetterCharacter = "NULL";
 				// if letter is joker/jester/wild card change blancoLetterCharacter to the character it became.
-				// TODO fix letter.getIsJoker
-				//if (letter.getLetterChar().equals("?"))
-				//{
-				//	blancoLetterCharacter = letter.getJokerLetterChar();
-				//}
+				
+				if (letter.getIsJoker())
+				{
+					blancoLetterCharacter = letter.getLetterChar();
+				}
 				String gelegdeLetterUpdateQuery = ("INSERT INTO gelegdeletter (tegel_bord_naam,spel_id,beurt_id,letter_id,tegel_x,tegel_y,blancoletterkarakter) VALUES ('"+ tegelBordNaam +"'," + gsm.getUser().getGameNumber() +","+ (lastTurnNumber+1) +"," + letter.getLetterID() + ","+ letter.getBordX() +","+ letter.getBordY() +"," + blancoLetterCharacter +")");
 				databaseController.queryUpdate(gelegdeLetterUpdateQuery);
 			}
@@ -1054,6 +1052,7 @@ public class PlaystateController
 							Letter firstLetterOnGameBoard = getFirstHorizontalWordLetter(firstLetterInWordArrayList);
 							
 							ArrayList<Letter> horizontalWordArraylist = getHorizontalWord(firstLetterOnGameBoard, wordArrayList);
+							@SuppressWarnings("unused")
 							String horizontalWordString = getConvertedWordArrayListToString(horizontalWordArraylist);
 							
 							int horizontalWordValue = getWordValue(horizontalWordArraylist, wordArrayList);
@@ -1070,6 +1069,7 @@ public class PlaystateController
 							for (Letter letter : wordArrayList)
 							{
 								ArrayList<Letter> verticalWordArraylist = getVerticalWord(letter, wordArrayList);
+								@SuppressWarnings("unused")
 								String verticalWordString = getConvertedWordArrayListToString(verticalWordArraylist);
 								// it can only be a word if it's bigger than one letter
 								if (verticalWordArraylist.size() > 1)
@@ -1103,6 +1103,7 @@ public class PlaystateController
 							Letter firstLetterOnGameBoard = getFirstVerticalWordLetter(firstLetterInWordArrayList);
 							
 							ArrayList<Letter> verticalWordArraylist = getVerticalWord(firstLetterOnGameBoard, wordArrayList);
+							@SuppressWarnings("unused")
 							String verticalWordString = getConvertedWordArrayListToString(verticalWordArraylist);
 							
 							
@@ -1120,6 +1121,7 @@ public class PlaystateController
 							for (Letter letter : wordArrayList)
 							{
 								ArrayList<Letter> horizontalWordArraylist = getHorizontalWord(letter, wordArrayList);
+								@SuppressWarnings("unused")
 								String horizontalWordString = getConvertedWordArrayListToString(horizontalWordArraylist);
 								// it can only be a word if it's bigger than one letter
 								if (horizontalWordArraylist.size() > 1)
