@@ -221,4 +221,12 @@ public class User {
 		}
 		return amountOfRoles;
 	}
+	
+	public boolean userCanPlay() {
+		if (this.getPlayerTurn().equals(this.getUsername())) {
+			return true;
+		} else {
+			return false;
+		}
+	} 
 }
