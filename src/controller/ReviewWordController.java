@@ -8,21 +8,23 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import Gamestate.GamestateManager;
+import Gamestate.ReviewWordstate;
 
 public class ReviewWordController
 {
 	private DatabaseController databaseController;
-
-	public ReviewWordController(GamestateManager gsm)
+	private ReviewWordstate reviewWordstate;
+	public ReviewWordController(GamestateManager gsm, ReviewWordstate reviewWordstate)
 	{
 		databaseController = gsm.getDatabaseController();
-
+		this.reviewWordstate = reviewWordstate;
 	}
 
 	public void denyWord(String word, String letterset)
 	{
 		if (word != null){
 			databaseController.queryUpdate("UPDATE woordenboek SET status = 'denied' WHERE woord = '" + word + "' AND letterset_code = '" + letterset + "'");
+			reviewWordstate.createAddedWordList();
 		} else {
 			JOptionPane.showMessageDialog(null, "Er is geen woord geselecteerd.");
 		}
@@ -33,6 +35,7 @@ public class ReviewWordController
 	{
 		if (word != null){
 			databaseController.queryUpdate("UPDATE woordenboek SET status = 'accepted' WHERE woord = '" + word + "' AND letterset_code = '" + letterset + "'");
+			reviewWordstate.createAddedWordList();
 		} else {
 			JOptionPane.showMessageDialog(null, "Er is geen woord geselecteerd.");
 		}
