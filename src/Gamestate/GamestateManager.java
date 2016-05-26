@@ -17,6 +17,7 @@ import GameObjects.NotificationFrame;
 import Main.GUI;
 import model.User;
 import controller.DatabaseController;
+import controller.PollingChallengeController;
 
 @SuppressWarnings("serial")
 public class GamestateManager extends JPanel implements ActionListener{
@@ -90,6 +91,8 @@ public class GamestateManager extends JPanel implements ActionListener{
 		/*
 		 * add all gamestates to the array list
 		 */	
+		
+		this.startPollhread();
 	}
 	
 	public void setGamestate(int gamestate) {
@@ -254,6 +257,12 @@ public class GamestateManager extends JPanel implements ActionListener{
 		{
 			goToLastState();
 		}
-
+	}
+	
+	private void startPollhread()
+	{
+		Runnable run = new PollingChallengeController(this);
+		Thread t1 = new Thread(run);
+		t1.start();
 	}
 }
