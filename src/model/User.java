@@ -226,4 +226,18 @@ public class User {
 			return false;
 		}
 	}
+	
+	public int getMaxTurnNumber(){
+		ResultSet rs = databaseController.query("SELECT max(id) FROM beurt WHERE spel_id = "+turnNumber);
+		int maxTurn = turnNumber;
+		try {
+			while(rs.next()){
+				maxTurn = rs.getInt("max(id)");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return maxTurn;
+	}
 }

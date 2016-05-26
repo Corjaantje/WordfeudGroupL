@@ -111,12 +111,14 @@ public class Playstate extends Gamestate implements MouseListener {
 	}
 
 	public void reloadPlaystate() {
-		playField.reloadPlayfield();
-		letterBox.reloadLetterBox();
-		infoPanel.reloadInfoPanel();
-		swapFrame.reloadSwapFrame();
-		filledTiles.clear();
-		chatArea.reloadChat();
+		if (playstateController.checkIfGameIsEnded()) {
+			playField.reloadPlayfield();
+			letterBox.reloadLetterBox();
+			infoPanel.reloadInfoPanel();
+			swapFrame.reloadSwapFrame();
+			filledTiles.clear();
+			chatArea.reloadChat();
+		}
 	}
 
 	@Override
@@ -478,7 +480,7 @@ public class Playstate extends Gamestate implements MouseListener {
 		}
 		JOptionPane.showMessageDialog(this, "U heeft '" + word + "' gespeeld");
 	}
-	
+
 	@Deprecated
 	private void checkXAxis(ArrayList<Letter> letters, ArrayList<Integer> letterX, int sequenceY) {
 		// orders integer array
