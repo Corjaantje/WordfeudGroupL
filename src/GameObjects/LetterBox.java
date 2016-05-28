@@ -6,11 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Random;
+
+import javax.swing.JOptionPane;
 
 import Gamestate.GamestateManager;
 import Main.Drawable;
 import controller.DatabaseController;
+import model.User;
 
 public class LetterBox implements Drawable {
 
@@ -56,36 +60,101 @@ public class LetterBox implements Drawable {
 		int turn = 0;
 		int game = gsm.getUser().getGameNumber();
 		if (player.equals(gsm.getUser().getPlayerTurn())) {
-			turn = gsm.getUser().getTurnNumber();//strange!!
+			turn = gsm.getUser().getTurnNumber();
 		} else {
-			turn = gsm.getUser().getTurnNumber();//strange!!
+			turn = gsm.getUser().getTurnNumber()-1;
 		}
-		String query = "SELECT * FROM plankje WHERE spel_id = "+game+" AND beurt_id = "+turn;
+		String query = "SELECT *  FROM letterbakjeletter AS lb  INNER JOIN letter AS l  ON l.id = lb.letter_id  INNER JOIN lettertype AS lt  ON lt.karakter = l.lettertype_karakter  INNER JOIN beurt AS b ON b.id = lb.beurt_id WHERE lb.spel_id = "
+				+ game + " AND lb.beurt_id = " + turn + " AND letterset_code = 'NL';";
 		ResultSet rs = db_c.query(query);
-		String letterboxLetters = "";
 		try {
+			int i = 0;
 			while (rs.next()) {
-				letterboxLetters = rs.getString("inhoud");
+				if (i == 7) {
+					break;
+				}
+				double x = tiles.get(i).getX();
+				double y = tiles.get(i).getY();
+				int width = tiles.get(i).getWidth();
+				int height = tiles.get(i).getHeight();
+				String letterSign = rs.getString("karakter");
+				int score = rs.getInt("waarde");
+				Letter letter = new Letter(x, y, width, height, letterSign, score);
+				letter.setLetterID(rs.getInt("letter_id"));
+				letters.add(letter);
+				tiles.get(i).setLetter(letter);
+				i++;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Something went wrong in the LetterBox: " + e.getMessage());
 		}
 		db_c.closeConnection();
-		letterboxLetters = letterboxLetters.replaceAll(",", "");
-		for (int i = 0; i < letterboxLetters.length(); i++) {
-			double x = tiles.get(i).getX();
-			double y = tiles.get(i).getY();
-			int width = tiles.get(i).getWidth();
-			int height = tiles.get(i).getHeight();
-			String letterSign = "" + letterboxLetters.charAt(i);
-			int score = -1;
-			Letter letter = new Letter(x, y, width, height, letterSign, score);
-			letters.add(letter);
-			tiles.get(i).setLetter(letter);
-		}
 	}
 
+	public void replacePlacedLetters(ArrayList<Letter> placedLetters)
+	{
+		int desiredNumberOfLetters = placedLetters.size();
+		
+		// get all unused letters (not on field not in player's hands)
+		// ( letter is not in gelegdeletter and letter is not in a letterbakje letter with last two turns
+		String query = "SELECT * FROM letter WHERE NOT id = ANY( SELECT letter_id FROM gelegdeletter WHERE beurt_id <= " + gsm.getUser().getTurnNumber() + " AND spel_id = " + gsm.getUser().getGameNumber() + ") "
+				+ "AND NOT id = ANY( SELECT letter_id from letterbakjeletter where beurt_id =" + (gsm.getUser().getTurnNumber()-1) + " OR beurt_id =" + (gsm.getUser().getTurnNumber()-2);
+		ResultSet rSet = db_c.query(query);
+		
+		ArrayList<Integer> charNumberList = new ArrayList<Integer>();
+		try
+		{
+			charNumberList.add(rSet.getInt("id"));
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		// now randomize the order of the id's in the arraylist
+		long seed = System.nanoTime();
+		Collections.shuffle(charNumberList, new Random(seed));
+		
+		ArrayList<Integer> newLetters = new ArrayList<>();
+		
+		// if there's not enough letters available; change the number of letters that gets returned to the maximum number that is available
+		if(charNumberList.size() < desiredNumberOfLetters)
+		{
+			desiredNumberOfLetters = newLetters.size();
+		}
+		// take desiredNumberOfLetters unused letters
+		for(int i = 0; i < desiredNumberOfLetters; i++)
+		{
+			newLetters.add(charNumberList.get(i));
+		}
+		// place the unused letters in the letterbakjeletter again
+		// get the unused letter_ids
+		ArrayList<Letter> unusedLetters = letters;
+		// for every letter in the letterbox check if they have been used (if they are also in the placedLetters arraylist
+		for (Letter letter : letters)
+		{
+			for (Letter placedLetter : placedLetters)
+			{
+				// if they are remove them from the unusedLetters arraylist
+				if (letter.equals(placedLetter))
+				{
+					unusedLetters.remove(letter);
+				}
+			}
+		}
+		// add the unused letters
+		for (Letter letter : unusedLetters)
+		{
+			String updateLetterbakjeletterQuery = "INSERT INTO letterbakjeletter (spel_id,letter_id,beurt_id) VALUES (" + gsm.getUser().getGameNumber() + ", " + letter.getLetterID() + ", " + gsm.getUser().getTurnNumber() + ")";
+			db_c.queryUpdate(updateLetterbakjeletterQuery);
+		}
+		// finally replace the placed letters with the new letters
+		for (Integer letter_id : newLetters)
+		{
+			String updateLetterbakjeletterQuery = "INSERT INTO letterbakjeletter (spel_id,letter_id,beurt_id) VALUES (" + gsm.getUser().getGameNumber() + ", " + letter_id + ", " + gsm.getUser().getTurnNumber() + ")";
+			db_c.queryUpdate(updateLetterbakjeletterQuery);
+		}
+	}
+	
 	@Override
 	public void draw(Graphics2D g) {
 		if (isCreated) {

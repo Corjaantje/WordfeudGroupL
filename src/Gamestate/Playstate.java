@@ -2,8 +2,11 @@ package Gamestate;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,6 +15,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JOptionPane;
 
 import GameObjects.Button;
@@ -23,6 +31,7 @@ import GameObjects.LetterBox;
 import GameObjects.PlayField;
 import GameObjects.SwapFrame;
 import GameObjects.Tile;
+import GameObjects.TurnIndicator;
 import Main.GUI;
 import controller.DatabaseController;
 import controller.PlaystateController;
@@ -31,6 +40,8 @@ import controller.PlaystateController;
 public class Playstate extends Gamestate implements MouseListener {
 
 	private Letter moveLetter;
+
+	private TurnIndicator turnIndicator;
 
 	private PlayField playField;
 
@@ -50,6 +61,8 @@ public class Playstate extends Gamestate implements MouseListener {
 
 	private PlaystateController playstateController;
 
+	private boolean indicatorIsPlaced = false;
+
 	public Playstate(GamestateManager gsm, DatabaseController db_c) {
 		super(gsm, db_c);
 	}
@@ -61,6 +74,7 @@ public class Playstate extends Gamestate implements MouseListener {
 			letterBox.draw(g);
 			buttonPanel.draw(g);
 			infoPanel.draw(g);
+			turnIndicator.draw(g);
 		}
 	}
 
@@ -68,6 +82,7 @@ public class Playstate extends Gamestate implements MouseListener {
 	public void update() {
 		if (isCreated) {
 			letterBox.update();
+			this.placeIndicator();
 		}
 	}
 
@@ -87,9 +102,16 @@ public class Playstate extends Gamestate implements MouseListener {
 			chatArea = new Chat(db_c, gsm);
 			this.add(chatArea, BorderLayout.EAST);
 			filledTiles = new ArrayList<Tile>();
-			playstateController = new PlaystateController(gsm, playField, letterBox);
+			playstateController = new PlaystateController(gsm, playField, letterBox, this);
+			turnIndicator = new TurnIndicator(gsm, playField.getTiles().get(0).getWidth());
 			isCreated = true;
 		} else {
+			this.reloadPlaystate();
+		}
+	}
+
+	public void reloadPlaystate() {
+		if (!playstateController.checkIfGameIsEnded()) {
 			playField.reloadPlayfield();
 			letterBox.reloadLetterBox();
 			infoPanel.reloadInfoPanel();
@@ -150,12 +172,27 @@ public class Playstate extends Gamestate implements MouseListener {
 											}
 										}
 									}
-									if (!tileIsFilled) {
+									if (!tileIsFilled && moveLetter.getX() != tile.getX()
+											&& moveLetter.getBordY() != tile.getY()) {
 										filledTiles.add(tile);
+										indicatorIsPlaced = true;
+										moveLetter.setBordX(tile.getBordX());
+										moveLetter.setBordY(tile.getBordY());
 										moveLetter.calculateRoute(tile.getX(), tile.getY());
 										moveLetter.setWantedSize(tile.getWidth(), tile.getHeight());
+										if (moveLetter.getLetterChar().equals("?")) {
+											String option = JOptionPane
+													.showInputDialog("Vul hier de gewenste letter in: ");
+											if (option.length() == 1 && Character.isLetter(option.charAt(0))) {
+												moveLetter.setLetterChar(option.toUpperCase());
+											} else {
+												JOptionPane.showMessageDialog(null,
+														"U heeft geen geldige letter ingevuld!", "Wordfeud",
+														JOptionPane.ERROR_MESSAGE);
+												moveLetter.reset();
+											}
+										}
 									}
-
 								}
 							}
 						}
@@ -209,58 +246,103 @@ public class Playstate extends Gamestate implements MouseListener {
 			if (buttonPanel.getButtonsAreSelected() && x > button.getX() && x < (button.getX() + button.getWidth())) {
 				if (buttonPanel.getButtonsAreSelected() && y > button.getY()
 						&& y < (button.getY() + button.getHeight())) {
-					if (button.getText().equals("Reset")) {
-						this.resetLetterBoxLetters();
-					} else if (button.getText().equals("Shuffle")) {
-						letterBox.shuffleLetters();
-					} else if (button.getText().equals("Play")) {
-						this.checkCorrectPlacedLetters();
-						// playstateController.doPlay();
-					} else if (button.getText().equals("Swap")) {
-						swapFrame.setVisible(true);
-					} else if (button.getText().equals("Pass")) {
-						this.doPass();
-					} else if (button.getText().equals("Resign")) {
-						this.doResign();
+					this.playSound("ButtonClick.wav");
+					if (gsm.getUser().userCanPlay()) {
+
+						if (button.getText().equals("Reset")) {
+							this.resetLetterBoxLetters();
+						} else if (button.getText().equals("Shuffle")) {
+							letterBox.shuffleLetters();
+						} else if (button.getText().equals("Play")) {
+							playstateController.doPlay();
+						} else if (button.getText().equals("Swap")) {
+							swapFrame.setVisible(true);
+						} else if (button.getText().equals("Pass")) {
+							if(playstateController.doPass()){
+								letterBox.replacePlacedLetters(new ArrayList<Letter>());
+							}
+						} else if (button.getText().equals("Resign")) {
+							playstateController.doResign();
+						}
+					} else {
+						if (button.getText().equals("Reset")) {
+							this.resetLetterBoxLetters();
+						} else {
+							JOptionPane.showMessageDialog(null, "De beurt is aan: " + gsm.getUser().getPlayerTurn(),
+									"Wordfeud", JOptionPane.ERROR_MESSAGE);
+						}
+
 					}
 				}
 			}
 		}
 	}
 
-	private void doPass() {
-		int option = JOptionPane.showConfirmDialog(this, "Weet je zeker dat je deze beurt wilt passen?", "Wordfeud",
-				JOptionPane.YES_NO_OPTION);
-		if (option == JOptionPane.YES_OPTION) {
-			int turn = gsm.getUser().getTurnNumber();
-			int game = gsm.getUser().getGameNumber();
-			String username = gsm.getUser().getUsername();
-			db_c.query("INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'pass');");
-			db_c.closeConnection();
-		}
-	}
-
-	private void doResign() {
-		int option = JOptionPane.showConfirmDialog(this, "Weet je zeker dat je wil opgeven?", "Wordfeud",
-				JOptionPane.YES_NO_OPTION);
-		if (option == JOptionPane.YES_OPTION) {
-			int turn = gsm.getUser().getTurnNumber();
-			int game = gsm.getUser().getGameNumber();
-			String username = gsm.getUser().getUsername();
-			db_c.query("INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'resign');");
-			db_c.closeConnection();
-			// TODO set end of game
+	private void placeIndicator() {
+		if (indicatorIsPlaced && moveLetter.getRightLocation()) {
+			this.playSound("LetterDrop.wav");
+			playstateController.setScoreTrackingVariables();
+			int score = playstateController.getScore();
+			// check if the word is on a wrong location
+			if (score == -1) {
+				indicatorIsPlaced = false;
+				System.out.println("The letters are not placed correctly! score = " + score);
+				turnIndicator.resetTurnIndicator();
+				return;
+			}
+			ArrayList<Letter> wordLetters = playstateController.getMainWord();
+			if (playstateController.getMainWordOrientation().equals("horizontal")) {
+				// Order the letters reversed
+				Collections.sort(wordLetters, new Comparator<Letter>() {
+					@Override
+					public int compare(Letter a, Letter b) {
+						if (a.getBordX() < b.getBordX())
+							return 1;
+						if (a.getBordX() > b.getBordX())
+							return -1;
+						return 0;
+					}
+				});
+				System.out.println("Horizontal word ordered");
+				turnIndicator.setToPoint(new Point((int) wordLetters.get(0).getX(), (int) wordLetters.get(0).getY()));
+				turnIndicator.setScore(score);
+			} else if (playstateController.getMainWordOrientation().equals("vertical")) {
+				// Order the letters reversed
+				Collections.sort(wordLetters, new Comparator<Letter>() {
+					@Override
+					public int compare(Letter a, Letter b) {
+						if (a.getBordY() < b.getBordY())
+							return 1;
+						if (a.getBordY() > b.getBordY())
+							return -1;
+						return 0;
+					}
+				});
+				System.out.println("Vertical word ordered");
+				turnIndicator.setToPoint(new Point((int) wordLetters.get(0).getX(), (int) wordLetters.get(0).getY()));
+				turnIndicator.setScore(score);
+			} else {
+				System.out.println("Word Orientation went wrong");
+			}
+			indicatorIsPlaced = false;
 		}
 	}
 
 	private void resetLetterBoxLetters() {
 		for (Letter letter : letterBox.getLetters()) {
+			letter.setBordX(0);
+			letter.setBordY(0);
 			letter.reset();
+			if (letter.getIsJoker()) {
+				letter.setLetterChar("?");
+			}
 		}
 		filledTiles.clear();
+		turnIndicator.resetTurnIndicator();
 		moveLetter = null;
 	}
 
+	@Deprecated
 	private void checkCorrectPlacedLetters() {
 		int counter = 0;
 		boolean isWrongTurn = false;
@@ -299,6 +381,7 @@ public class Playstate extends Gamestate implements MouseListener {
 		}
 	}
 
+	@Deprecated
 	private void checkForAxis(ArrayList<Letter> letters) {
 		boolean isVerticalLayed = true;
 		boolean isHorizontalLayed = true;
@@ -334,6 +417,7 @@ public class Playstate extends Gamestate implements MouseListener {
 		}
 	}
 
+	@Deprecated
 	private void checkYAxis(ArrayList<Letter> letters, ArrayList<Integer> letterY, int sequenceX) {
 		// orders integer array
 		Arrays.sort(letterY.toArray());
@@ -398,6 +482,7 @@ public class Playstate extends Gamestate implements MouseListener {
 		JOptionPane.showMessageDialog(this, "U heeft '" + word + "' gespeeld");
 	}
 
+	@Deprecated
 	private void checkXAxis(ArrayList<Letter> letters, ArrayList<Integer> letterX, int sequenceY) {
 		// orders integer array
 		Arrays.sort(letterX.toArray());
@@ -467,8 +552,25 @@ public class Playstate extends Gamestate implements MouseListener {
 		JOptionPane.showMessageDialog(this, "U heeft '" + word + "' gespeeld");
 	}
 
-	private void checkForRightWord(ArrayList<Letter> letters) {
-
+	private void playSound(String url) {
+		File f = new File("Resources/Sound/" + url);
+		try {
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(f.getAbsoluteFile());
+			try {
+				Clip clip = AudioSystem.getClip();
+				clip.open(audioInputStream);
+				clip.start();
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

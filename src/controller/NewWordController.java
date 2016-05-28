@@ -1,6 +1,5 @@
 package controller;
 
-import java.nio.channels.SelectableChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,18 +9,22 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import Gamestate.GamestateManager;
-import model.User;
+import Gamestate.NewWordstate;
 
 public class NewWordController
 {
 	private GamestateManager gsm;
 	private DatabaseController databaseController;
 	
-	public NewWordController(GamestateManager gsm)
+	@SuppressWarnings("rawtypes")
+	private JList addedWordList;
+	private NewWordstate newWordstate;
+	
+	public NewWordController(GamestateManager gsm, NewWordstate newWordstate)
 	{
 		this.gsm = gsm;
 		databaseController = gsm.getDatabaseController();
-		
+		this.newWordstate = newWordstate;
 	}
 
 	public void addNewWord(String word, String letterSet)
@@ -32,6 +35,7 @@ public class NewWordController
 			if (word.length() > 0) {
 				if (word.length() <= 15){
 					databaseController.queryUpdate("insert into woordenboek (woord, letterset_code, status, account_naam) values ('" + word + "', '" + letterSet + "', 'pending', '" + gsm.getUser().getUsername() +"')");
+					newWordstate.createAddedWordList();
 					JOptionPane.showMessageDialog(null, "" + word + " is succesvol toegevoegd aan het woordenboek met letterset " + letterSet + ".");
 				} else {
 					JOptionPane.showMessageDialog(null, "De maximale lengte van een woord is 15 characters.");
@@ -101,8 +105,9 @@ public class NewWordController
 		
 		return allAddedWords;
 	}
+	@SuppressWarnings("rawtypes")
 	public JList generateAddedWordsList() {
-		JList addedWordList = new JList<>(getAddedWords().toArray());
+		addedWordList = new JList<>(getAddedWords().toArray());
 		
 		return addedWordList;
 	}

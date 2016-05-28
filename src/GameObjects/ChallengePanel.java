@@ -10,6 +10,7 @@ import java.sql.SQLException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,11 +30,14 @@ public class ChallengePanel extends JPanel implements KeyListener
 	private JLabel mainText;
 	private JTextField searchField;
 	
+	private String[] languages = {"NL", "EN"};
+	private JComboBox<String> langCombo;
+	
 	public ChallengePanel(GamestateManager gsmPar, DatabaseController db_cPar)
 	{
 		this.gsm = gsmPar;
 		this.db_c = db_cPar;
-		this.setLayout(new BorderLayout());
+		this.setLayout(null);
 		this.addContent();
 		this.validate();
 		this.setBackground(new Color(24, 24, 24));
@@ -41,16 +45,22 @@ public class ChallengePanel extends JPanel implements KeyListener
 	
 	private void addContent()
 	{
-		mainText = new JLabel("Geef een gebruikersnaam om uit te dagen");
+		mainText = new JLabel("Geef een taal & gebruikersnaam om uit te dagen");
 		mainText.setForeground(Color.white);
+		mainText.setBounds(0, 0, 300, 20);
 		
+		langCombo = new JComboBox(languages);
+		langCombo.setSelectedItem(1);
+		langCombo.setBounds(0, 21, (int)(GUI.WIDTH/5), 20);
+
 		searchField = new JTextField();
-		searchField.setPreferredSize(new Dimension((int)(GUI.WIDTH/5.1), (int)(GUI.HEIGHT/50)));
 		searchField.addKeyListener(this);
+		searchField.setBounds(0, 42, (int)(GUI.WIDTH/5), 20);	
 		
-		this.add(mainText, BorderLayout.NORTH);
-		this.add(searchField, BorderLayout.AFTER_LINE_ENDS);
-		this.add(Box.createRigidArea(new Dimension(0,120)), BorderLayout.AFTER_LAST_LINE);
+		this.add(mainText);	
+		this.add(langCombo);
+		this.add(searchField);
+		this.add(Box.createRigidArea(new Dimension(0,100)), BorderLayout.AFTER_LAST_LINE);
 	}
 
 	@Override
@@ -58,8 +68,7 @@ public class ChallengePanel extends JPanel implements KeyListener
 	{
 		if(e.getKeyCode() == KeyEvent.VK_ENTER)
 		{
-			String input = searchField.getText();
-			
+			String input = searchField.getText();		
 			if(input.matches("^[a-zA-Z0-9]*$")) //Valid name?
 			{
 				ResultSet userExist = db_c.query("SELECT * FROM account WHERE naam = '" + input + "';");
@@ -67,34 +76,40 @@ public class ChallengePanel extends JPanel implements KeyListener
 				{
 					if(userExist.next()) //User exists
 					{
-						ResultSet alreadyInviteOpen = db_c.query("SELECT * FROM spel WHERE toestand_type = 'request' AND account_naam_uitdager = '" + gsm.getUser().getUsername() + "'  AND competitie_id = " + gsm.getUser().getCompetitionNumber() + " AND account_naam_tegenstander = '" + input + "'  AND account_naam_tegenstander != '" + gsm.getUser().getUsername() + "';");
-						if(!alreadyInviteOpen.next()) //If query is empty, so there is no open invite
+						//TODO Self-check, cannot invite yourself
+						if(!input.toLowerCase().equals(gsm.getUser().getUsername().toLowerCase()))
 						{
-							ResultSet userInCompetition = db_c.query("SELECT * FROM deelnemer WHERE account_naam = '"+input+"' AND competitie_id ="+gsm.getUser().getCompetitionNumber()+";");
-							if(userInCompetition.next()) //Is the requested user in this competition?
+							ResultSet alreadyAGameWithinThisCompetition = db_c.query("SELECT * FROM spel WHERE toestand_type != 'finished' AND reaktie_type != 'rejected' AND competitie_id = "+gsm.getUser().getCompetitionNumber()+" AND account_naam_uitdager = '"+gsm.getUser().getUsername()+"' AND account_naam_tegenstander = '"+input+"';");
+							if(!alreadyAGameWithinThisCompetition.next()) //Already a game running within this competition
 							{
-								ResultSet getEmptyGameID = db_c.query("select * from spel ORDER BY id DESC;"); 
-								if(getEmptyGameID.next())
+								ResultSet alreadyInviteOpen = db_c.query("SELECT * FROM spel WHERE toestand_type = 'request' AND reaktie_type = 'unknown' AND account_naam_uitdager = '" + gsm.getUser().getUsername() + "'  AND competitie_id = " + gsm.getUser().getCompetitionNumber() + " AND account_naam_tegenstander = '" + input + "'  AND account_naam_tegenstander != '" + gsm.getUser().getUsername() + "';");
+								if(!alreadyInviteOpen.next()) //If query is empty, so there is no open invite
 								{
-									int freeGameID = (getEmptyGameID.getInt("id") + 1);
-									
-									db_c.queryUpdate("INSERT INTO spel VALUES ("+freeGameID+","+gsm.getUser().getCompetitionNumber()+", 'request', '"+gsm.getUser().getUsername()+"', 'unknown', 'standard', 'NL', '"+input+"');");
-									JOptionPane.showMessageDialog(null, "Uitnodiging verzonden!");
+									ResultSet userInCompetition = db_c.query("SELECT * FROM deelnemer WHERE account_naam = '"+input+"' AND competitie_id ="+gsm.getUser().getCompetitionNumber()+";");
+									if(userInCompetition.next()) //Is the requested user in this competition?
+									{
+											db_c.queryUpdate("INSERT INTO spel (`competitie_id`, `toestand_type`, `account_naam_uitdager`,`reaktie_type`, `bord_naam`, `letterset_naam`,`account_naam_tegenstander`) VALUES ("+gsm.getUser().getCompetitionNumber()+", 'request', '"+gsm.getUser().getUsername()+"', 'unknown', 'standard', '"+langCombo.getSelectedItem().toString()+"', '"+input+"')");
+											JOptionPane.showMessageDialog(null, "Uitnodiging verzonden!");
+									}
+									else
+									{
+										JOptionPane.showMessageDialog(null, input + " zit niet in deze competitie!");
+									}
 								}
 								else
 								{
-									System.out.println("UNKNOWN ERROR");
+									System.out.println(alreadyInviteOpen.getString("competitie_id"));
+									JOptionPane.showMessageDialog(null, "Er staat nog een uitnodiging open met " + input + " binnen deze competitie!");
 								}
 							}
-							else
+							else //No competition running
 							{
-								JOptionPane.showMessageDialog(null, input + " zit niet in deze competitie!");
+								JOptionPane.showMessageDialog(null, "Je hebt al een spel openstaan met " + input + "!");
 							}
 						}
-						else
+						else //Inviting yourself
 						{
-							System.out.println(alreadyInviteOpen.getString("competitie_id"));
-							JOptionPane.showMessageDialog(null, "Er staat nog een uitnodiging open met " + input + " binnen deze competitie!");
+							JOptionPane.showMessageDialog(null, "Je kan jezelf niet uitdagen!");
 						}
 					}
 					else //User doesn't exist

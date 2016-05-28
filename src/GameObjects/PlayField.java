@@ -1,15 +1,10 @@
 package GameObjects;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
-
 import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javax.script.ScriptContext;
-import javax.swing.JPanel;
 
 import Gamestate.GamestateManager;
 import Main.Drawable;
@@ -103,11 +98,11 @@ public class PlayField implements Drawable {
 				}
 				int score = rs.getInt("waarde");
 				Letter letter = new Letter(x + (letterX * (size + space))-36, y + (letterY * (size + space))-25, size, size,letterType,score);
-				//test v
+				letter.setLetterID(rs.getInt("letter_id"));
 				letter.setBordX(letterX);
 				letter.setBordY(letterY);
 				letter.setPlayfieldX(x);
-				//test ^
+				
 				playedLetters.add(letter);
 				
 				for (Tile tile:tiles) {
@@ -155,5 +150,62 @@ public class PlayField implements Drawable {
 		playedLetters.clear();
 		this.createPlayedLetters();
 		isCreated = true;
+	}
+	
+	public void moveForward(){
+		int size = tiles.get(0).getHeight();
+		int space = 2;
+		String query = "SELECT * FROM gelegdeletter AS gl INNER JOIN letter AS l ON gl.letter_id = l.id INNER JOIN lettertype AS lt ON lt.karakter = l.lettertype_karakter WHERE gl.spel_id = "+gsm.getUser().getGameNumber()+" AND letterset_code = 'NL' AND gl.beurt_id = "+gsm.getUser().getTurnNumber();
+		ResultSet rs = db_c.query(query);
+		try {
+			while(rs.next()){
+				int letterX = rs.getInt("tegel_x");
+				int letterY = rs.getInt("tegel_y");
+				String letterType = rs.getString("lettertype_karakter");
+				if (letterType.equals("?")) {
+					letterType = rs.getString("blancoletterkarakter");
+				}
+				int score = rs.getInt("waarde");
+				Letter letter = new Letter(x + (letterX * (size + space))-36, y + (letterY * (size + space))-25, size, size,letterType,score);
+				System.out.println(letter.getLetterChar()+"is added");
+				letter.setBordX(letterX);
+				letter.setBordY(letterY);
+				letter.setPlayfieldX(x);
+				
+				playedLetters.add(letter);
+				
+				for (Tile tile:tiles) {
+					if (tile.getX() == x + (letterX * (size + space))-36) {
+						if (tile.getY() == y + (letterY * (size + space))-25) {
+							tile.setLetter(letter);
+						}
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void moveBackwards(){
+		String query = "SELECT * FROM gelegdeletter AS gl INNER JOIN letter AS l ON gl.letter_id = l.id INNER JOIN lettertype AS lt ON lt.karakter = l.lettertype_karakter WHERE gl.spel_id = "+gsm.getUser().getGameNumber()+" AND letterset_code = 'NL' AND gl.beurt_id = "+gsm.getUser().getTurnNumber();
+		ResultSet rs = db_c.query(query);
+		ArrayList<Letter> removedLetters = new ArrayList<Letter>();
+		try {
+			while(rs.next()){
+				int letterNumber = rs.getInt("letter_id");
+				for (Letter letter : playedLetters) {
+					if (letter.getLetterID() == letterNumber) {
+						System.out.println(letter.getLetterChar()+" is removed");
+						removedLetters.add(letter);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		for (Letter letter : removedLetters) {
+			playedLetters.remove(letter);
+		}
 	}
 }
