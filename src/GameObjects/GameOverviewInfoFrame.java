@@ -56,7 +56,7 @@ public class GameOverviewInfoFrame extends JFrame {
 		}
 		this.setVisible(true);
 	}
-
+	//TODO if game is created check this !
 	private void createLabel() {
 		Font font = new Font("Serif", Font.BOLD, 20);
 
