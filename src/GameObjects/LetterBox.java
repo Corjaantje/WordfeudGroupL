@@ -102,13 +102,14 @@ public class LetterBox implements Drawable {
 		String query = "SELECT * FROM letter WHERE NOT id = ANY( SELECT letter_id FROM gelegdeletter WHERE beurt_id <= "
 				+ gsm.getUser().getTurnNumber() + " AND spel_id = " + gsm.getUser().getGameNumber() + ") "
 				+ "AND NOT id = ANY( SELECT letter_id from letterbakjeletter where beurt_id ="
-				+ (gsm.getUser().getTurnNumber() - 1) + " OR beurt_id =" + (gsm.getUser().getTurnNumber() - 2);
+				+ (gsm.getUser().getTurnNumber() - 1) + " OR beurt_id =" + (gsm.getUser().getTurnNumber() - 2) + ")";
 		ResultSet rSet = db_c.query(query);
-
 		ArrayList<Integer> charNumberList = new ArrayList<Integer>();
 		try {
-			charNumberList.add(rSet.getInt("id"));
-
+			if (rSet.next())
+			{
+				charNumberList.add(rSet.getInt("id"));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -129,7 +130,7 @@ public class LetterBox implements Drawable {
 		}
 		// place the unused letters in the letterbakjeletter again
 		// get the unused letter_ids
-		ArrayList<Letter> unusedLetters = letters;
+		ArrayList<Letter> unusedLetters = (ArrayList<Letter>) letters.clone();
 		// for every letter in the letterbox check if they have been used (if
 		// they are also in the placedLetters arraylist
 		for (Letter letter : letters) {
