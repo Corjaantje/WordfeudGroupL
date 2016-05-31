@@ -84,7 +84,7 @@ public class NotificationPanel extends JPanel
 	{	
 		String gameID = gameNumber;
 		Font messageFont = new Font("Verdana", Font.BOLD, 12);
-		JLabel message = new JLabel((NotificationTotal + 1) + ". Uitgedaagd door: " + challengerName + " in competitie '" + competitionName + "' met ID " + gameNumber);
+		JLabel message = new JLabel((NotificationTotal + 1) + ". Uitgedaagd door: " + challengerName + " in competitie '" + competitionName + "!");
 		message.setForeground(Color.BLACK);
 		message.setAlignmentX(CENTER_ALIGNMENT);
 		message.setFont(messageFont);
