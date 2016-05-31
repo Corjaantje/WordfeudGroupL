@@ -81,6 +81,7 @@ public class PlaystateController {
 		// method requires ArrayList<Letter> as input so put the letter in an
 		// arrayList
 		ArrayList<Letter> letterArrayList = new ArrayList<>();
+		letterArrayList.add(letter);
 		// if it's not on the startstar isOnStartStar() will return false and so
 		// will this method.
 		return isOnStartStar(letterArrayList);
@@ -561,36 +562,39 @@ public class PlaystateController {
 		// Letters from the hand do apply score multipliers.
 
 		for (Letter letter : wordArraylist) {
-
-			for (Tile tile : playField.getTiles()) {
-				// if the tile and letter have the same x and y
-				if (letter.getBordX() == tile.getBordX() && letter.getBordY() == tile.getBordY()) {
-					int letterMultiplier = 1;
-					// get the score from the tile the letter is placed on and
-					// apply the multiplier
-					String tileScore = tile.getScore();
-					switch (tileScore) {
-					case "--":
-						break;
-					case "DL":
-						letterMultiplier *= 2;
-						break;
-					case "TL":
-						letterMultiplier *= 3;
-						break;
-					case "DW":
-						wordMultiplier *= 2;
-						break;
-					case "TW":
-						wordMultiplier *= 2;
-						break;
-					default:
-						break;
+			// check if letter is in foundWordArraylist too
+			for (Letter letter2 : foundWordArraylist) {
+				if (letter.equals(letter2)) {
+					for (Tile tile : playField.getTiles()) {
+						// if the tile and letter have the same x and y
+						if (letter.getBordX() == tile.getBordX() && letter.getBordY() == tile.getBordY()) {
+							int letterMultiplier = 1;
+							// get the score from the tile the letter is placed
+							// on and apply the multiplier
+							String tileScore = tile.getScore();
+							switch (tileScore) {
+							case "--":
+								break;
+							case "DL":
+								letterMultiplier *= 2;
+								break;
+							case "TL":
+								letterMultiplier *= 3;
+								break;
+							case "DW":
+								wordMultiplier *= 2;
+								break;
+							case "TW":
+								wordMultiplier *= 2;
+								break;
+							default:
+								break;
+							}
+							// add the letter score
+							score += letter.getScore() * letterMultiplier;
+						}
 					}
-					// add the letter score
-					score += letter.getScore() * letterMultiplier;
 				}
-
 			}
 		}
 
@@ -642,7 +646,7 @@ public class PlaystateController {
 			String tegelBordNaam = "";
 			try {
 				ResultSet rSet = databaseController
-						.query("SELECT bord_naam FROM spel WHERE spel_id =" + gsm.getUser().getGameNumber());
+						.query("SELECT bord_naam FROM spel WHERE id =" + gsm.getUser().getGameNumber());
 				if (rSet.next()) {
 					tegelBordNaam = rSet.getString(1);
 				}
@@ -1253,7 +1257,7 @@ public class PlaystateController {
 		return mainWordOrientation;
 	}
 
-	public void doPass() {
+	public boolean doPass() {
 		int option = JOptionPane.showConfirmDialog(null, "Weet je zeker dat je deze beurt wilt passen?", "Wordfeud",
 				JOptionPane.YES_NO_OPTION);
 		if (option == JOptionPane.YES_OPTION) {
@@ -1262,7 +1266,9 @@ public class PlaystateController {
 			String username = gsm.getUser().getUsername();
 			databaseController.queryUpdate(
 					"INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'pass');");
+			return true;
 		}
+		return false;
 	}
 
 	public void doResign() {
@@ -1272,9 +1278,8 @@ public class PlaystateController {
 			int turn = gsm.getUser().getTurnNumber();
 			int game = gsm.getUser().getGameNumber();
 			String username = gsm.getUser().getUsername();
-			databaseController.query(
+			databaseController.queryUpdate(
 					"INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'resign');");
-			// TODO set end of game
 		}
 	}
 
@@ -1283,8 +1288,9 @@ public class PlaystateController {
 			int turn = gsm.getUser().getTurnNumber();
 			ResultSet passRS = databaseController
 					.query("SELECT * FROM beurt WHERE id = (" + turn + " - 2) OR id = (" + turn + " - 4);");
-			ResultSet resignRS = databaseController.query("SELECT * FROM beurt WHERE id = "+(turn-1));
+			ResultSet resignRS = databaseController.query("SELECT * FROM beurt WHERE id = " + (turn - 1));
 			boolean hasResigned = false;
+			boolean hasEnded = false;
 			int counter = 1;
 			try {
 				while (passRS.next()) {
@@ -1292,20 +1298,29 @@ public class PlaystateController {
 						counter++;
 					}
 				}
-				while(resignRS.next()){
+				while (resignRS.next()) {
 					if (resignRS.getString("aktie_type").equals("resign")) {
 						hasResigned = true;
+					} else if (resignRS.getString("aktie_type").equals("end")) {
+						hasEnded = true;
 					}
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			if (counter == 3||hasResigned) {
-				JOptionPane.showMessageDialog(null, "Het spel is geeindigd!");
+			if (counter == 3 || hasResigned || hasEnded) {
+				JOptionPane.showMessageDialog(null,
+						"Het spel is geeindigd!/n" + gsm.getUser().getChallengerName() + " heeft "
+								+ gsm.getUser().getUserScore() + " punten.\n" + gsm.getUser().getOpponentName()
+								+ " heeft " + gsm.getUser().getOpponentScore() + " punten.\n"
+								+ gsm.getUser().getWinner() + " is de winnaar!");
 				int game = gsm.getUser().getGameNumber();
 				String username = gsm.getUser().getUsername();
-				databaseController.query(
+				databaseController.queryUpdate(
 						"INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'end');");
+				if (hasEnded) {
+					databaseController.queryUpdate("UPDATE spel SET toestand_type = 'finished' WHERE id = " + game);
+				}
 				return true;
 			}
 		}
