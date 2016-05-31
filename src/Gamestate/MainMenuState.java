@@ -294,6 +294,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 			}
 			else
 			{
+				gsm.Notify.updateNotifications();
 				gsm.Notify.setVisible(true);
 			}
 		}
