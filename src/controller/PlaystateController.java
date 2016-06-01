@@ -81,6 +81,7 @@ public class PlaystateController {
 		// method requires ArrayList<Letter> as input so put the letter in an
 		// arrayList
 		ArrayList<Letter> letterArrayList = new ArrayList<>();
+		letterArrayList.add(letter);
 		// if it's not on the startstar isOnStartStar() will return false and so
 		// will this method.
 		return isOnStartStar(letterArrayList);
@@ -645,7 +646,7 @@ public class PlaystateController {
 			String tegelBordNaam = "";
 			try {
 				ResultSet rSet = databaseController
-						.query("SELECT bord_naam FROM spel WHERE spel_id =" + gsm.getUser().getGameNumber());
+						.query("SELECT bord_naam FROM spel WHERE id =" + gsm.getUser().getGameNumber());
 				if (rSet.next()) {
 					tegelBordNaam = rSet.getString(1);
 				}

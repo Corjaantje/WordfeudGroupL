@@ -108,18 +108,25 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 		String bericht = input.chatInput.getText();
 		if(!bericht.contains("\\"))
 		{
-			DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-			Date date = new Date();
-	
-			try
+			if(!bericht.contains("'"))
 			{
-				database.queryUpdate("INSERT INTO chatregel VALUES ('" + userName + "', " + this.savedGameNumber + ", " + dateFormat.format(date) + ", '" + bericht + "')");
-			} catch (Exception e)
-			{
-				e.printStackTrace();
+				DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+				Date date = new Date();
+		
+				try
+				{
+					database.queryUpdate("INSERT INTO chatregel VALUES ('" + userName + "', " + this.savedGameNumber + ", " + dateFormat.format(date) + ", '" + bericht + "')");
+				} catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+				this.input.chatInput.setText("");
+				this.fillChatOutput();
 			}
-			this.input.chatInput.setText("");
-			this.fillChatOutput();
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Het leesteken 'Apostrof' is niet toegestaan!");	
+			}
 		}
 		else
 		{
