@@ -46,7 +46,9 @@ public class User {
 	}
 
 	private void addRoles() {
-		ResultSet rs = databaseController.query("select * from accountrol where account_naam = '" + username + "'");
+		ResultSet rs = databaseController
+				.query("select * from accountrol where account_naam = '"
+						+ username + "'");
 		try {
 			while (rs.next()) {
 				roles.add(rs.getString("rol_type"));
@@ -75,7 +77,8 @@ public class User {
 
 	public void setPassword(String passwordOfUsername) {
 		ResultSet rs = databaseController
-				.query("select wachtwoord from account where naam = '" + passwordOfUsername + "'");
+				.query("select wachtwoord from account where naam = '"
+						+ passwordOfUsername + "'");
 		try {
 			if (rs.next()) {
 				password = rs.getString("wachtwoord");
@@ -87,7 +90,8 @@ public class User {
 
 	public String getPassword(String passwordOfUsername) {
 		ResultSet rs = databaseController
-				.query("select wachtwoord from account where naam = '" + passwordOfUsername + "'");
+				.query("select wachtwoord from account where naam = '"
+						+ passwordOfUsername + "'");
 		try {
 			if (rs.next()) {
 				return this.password;
@@ -116,8 +120,10 @@ public class User {
 	}
 
 	public int getOpponentScore() {
-		String query = "SELECT sum(score) AS totaalScore FROM beurt WHERE account_naam = '" + this.getOpponentName()
-				+ "' AND spel_id = " + this.getGameNumber() + " AND id < " + this.getTurnNumber();
+		String query = "SELECT sum(score) AS totaalScore FROM beurt WHERE account_naam = '"
+				+ this.getOpponentName()
+				+ "' AND spel_id = "
+				+ this.getGameNumber() + " AND id < " + this.getTurnNumber();
 		ResultSet rs = databaseController.query(query);
 		int score = -1;
 		try {
@@ -136,7 +142,8 @@ public class User {
 		String challenger = "";
 		String opponent = "";
 		ResultSet rs = databaseController
-				.query("SELECT account_naam_uitdager,account_naam_tegenstander  FROM spel WHERE id = " + this.getGameNumber());
+				.query("SELECT account_naam_uitdager,account_naam_tegenstander  FROM spel WHERE id = "
+						+ this.getGameNumber());
 		try {
 			while (rs.next()) {
 				challenger = rs.getString("account_naam_uitdager");
@@ -164,8 +171,10 @@ public class User {
 
 	public String getPlayerTurn() {
 		String player = "";
-		ResultSet rs = databaseController.query("SELECT account_naam FROM beurt WHERE spel_id = " + this.getGameNumber()
-				+ " AND id = " + this.getTurnNumber());
+		ResultSet rs = databaseController
+				.query("SELECT account_naam FROM beurt WHERE spel_id = "
+						+ this.getGameNumber() + " AND id = "
+						+ this.getTurnNumber());
 		try {
 			while (rs.next()) {
 				player = rs.getString("account_naam");
@@ -189,7 +198,9 @@ public class User {
 
 	public String getCompetitionDescription() {
 		String description = "";
-		ResultSet rs = databaseController.query("SELECT omschrijving FROM competitie WHERE id = " + competitionNumber);
+		ResultSet rs = databaseController
+				.query("SELECT omschrijving FROM competitie WHERE id = "
+						+ competitionNumber);
 		try {
 			while (rs.next()) {
 				description = rs.getString("omschrijving");
@@ -206,7 +217,9 @@ public class User {
 	}
 
 	public int getAmountOfRoles(String nameUser) {
-		ResultSet rs = databaseController.query("select * from accountrol where account_naam = '" + nameUser + "'");
+		ResultSet rs = databaseController
+				.query("select * from accountrol where account_naam = '"
+						+ nameUser + "'");
 		amountOfRoles = 0;
 		try {
 			while (rs.next()) {
@@ -226,12 +239,14 @@ public class User {
 			return false;
 		}
 	}
-	
-	public int getMaxTurnNumber(){
-		ResultSet rs = databaseController.query("SELECT max(id) FROM beurt WHERE spel_id = "+turnNumber);
+
+	public int getMaxTurnNumber() {
+		ResultSet rs = databaseController
+				.query("SELECT max(id) FROM beurt WHERE spel_id = "
+						+ gameNumber);
 		int maxTurn = turnNumber;
 		try {
-			while(rs.next()){
+			while (rs.next()) {
 				maxTurn = rs.getInt("max(id)");
 			}
 		} catch (SQLException e) {
@@ -240,11 +255,11 @@ public class User {
 		}
 		return maxTurn;
 	}
-	
-	public String getWinner(){
+
+	public String getWinner() {
 		if (this.getOpponentScore() > this.getUserScore()) {
 			return this.getOpponentName();
-		}else{
+		} else {
 			return this.getChallengerName();
 		}
 	}

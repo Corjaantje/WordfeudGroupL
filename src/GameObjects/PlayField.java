@@ -167,7 +167,6 @@ public class PlayField implements Drawable {
 				}
 				int score = rs.getInt("waarde");
 				Letter letter = new Letter(x + (letterX * (size + space))-36, y + (letterY * (size + space))-25, size, size,letterType,score);
-				System.out.println(letter.getLetterChar()+"is added");
 				letter.setBordX(letterX);
 				letter.setBordY(letterY);
 				letter.setPlayfieldX(x);
@@ -196,7 +195,6 @@ public class PlayField implements Drawable {
 				int letterNumber = rs.getInt("letter_id");
 				for (Letter letter : playedLetters) {
 					if (letter.getLetterID() == letterNumber) {
-						System.out.println(letter.getLetterChar()+" is removed");
 						removedLetters.add(letter);
 					}
 				}

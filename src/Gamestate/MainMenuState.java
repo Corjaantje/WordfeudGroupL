@@ -260,7 +260,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 	{
 		if("competition".equals(e.getActionCommand()))
 		{
-			gsm.setGamestate(gsm.spectatorCompetitionState);
+			gsm.setGamestate(GamestateManager.spectatorCompetitionState);
 		}
 		else if("userinfo".equals(e.getActionCommand()))
 		{
@@ -268,7 +268,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 		}
 		else if("logout".equals(e.getActionCommand()))
 		{
-			gsm.setGamestate(gsm.loginState);
+			gsm.setGamestate(GamestateManager.loginState);
 			gsm.setUser(null);
 			this.removeAll();
 		}
@@ -278,11 +278,11 @@ public class MainMenuState extends Gamestate implements ActionListener
 		}
 		else if("moderatorNew".equals(e.getActionCommand()))
 		{
-			gsm.setGamestate(gsm.moderatorReviewWordState);
+			gsm.setGamestate(GamestateManager.moderatorReviewWordState);
 		}
 		else if("wordNew".equals(e.getActionCommand()))
 		{
-			gsm.setGamestate(gsm.playerNewWordState);
+			gsm.setGamestate(GamestateManager.playerNewWordState);
 		}
 		else if("notifications".equals(e.getActionCommand()))
 		{
@@ -294,12 +294,13 @@ public class MainMenuState extends Gamestate implements ActionListener
 			}
 			else
 			{
+				gsm.Notify.updateNotifications();
 				gsm.Notify.setVisible(true);
 			}
 		}
 		else if("spectator".equals(e.getActionCommand()))
 		{
-			gsm.setGamestate(gsm.spectatorCompetitionState);
+			gsm.setGamestate(GamestateManager.spectatorCompetitionState);
 		}
 	}
 	

@@ -108,7 +108,7 @@ public class Registerstate extends Gamestate implements ActionListener{
 		}
 		else if("switchLogin".equals(e.getActionCommand()))
 		{
-			gsm.setGamestate(gsm.loginState);
+			gsm.setGamestate(GamestateManager.loginState);
 		}
 	}
 }
