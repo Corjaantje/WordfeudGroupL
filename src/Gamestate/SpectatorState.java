@@ -84,20 +84,22 @@ public class SpectatorState extends Gamestate {
 	}
 
 	private void goToNext() {
-		if (gsm.getUser().getTurnNumber() == gsm.getUser().getMaxTurnNumber()) {
-			gsm.getUser().setTurnNumber(gsm.getUser().getTurnNumber() + 1);
+		int turnNumber = gsm.getUser().getTurnNumber();
+		int maxTurnNumber = gsm.getUser().getMaxTurnNumber();
+		if (turnNumber <= maxTurnNumber) {
+			gsm.getUser().setTurnNumber(turnNumber + 1);
 			playField.moveForward();
 			letterBox1.reloadLetterBox();
 			letterBox2.reloadLetterBox();
 			infoPanel.reloadInfoPanel();
 		} else {
-			JOptionPane.showMessageDialog(this, "U heeft de laatste beurt bereikt");
+			JOptionPane.showMessageDialog(this, "U heeft de laatste beurt bereikt. Beurt: "+turnNumber+" - Max: "+maxTurnNumber);
 		}
 
 	}
 
 	private void goToPrevious() {
-		if (gsm.getUser().getTurnNumber() <= 0) {
+		if (gsm.getUser().getTurnNumber()-1 > 2) {
 			gsm.getUser().setTurnNumber(gsm.getUser().getTurnNumber() - 1);
 			playField.moveBackwards();
 			letterBox1.reloadLetterBox();

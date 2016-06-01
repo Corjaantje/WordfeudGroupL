@@ -49,8 +49,8 @@ public class GamePanel extends JPanel {
 
 	private void createButtons() {
 		String query = "SELECT * FROM spel WHERE competitie_id = " + gsm.getUser().getCompetitionNumber()
-				+ " AND toestand_type = 'playing' AND account_naam_uitdager = '" + gsm.getUser().getUsername()
-				+ "' OR account_naam_tegenstander = '" + gsm.getUser().getUsername() + "';";
+				+ " AND toestand_type = 'playing' AND (account_naam_uitdager = '" + gsm.getUser().getUsername()
+				+ "' OR account_naam_tegenstander = '" + gsm.getUser().getUsername() + "');";
 
 		try {
 			ResultSet rs = db_c.query(query);

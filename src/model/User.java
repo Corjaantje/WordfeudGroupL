@@ -228,7 +228,7 @@ public class User {
 	}
 	
 	public int getMaxTurnNumber(){
-		ResultSet rs = databaseController.query("SELECT max(id) FROM beurt WHERE spel_id = "+turnNumber);
+		ResultSet rs = databaseController.query("SELECT max(id) FROM beurt WHERE spel_id = "+gameNumber);
 		int maxTurn = turnNumber;
 		try {
 			while(rs.next()){
