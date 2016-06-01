@@ -49,7 +49,7 @@ public class Button implements Drawable {
 		}
 		g.setColor(Color.WHITE);
 		g.setFont(buttonFont);
-		g.drawString(text, x + (width / 3), y + (height / 2));
+		g.drawString(text, x + (width / 4)-5, y + (height / 2));
 	}
 
 	@Override
