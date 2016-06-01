@@ -118,7 +118,7 @@ public class SpectatorGameOverviewState extends Gamestate {
 								JOptionPane.YES_NO_OPTION);
 						if (option == JOptionPane.OK_OPTION) {
 							gsm.getUser().setGameNumber(gameNumber);
-							gsm.getUser().setTurnNumber(1);
+							gsm.getUser().setTurnNumber(2);
 							gsm.setGamestate(gsm.spectatorState);
 						}
 					}
