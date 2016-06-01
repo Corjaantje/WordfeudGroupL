@@ -114,6 +114,7 @@ public class Playstate extends Gamestate implements MouseListener {
 					}
 				}
 			};
+			timer.scheduleAtFixedRate(task, 10000, 10000);
 			// Test ^
 			isCreated = true;
 		} else {
