@@ -27,25 +27,41 @@ public class CompetitionController {
 
 		int competitieID = 0;
 		try {
-			if (description.length() < 5 || description.length() > 25) {
+			if (description.length() < 5 || description.length() > 25) 
+			{
 				JOptionPane.showMessageDialog(null, "Je hebt te weinig/veel karakters gebruikt probeer opnieuw.");
 				return;
-			} else {
+			} 
+			else 
+			{
 				ResultSet eigenaarRS = databaseController.query("select * from competitie");
-				while (eigenaarRS.next()) {
-					if (eigenaarRS.getString("account_naam_eigenaar").equals(gsm.getUser().getUsername())) {
+				while (eigenaarRS.next()) 
+				{				
+					if (eigenaarRS.getString("account_naam_eigenaar").equals(gsm.getUser().getUsername())) 
+					{
 						JOptionPane.showMessageDialog(null, "Deze gebruiker is al eigenaar.");
 						return;
-					} else {
-						if (eigenaarRS.getString("omschrijving").equals(description)) {
-
-						}
 					}
-
 				}
+				if(!description.contains("\\"))
+				{
+					if(!description.contains("'"))
+					{
+					databaseController.queryUpdate("INSERT INTO competitie (`account_naam_eigenaar`,`omschrijving`) VALUES ('"+gsm.getUser().getUsername()+"', '"+description+"');");
+					JOptionPane.showMessageDialog(null, "Je hebt een nieuwe competitie gemaakt!");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Het leesteken 'apostrof' is niet toegestaan!");
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Het leesteken 'backslash' is niet toegestaan!");
+				}
+				return;
 			}
-			databaseController.queryUpdate("INSERT INTO competitie (`account_naam_eigenaar`,`omschrijving`) VALUES ('"+gsm.getUser().getUsername()+"', '"+description+"');");
-			JOptionPane.showMessageDialog(null, "Je hebt een nieuwe competitie gemaakt!");
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

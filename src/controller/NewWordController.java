@@ -9,6 +9,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import Gamestate.GamestateManager;
+import Gamestate.NewWordstate;
 
 public class NewWordController
 {
@@ -16,12 +17,13 @@ public class NewWordController
 	private DatabaseController databaseController;
 
 	private JList addedWordList;
+	private NewWordstate newWordstate;
 	
-	public NewWordController(GamestateManager gsm)
+	public NewWordController(GamestateManager gsm, NewWordstate newWordstate)
 	{
 		this.gsm = gsm;
 		databaseController = gsm.getDatabaseController();
-		
+		this.newWordstate = newWordstate;
 	}
 
 	public void addNewWord(String word, String letterSet)
@@ -32,6 +34,7 @@ public class NewWordController
 			if (word.length() > 0) {
 				if (word.length() <= 15){
 					databaseController.queryUpdate("insert into woordenboek (woord, letterset_code, status, account_naam) values ('" + word + "', '" + letterSet + "', 'pending', '" + gsm.getUser().getUsername() +"')");
+					newWordstate.createAddedWordList();
 					JOptionPane.showMessageDialog(null, "" + word + " is succesvol toegevoegd aan het woordenboek met letterset " + letterSet + ".");
 				} else {
 					JOptionPane.showMessageDialog(null, "De maximale lengte van een woord is 15 characters.");

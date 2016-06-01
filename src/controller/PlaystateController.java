@@ -81,6 +81,7 @@ public class PlaystateController {
 		// method requires ArrayList<Letter> as input so put the letter in an
 		// arrayList
 		ArrayList<Letter> letterArrayList = new ArrayList<>();
+		letterArrayList.add(letter);
 		// if it's not on the startstar isOnStartStar() will return false and so
 		// will this method.
 		return isOnStartStar(letterArrayList);
@@ -645,7 +646,7 @@ public class PlaystateController {
 			String tegelBordNaam = "";
 			try {
 				ResultSet rSet = databaseController
-						.query("SELECT bord_naam FROM spel WHERE spel_id =" + gsm.getUser().getGameNumber());
+						.query("SELECT bord_naam FROM spel WHERE id =" + gsm.getUser().getGameNumber());
 				if (rSet.next()) {
 					tegelBordNaam = rSet.getString(1);
 				}
@@ -1256,7 +1257,7 @@ public class PlaystateController {
 		return mainWordOrientation;
 	}
 
-	public void doPass() {
+	public boolean doPass() {
 		int option = JOptionPane.showConfirmDialog(null, "Weet je zeker dat je deze beurt wilt passen?", "Wordfeud",
 				JOptionPane.YES_NO_OPTION);
 		if (option == JOptionPane.YES_OPTION) {
@@ -1265,22 +1266,9 @@ public class PlaystateController {
 			String username = gsm.getUser().getUsername();
 			databaseController.queryUpdate(
 					"INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'pass');");
-			ResultSet rs = databaseController
-					.query("SELECT * FROM beurt WHERE id = (" + turn + " - 2) OR id = (" + turn + " - 4);");
-			int counter = 1;
-			try {
-				while (rs.next()) {
-					if (rs.getString("aktie_type").equals("pass")) {
-						counter++;
-					}
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			if (counter == 3) {
-				// TODO: end game
-			}
+			return true;
 		}
+		return false;
 	}
 
 	public void doResign() {
@@ -1292,7 +1280,6 @@ public class PlaystateController {
 			String username = gsm.getUser().getUsername();
 			databaseController.queryUpdate(
 					"INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'resign');");
-			// TODO set end of game
 		}
 	}
 

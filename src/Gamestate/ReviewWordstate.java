@@ -6,6 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -31,14 +34,13 @@ public class ReviewWordstate extends Gamestate
 	private JScrollPane pendingWordsScrollPane;
 	private JButton acceptWordButton = new JButton("Accepteer");
 	private JButton denyWordButton = new JButton("Wijs af");
-	JLabel pendingWordsLabel = new JLabel("Beoordeelbare woorden:");
-	
+	private JLabel pendingWordsLabel = new JLabel("Beoordeelbare woorden:");
+	private JComboBox<String> lettersetComboBox;
 	public ReviewWordstate(GamestateManager gsm, DatabaseController db_c)
 	{
 		super(gsm, db_c);
 		// TODO Auto-generated constructor stub
-		reviewWordController = new ReviewWordController(gsm);
-		newWordController = new NewWordController(gsm);
+		reviewWordController = new ReviewWordController(gsm, this);
 		this.reviewWordsPanel = new JPanel();
 		this.reviewWordsPanel.setBackground(Color.gray);
 		this.reviewWordsPanel.setLocation(0, 0);
@@ -52,13 +54,13 @@ public class ReviewWordstate extends Gamestate
 		JLabel lettersetLabel = new JLabel("Selecteer de letterset:");
 		reviewWordsPanel.add(lettersetLabel);
 		
-		JComboBox<String> lettersetComboBox = new JComboBox<>();
-		newWordController.fillLetterSetComboBox(lettersetComboBox);
+		lettersetComboBox = new JComboBox<>();
+		fillLetterSetComboBox(lettersetComboBox);
 		reviewWordsPanel.add(lettersetComboBox);
 		
 		JButton reviewWordButton = new JButton("Laat woorden zien/vernieuw");
 		reviewWordsPanel.add(reviewWordButton);
-		reviewWordButton.addActionListener(e -> createAddedWordList((String) lettersetComboBox.getSelectedItem()));
+		reviewWordButton.addActionListener(e -> createAddedWordList());
 		
 		this.pendingWordsPanel = new JPanel();
 		pendingWordsPanel.setLayout(new BoxLayout(pendingWordsPanel, BoxLayout.PAGE_AXIS));
@@ -70,7 +72,31 @@ public class ReviewWordstate extends Gamestate
 		
 	}
 	
-	private void createAddedWordList(String letterset) {
+	// get the codes from all the lettersets
+		private ArrayList<String> getLetterSets() {
+			ArrayList<String> allLetterSets = new ArrayList<>();
+			ResultSet rSet = db_c.query("select * from letterset");
+			
+			try {
+				while(rSet.next()) {
+					allLetterSets.add(rSet.getString("code"));
+				}
+				
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			return allLetterSets;
+		}
+	
+	public void fillLetterSetComboBox(JComboBox<String> lettersetComboBox)
+	{
+		for (String lettersetCode : getLetterSets()) {
+			lettersetComboBox.addItem(lettersetCode);
+		}
+	}
+
+	public void createAddedWordList() {
+		String letterset = (String) lettersetComboBox.getSelectedItem();
 		JList pendingWordsList = reviewWordController.generatePendingWordsList(letterset);
 		
 		if (pendingWordsScrollPane != null){
