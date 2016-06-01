@@ -100,7 +100,7 @@ public class GameOverviewInfoFrame extends JFrame {
 					}else{
 						gsm.getUser().setTurnNumber(maxTurn-1);
 					}
-					gsm.setGamestate(gsm.playState);
+					gsm.setGamestate(GamestateManager.playState);
 					setVisible(false);
 				}
 			}
