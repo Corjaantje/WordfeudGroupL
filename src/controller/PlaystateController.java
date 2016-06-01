@@ -585,7 +585,7 @@ public class PlaystateController {
 								wordMultiplier *= 2;
 								break;
 							case "TW":
-								wordMultiplier *= 2;
+								wordMultiplier *= 3;
 								break;
 							default:
 								break;
