@@ -80,9 +80,9 @@ public class AdditionalGameInfo implements Drawable{
 	}
 	
 	public void reloadAdditionalInfo(){
-		user.setTurnNumber(user.getTurnNumber()-1);
+		//user.setTurnNumber(user.getTurnNumber()-1);
 		playerTurn = user.getPlayerTurn();
-		//user.setTurnNumber(user.getTurnNumber()+1);
+		user.setTurnNumber(user.getTurnNumber()-1);
 		additionalInfo = playerTurn+" heeft "+this.getPlacedLetters()+" gespeeld voor "+this.getTurnScore()+" punten.";
 		user.setTurnNumber(user.getTurnNumber()+1);
 	}

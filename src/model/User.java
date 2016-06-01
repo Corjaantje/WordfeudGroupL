@@ -182,7 +182,11 @@ public class User {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return player;
+		if (player.equals(this.getChallengerName())) {
+			return this.getOpponentName();
+		}else{
+			return this.getChallengerName();
+		}
 	}
 
 	public void setTurnNumber(int turnNumber) {
