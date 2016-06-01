@@ -165,7 +165,7 @@ public class User {
 	public String getPlayerTurn() {
 		String player = "";
 		ResultSet rs = databaseController.query("SELECT account_naam FROM beurt WHERE spel_id = " + this.getGameNumber()
-				+ " AND id = " + this.getTurnNumber());
+				+ " AND id = " + (this.getTurnNumber()-1));
 		try {
 			while (rs.next()) {
 				player = rs.getString("account_naam");
