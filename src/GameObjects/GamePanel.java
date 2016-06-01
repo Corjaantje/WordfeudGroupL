@@ -89,9 +89,7 @@ public class GamePanel extends JPanel {
 	}
 
 	public void gamePanelReload() {
-		for (JButton button : buttons) {
-			this.remove(button);
-		}
+		this.removeAll();
 		buttons.clear();
 		this.createButtons();
 	}
