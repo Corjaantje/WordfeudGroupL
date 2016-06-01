@@ -104,7 +104,7 @@ public class CompetitionFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					gsm.getUser().setCompetitionNumber(competitionNumber);
-					gsm.setGamestate(gsm.spectatorGameOverviewState);
+					gsm.setGamestate(GamestateManager.spectatorGameOverviewState);
 					setVisible(false);
 				}
 			});
@@ -125,7 +125,7 @@ public class CompetitionFrame extends JFrame {
 					}
 					if (userIsPlayer) {
 						gsm.getUser().setCompetitionNumber(competitionNumber);
-						gsm.setGamestate(gsm.gameOverviewState);
+						gsm.setGamestate(GamestateManager.gameOverviewState);
 						setVisible(false);
 					} else {
 						int option = JOptionPane.showConfirmDialog(null,
