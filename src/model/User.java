@@ -228,7 +228,7 @@ public class User {
 	}
 	
 	public int getMaxTurnNumber(){
-		ResultSet rs = databaseController.query("SELECT max(id) FROM beurt WHERE spel_id = "+turnNumber);
+		ResultSet rs = databaseController.query("SELECT max(id) FROM beurt WHERE spel_id = "+gameNumber);
 		int maxTurn = turnNumber;
 		try {
 			while(rs.next()){
@@ -240,4 +240,16 @@ public class User {
 		}
 		return maxTurn;
 	}
+<<<<<<< HEAD
 }
+=======
+	
+	public String getWinner(){
+		if (this.getOpponentScore() > this.getUserScore()) {
+			return this.getOpponentName();
+		}else{
+			return this.getChallengerName();
+		}
+	}
+}
+>>>>>>> refs/remotes/origin/master

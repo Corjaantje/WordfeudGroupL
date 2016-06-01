@@ -250,6 +250,7 @@ public class GamestateManager extends JPanel implements ActionListener{
 			}
 			else
 			{
+				Notify.updateNotifications();
 				Notify.setVisible(true);
 			}
 		}

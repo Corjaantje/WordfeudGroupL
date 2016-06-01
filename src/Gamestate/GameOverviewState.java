@@ -50,14 +50,17 @@ public class GameOverviewState extends Gamestate {
 	public void create() {
 		if (!isCreated) {
 			gamePanel = new GamePanel(db_c, gsm);
-			x = (int) (GUI.WIDTH / 2.5);
-
+			description = gsm.getUser().getCompetitionDescription();
+			x = (int) ((GUI.WIDTH / 2) - (description.length() * 12));
+			System.out.println((description.length() * 12));
 			y = 75;
 			this.add(gamePanel, new GridBagConstraints());
-			description = gsm.getUser().getCompetitionDescription();
 			isCreated = true;
 		} else {
 			gamePanel.gamePanelReload();
+			description = gsm.getUser().getCompetitionDescription();
+			x = (int) ((GUI.WIDTH / 2) - (description.length() * 12));
+			System.out.println((description.length() * 12));
 		}
 	}
 

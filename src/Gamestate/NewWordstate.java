@@ -41,7 +41,7 @@ public class NewWordstate extends Gamestate {
 
 	public NewWordstate(GamestateManager gsm, DatabaseController db_c) {
 		super(gsm, db_c);
-		newWordController = new NewWordController(gsm);
+		newWordController = new NewWordController(gsm, this);
 		this.newWordPanel = new JPanel();
 		this.newWordPanel.setBackground(Color.gray);
 		this.newWordPanel.setLocation(0, 0);
@@ -79,7 +79,7 @@ public class NewWordstate extends Gamestate {
 
 	}
 
-	private void createAddedWordList() {
+	public void createAddedWordList() {
 		JList addedWordsList = newWordController.generateAddedWordsList();
 
 		if (addedWordsScrollPane != null) {
