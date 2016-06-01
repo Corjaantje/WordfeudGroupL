@@ -61,7 +61,7 @@ public class PollingChallengeController implements Runnable
         {
             db_c.queryUpdate("INSERT INTO letterbakjeletter (spel_id,letter_id,beurt_id) VALUES (" + gameID + "," + randomLetterList.get(i) + ",1);");
         }
-        for (int i = 7; i < 13; i++)
+        for (int i = 7; i < 14; i++)
         {
         	db_c.queryUpdate("INSERT INTO letterbakjeletter (spel_id,letter_id,beurt_id) VALUES (" + gameID + "," + randomLetterList.get(i) + ",2);");
         }
