@@ -38,7 +38,7 @@ public class LoginController {
 			if(rs.next()){
 				if(gsm.getUser() == null){
 					System.out.println("Test database query login");
-					User user = new User(username);
+					User user = new User(username, databaseController);
 					gsm.setUser(user);
 					gsm.setGamestate(GamestateManager.mainMenuState);
 
