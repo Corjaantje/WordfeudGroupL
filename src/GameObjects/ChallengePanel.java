@@ -69,7 +69,7 @@ public class ChallengePanel extends JPanel implements KeyListener
 		if(e.getKeyCode() == KeyEvent.VK_ENTER)
 		{
 			String input = searchField.getText();		
-			if(input.matches("^[a-zA-Z0-9]*$")) //Valid name?
+			if(!input.contains("'") && !input.contains("\\")) //Valid name?
 			{
 				ResultSet userExist = db_c.query("SELECT * FROM account WHERE naam = '" + input + "';");
 				try

@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -62,6 +63,8 @@ public class Playstate extends Gamestate implements MouseListener {
 	private PlaystateController playstateController;
 
 	private boolean indicatorIsPlaced = false;
+	
+	private int lastTurn;
 
 	public Playstate(GamestateManager gsm, DatabaseController db_c) {
 		super(gsm, db_c);
@@ -88,6 +91,7 @@ public class Playstate extends Gamestate implements MouseListener {
 
 	@Override
 	public void create() {
+		lastTurn = gsm.getUser().getMaxTurnNumber();
 		if (!isCreated) {
 			this.setLayout(new BorderLayout());
 			playField = new PlayField(db_c, gsm);
@@ -104,6 +108,18 @@ public class Playstate extends Gamestate implements MouseListener {
 			filledTiles = new ArrayList<Tile>();
 			playstateController = new PlaystateController(gsm, playField, letterBox, this);
 			turnIndicator = new TurnIndicator(gsm, playField.getTiles().get(0).getWidth());
+			// Test v
+			Timer timer = new Timer();
+			TimerTask task = new TimerTask() {
+				public void run() {
+					if (getMaxTurnNumber() > lastTurn) {
+						JOptionPane.showInternalMessageDialog(null, "U spel gaat nu herladen!");
+						reloadPlaystate();
+					}
+				}
+			};
+			timer.scheduleAtFixedRate(task, 10000, 10000);
+			// Test ^
 			isCreated = true;
 		} else {
 			this.reloadPlaystate();
@@ -112,13 +128,36 @@ public class Playstate extends Gamestate implements MouseListener {
 
 	public void reloadPlaystate() {
 		if (!playstateController.checkIfGameIsEnded()) {
+			indicatorIsPlaced = false;
+			int maxTurn = this.getMaxTurnNumber();
+			if (gsm.getUser().getPlayerTurn().equals(gsm.getUser().getUsername())) {
+				gsm.getUser().setTurnNumber(maxTurn);
+			} else {
+				gsm.getUser().setTurnNumber(maxTurn - 1);
+			}
 			playField.reloadPlayfield();
 			letterBox.reloadLetterBox();
 			infoPanel.reloadInfoPanel();
 			swapFrame.reloadSwapFrame();
 			filledTiles.clear();
 			chatArea.reloadChat();
+		} else {
+			System.out.println("Game has ended");
 		}
+	}
+
+	private int getMaxTurnNumber() {
+		String query = "SELECT max(id) AS id FROM beurt WHERE spel_id = " + gsm.getUser().getGameNumber();
+		ResultSet rs = db_c.query(query);
+		int maxTurn = gsm.getUser().getTurnNumber();
+		try {
+			while (rs.next()) {
+				maxTurn = rs.getInt("id");
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return maxTurn;
 	}
 
 	@Override
@@ -158,12 +197,18 @@ public class Playstate extends Gamestate implements MouseListener {
 		int x = e.getX();
 		int y = e.getY();
 		try {
+			// check if a letter is selected
 			if (moveLetter != null) {
+				// check if the letter is on a valid position
 				if (moveLetter.getRightLocation()) {
 					for (Tile tile : playField.getTiles()) {
+						// check only the empty tiles
 						if (tile.getIsEmpty()) {
+							// check which tile is selected
 							if (x > tile.getX() && x < (tile.getX() + tile.getWidth())) {
 								if (y > tile.getY() && y < (tile.getY() + tile.getHeight())) {
+									// check if a letterbox letter is already
+									// placed on that tile
 									boolean tileIsFilled = false;
 									for (Tile filledTile : filledTiles) {
 										if (filledTile.getX() == tile.getX()) {
@@ -172,14 +217,20 @@ public class Playstate extends Gamestate implements MouseListener {
 											}
 										}
 									}
-									if (!tileIsFilled && moveLetter.getX() != tile.getX()
-											&& moveLetter.getBordY() != tile.getY()) {
+									if (!tileIsFilled) {
+										// checks if the letter is already
+										// selected
+										if (moveLetter.getX() == tile.getX() && moveLetter.getY() == tile.getY()) {
+											return;
+										}
+										// give the letter the right information
 										filledTiles.add(tile);
 										indicatorIsPlaced = true;
 										moveLetter.setBordX(tile.getBordX());
 										moveLetter.setBordY(tile.getBordY());
 										moveLetter.calculateRoute(tile.getX(), tile.getY());
 										moveLetter.setWantedSize(tile.getWidth(), tile.getHeight());
+										// check if the letter is a joker
 										if (moveLetter.getLetterChar().equals("?")) {
 											String option = JOptionPane
 													.showInputDialog("Vul hier de gewenste letter in: ");
@@ -200,7 +251,10 @@ public class Playstate extends Gamestate implements MouseListener {
 					for (Tile tile : letterBox.getTiles()) {
 						if (x > tile.getX() && x < (tile.getX() + tile.getWidth())) {
 							if (y > tile.getY() && y < (tile.getY() + tile.getHeight())) {
+								// reset the letter if its moved into the
+								// letterbox
 								moveLetter.reset();
+								// remove the first added tile
 								if (!filledTiles.isEmpty()) {
 									filledTiles.remove(0);
 								}
@@ -209,10 +263,15 @@ public class Playstate extends Gamestate implements MouseListener {
 					}
 				}
 			}
-		} catch (Exception e2) {
+		} catch (
+
+		Exception e2)
+
+		{
 			// TODO: handle exception
 			e2.printStackTrace();
 		}
+
 	}
 
 	private void letterPressed(MouseEvent e) {
@@ -249,25 +308,31 @@ public class Playstate extends Gamestate implements MouseListener {
 					this.playSound("ButtonClick.wav");
 					if (gsm.getUser().userCanPlay()) {
 
-						if (button.getText().equals("Reset")) {
+						if (button.getText().equals("Resetten")) {
 							this.resetLetterBoxLetters();
-						} else if (button.getText().equals("Shuffle")) {
+						} else if (button.getText().equals("Schudden")) {
 							letterBox.shuffleLetters();
-						} else if (button.getText().equals("Play")) {
-							playstateController.doPlay();
-						} else if (button.getText().equals("Swap")) {
-							swapFrame.setVisible(true);
-						} else if (button.getText().equals("Pass")) {
-							if(playstateController.doPass()){
-								letterBox.replacePlacedLetters(new ArrayList<Letter>());
+						} else if (button.getText().equals("Spelen")) {
+							if(playstateController.doPlay()){
+								this.reloadPlaystate();
 							}
-						} else if (button.getText().equals("Resign")) {
+						} else if (button.getText().equals("Swappen")) {
+							swapFrame.setVisible(true);
+						} else if (button.getText().equals("Passen")) {
+							if (playstateController.doPass()) {
+								letterBox.replacePlacedLetters(new ArrayList<Letter>());
+								this.reloadPlaystate();
+							}
+						} else if (button.getText().equals("Opgeven")) {
 							playstateController.doResign();
+							this.reloadPlaystate();
 						}
 					} else {
-						if (button.getText().equals("Reset")) {
+						if (button.getText().equals("Resetten")) {
 							this.resetLetterBoxLetters();
-						} else {
+						}else if(button.getText().equals("Schudden")){
+							letterBox.shuffleLetters();
+						}else {
 							JOptionPane.showMessageDialog(null, "De beurt is aan: " + gsm.getUser().getPlayerTurn(),
 									"Wordfeud", JOptionPane.ERROR_MESSAGE);
 						}
@@ -309,6 +374,7 @@ public class Playstate extends Gamestate implements MouseListener {
 			} else if (playstateController.getMainWordOrientation().equals("vertical")) {
 				// Order the letters reversed
 				Collections.sort(wordLetters, new Comparator<Letter>() {
+
 					@Override
 					public int compare(Letter a, Letter b) {
 						if (a.getBordY() < b.getBordY())
@@ -317,6 +383,7 @@ public class Playstate extends Gamestate implements MouseListener {
 							return -1;
 						return 0;
 					}
+
 				});
 				System.out.println("Vertical word ordered");
 				turnIndicator.setToPoint(new Point((int) wordLetters.get(0).getX(), (int) wordLetters.get(0).getY()));

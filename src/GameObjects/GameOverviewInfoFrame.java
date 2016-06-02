@@ -84,17 +84,24 @@ public class GameOverviewInfoFrame extends JFrame {
 						"Weet u zeker dat u naar het spel: " + button.getText() + " wilt gaan?", "Wordfeud",
 						JOptionPane.YES_NO_OPTION);
 				if (option == JOptionPane.OK_OPTION) {
+					int maxTurn = 0;
 					ResultSet rs = db_c
 							.query("SELECT max(id) AS id FROM beurt WHERE spel_id = " + gameNumber);
 					try {
 						while (rs.next()) {
-							gsm.getUser().setTurnNumber(rs.getInt("id"));
+							maxTurn = rs.getInt("id");
 						}
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					gsm.setGamestate(gsm.playState);
+					gsm.getUser().setGameNumber(gameNumber);
+					if (gsm.getUser().getPlayerTurn().equals(gsm.getUser().getUsername())) {
+						gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber());
+					}else{
+						gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber()-1);
+					}
+					gsm.setGamestate(GamestateManager.playState);
 					setVisible(false);
 				}
 			}

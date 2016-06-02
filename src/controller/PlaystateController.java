@@ -81,6 +81,7 @@ public class PlaystateController {
 		// method requires ArrayList<Letter> as input so put the letter in an
 		// arrayList
 		ArrayList<Letter> letterArrayList = new ArrayList<>();
+		letterArrayList.add(letter);
 		// if it's not on the startstar isOnStartStar() will return false and so
 		// will this method.
 		return isOnStartStar(letterArrayList);
@@ -584,7 +585,7 @@ public class PlaystateController {
 								wordMultiplier *= 2;
 								break;
 							case "TW":
-								wordMultiplier *= 2;
+								wordMultiplier *= 3;
 								break;
 							default:
 								break;
@@ -624,28 +625,12 @@ public class PlaystateController {
 					+ "'," + points + ", 'word')";
 			databaseController.queryUpdate(beurtUpdateQuery);
 
-			// update letterbakjeletter
-			letterBox.replacePlacedLetters(wordArrayList);
-			// TODO END if the player hand and deck are empty the action_type is
-			// "end"
-			// TODO not sure if letterbakjeletter will need to be updated if
-			// action_type is "end"
-
-			// get the letters that are in the letterBox at the end of the turn,
-			// loop through them
-			// and insert them into the database
-			for (Letter letter : letterBox.getLetters()) {
-				String letterBakjeLetterUpdateQuery = "INSERT INTO letterbakjeletter (`spel_id`,`beurt_id`,`Letter_id`) VALUES ("
-						+ gsm.getUser().getGameNumber() + "," + (lastTurnNumber + 1) + "," + letter.getLetterID() + ")";
-				databaseController.queryUpdate(letterBakjeLetterUpdateQuery);
-			}
-
+			
 			// update gelegde letter
-
 			String tegelBordNaam = "";
 			try {
 				ResultSet rSet = databaseController
-						.query("SELECT bord_naam FROM spel WHERE spel_id =" + gsm.getUser().getGameNumber());
+						.query("SELECT bord_naam FROM spel WHERE id =" + gsm.getUser().getGameNumber());
 				if (rSet.next()) {
 					tegelBordNaam = rSet.getString(1);
 				}
@@ -667,6 +652,26 @@ public class PlaystateController {
 						+ blancoLetterCharacter + ")");
 				databaseController.queryUpdate(gelegdeLetterUpdateQuery);
 			}
+			
+			
+			// update letterbakjeletter
+			letterBox.replacePlacedLetters(wordArrayList);
+			// TODO END if the player hand and deck are empty the action_type is
+			// "end"
+			// TODO not sure if letterbakjeletter will need to be updated if
+			// action_type is "end"
+
+			//TODO remove this part (already done in letterBox replaceplaced letters
+			// get the letters that are in the letterBox at the end of the turn,
+			// loop through them
+			// and insert them into the database
+	//		for (Letter letter : letterBox.getLetters()) {
+	//			String letterBakjeLetterUpdateQuery = "INSERT INTO letterbakjeletter (`spel_id`,`beurt_id`,`Letter_id`) VALUES ("
+	//					+ gsm.getUser().getGameNumber() + "," + (lastTurnNumber + 1) + "," + letter.getLetterID() + ")";
+	//			databaseController.queryUpdate(letterBakjeLetterUpdateQuery);
+	//		}
+
+
 
 		} else {
 			System.err.println("Something's gone wrong with the lastTurnNumber in the PlaystateController");
@@ -689,7 +694,7 @@ public class PlaystateController {
 		JOptionPane.showMessageDialog(null, wrongWordsString);
 	}
 
-	public void doPlay() {
+	public boolean doPlay() {
 		String wrongWordsString = "Dit woord kan niet geplaatst worden omdat de volgende woorden niet in het woordenboek staan: ";
 		ArrayList<Letter> wordArrayList = getPlacedLetters();
 		// get number of letters placed down (woordArrayList.size())
@@ -753,6 +758,7 @@ public class PlaystateController {
 
 				if (placementIsValid) {
 					submitValidWord(points, wordArrayList);
+					return true;
 				} else {
 					wordIsInvalid(wrongWordsString);
 				}
@@ -845,6 +851,7 @@ public class PlaystateController {
 
 						if (placementIsValid) {
 							submitValidWord(points, wordArrayList);
+							return true;
 						} else {
 							wordIsInvalid(wrongWordsString);
 						}
@@ -935,6 +942,7 @@ public class PlaystateController {
 
 						if (placementIsValid) {
 							submitValidWord(points, wordArrayList);
+							return true;
 						} else {
 							wordIsInvalid(wrongWordsString);
 						}
@@ -949,6 +957,7 @@ public class PlaystateController {
 				JOptionPane.showMessageDialog(null, "Letters zijn niet volledig horizontaal of verticaal geplaatst.");
 			}
 		}
+		return false;
 	}
 	// methods for Mathijs' score indicator: (getTotalScore() and getMainWord())
 	// to get the orientation of the mainWord use the existing method
