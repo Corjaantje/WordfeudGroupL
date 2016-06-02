@@ -282,11 +282,11 @@ public class Playstate extends Gamestate implements MouseListener {
 							this.resetLetterBoxLetters();
 						} else if (button.getText().equals("Schudden")) {
 							letterBox.shuffleLetters();
-						} else if (button.getText().equals("Spelen")) {
+						} else if (button.getText().equals(" Spelen")) {
 							playstateController.doPlay();
 						} else if (button.getText().equals("Swappen")) {
 							swapFrame.setVisible(true);
-						} else if (button.getText().equals("Passen")) {
+						} else if (button.getText().equals(" Passen")) {
 							if (playstateController.doPass()) {
 								letterBox.replacePlacedLetters(new ArrayList<Letter>());
 								this.reloadPlaystate();
