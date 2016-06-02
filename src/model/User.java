@@ -260,23 +260,20 @@ public class User {
 		return maxTurn;
 	}
 
-<<<<<<< HEAD
-	
-	public String getWinner(){
-=======
+
 	public String getWinner() {
->>>>>>> refs/remotes/origin/master
+
 		if (this.getOpponentScore() > this.getUserScore()) {
 			return this.getOpponentName();
 		} else {
 			return this.getChallengerName();
 		}
 	}
-<<<<<<< HEAD
+
 }
 
 
 
-=======
-}
->>>>>>> refs/remotes/origin/master
+
+
+
