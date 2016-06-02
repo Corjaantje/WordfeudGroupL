@@ -103,8 +103,8 @@ public class User {
 	}
 
 	public int getUserScore() {
-		String query = "SELECT sum(score) AS totaalScore FROM beurt WHERE account_naam = 'marijntje42' AND spel_id ="
-				+ this.getGameNumber() + " AND id < " + this.getTurnNumber();
+		String query = "SELECT sum(score) AS totaalScore FROM beurt WHERE account_naam = '"+this.getChallengerName()+"' AND spel_id ="
+				+ this.getGameNumber() + " AND id <= " + this.getTurnNumber();
 		ResultSet rs = databaseController.query(query);
 		int score = -1;
 		try {
@@ -123,7 +123,7 @@ public class User {
 		String query = "SELECT sum(score) AS totaalScore FROM beurt WHERE account_naam = '"
 				+ this.getOpponentName()
 				+ "' AND spel_id = "
-				+ this.getGameNumber() + " AND id < " + this.getTurnNumber();
+				+ this.getGameNumber() + " AND id <= " + this.getTurnNumber();
 		ResultSet rs = databaseController.query(query);
 		int score = -1;
 		try {
