@@ -67,7 +67,15 @@ public class MainMenuState extends Gamestate implements ActionListener
 		welcomeText = new JLabel();
 		welcomeText.setForeground(Color.WHITE);
 		
-		welcomeText.setFont(new Font("Verdana", Font.BOLD, 32));
+		if(currentUser.getUsername().length() <= 9)
+		{
+			System.out.println(currentUser.getUsername().length());
+			welcomeText.setFont(new Font("Verdana", Font.BOLD, 32));
+		}
+		else
+		{
+			welcomeText.setFont(new Font("Verdana", Font.BOLD, 24));
+		}
 		welcomeText.setText("Welkom " + currentUser.getUsername() + "!");
 		welcomeText.setAlignmentX(CENTER_ALIGNMENT);
 		this.add(Box.createRigidArea(new Dimension(0,25)));

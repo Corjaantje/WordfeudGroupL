@@ -36,8 +36,8 @@ public class GameOverviewState extends Gamestate {
 	@Override
 	public void draw(Graphics2D g) {
 		if (isCreated) {
-			g.setColor(Color.lightGray);
-			g.setFont(new Font("Comic Sans mt", Font.ITALIC, 50));
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Verdana", Font.BOLD, 32));
 			g.drawString(description, x, y);
 		}
 	}
@@ -51,16 +51,13 @@ public class GameOverviewState extends Gamestate {
 		if (!isCreated) {
 			gamePanel = new GamePanel(db_c, gsm);
 			description = gsm.getUser().getCompetitionDescription();
-			x = (int) ((GUI.WIDTH / 2) - (description.length() * 12));
-			System.out.println((description.length() * 12));
+			x = (int) ((GUI.WIDTH / 2) - (description.length() * 10));
 			y = 75;
 			this.add(gamePanel, new GridBagConstraints());
 			isCreated = true;
 		} else {
 			gamePanel.gamePanelReload();
-			description = gsm.getUser().getCompetitionDescription();
-			x = (int) ((GUI.WIDTH / 2) - (description.length() * 12));
-			System.out.println((description.length() * 12));
+			description = gsm.getUser().getCompetitionDescription();	
 		}
 	}
 
