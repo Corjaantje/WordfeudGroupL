@@ -1,8 +1,11 @@
 package Gamestate;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -21,7 +24,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
 
 import GameObjects.Button;
 import GameObjects.ButtonPanel;
@@ -108,22 +113,42 @@ public class Playstate extends Gamestate implements MouseListener {
 			filledTiles = new ArrayList<Tile>();
 			playstateController = new PlaystateController(gsm, playField, letterBox, this);
 			turnIndicator = new TurnIndicator(gsm, playField.getTiles().get(0).getWidth());
+			this.createButton();
 			isCreated = true;
 		} else {
 			this.reloadPlaystate();
 		}
 	}
+	
+	private void createButton(){
+		JButton button = new JButton("Ververs");
+		button.setPreferredSize(new Dimension(100, 10));
+		button.setSize(button.getPreferredSize());
+		button.setMinimumSize(button.getPreferredSize());
+		button.setMaximumSize(button.getPreferredSize());
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reloadPlaystate();
+			}
+		});
+		this.add(button, BorderLayout.WEST);
+	}
 
 	public void reloadPlaystate() {
 		indicatorIsPlaced = false;
-		int maxTurn = gsm.getUser().getMaxTurnNumber();
+		boolean turnNumberChanged = false;
 		if (gsm.getUser().getPlayerTurn().equals(gsm.getUser().getUsername())) {
-			gsm.getUser().setTurnNumber(maxTurn);
+			gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber());
 		} else {
-			gsm.getUser().setTurnNumber(maxTurn - 1);
+			gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber() - 1);
+			turnNumberChanged = true;
+		}
+		letterBox.reloadLetterBox();
+		if (turnNumberChanged) {
+			gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber());
 		}
 		playField.reloadPlayfield();
-		letterBox.reloadLetterBox();
 		infoPanel.reloadInfoPanel();
 		swapFrame.reloadSwapFrame();
 		filledTiles.clear();
@@ -284,6 +309,7 @@ public class Playstate extends Gamestate implements MouseListener {
 							letterBox.shuffleLetters();
 						} else if (button.getText().equals("Spelen")) {
 							playstateController.doPlay();
+							turnIndicator.resetTurnIndicator();
 						} else if (button.getText().equals("Swappen")) {
 							swapFrame.setVisible(true);
 						} else if (button.getText().equals("Passen")) {
