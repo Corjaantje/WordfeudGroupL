@@ -646,7 +646,7 @@ public class PlaystateController {
 				// blancoLetterCharacter to the character it became.
 
 				if (letter.getIsJoker()) {
-					blancoLetterCharacter = letter.getLetterChar();
+					blancoLetterCharacter = "'" + letter.getLetterChar() + "'";
 				}
 				String gelegdeLetterUpdateQuery = ("INSERT INTO gelegdeletter (tegel_bord_naam,spel_id,beurt_id,letter_id,tegel_x,tegel_y,blancoletterkarakter) VALUES ('"
 						+ tegelBordNaam + "'," + gsm.getUser().getGameNumber() + "," + (lastTurnNumber + 1) + ","
