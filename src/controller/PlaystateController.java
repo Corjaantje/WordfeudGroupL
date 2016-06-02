@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import org.w3c.dom.css.Counter;
+
 import GameObjects.Letter;
 import GameObjects.LetterBox;
 import GameObjects.PlayField;
@@ -585,7 +587,7 @@ public class PlaystateController {
 								wordMultiplier *= 2;
 								break;
 							case "TW":
-								wordMultiplier *= 2;
+								wordMultiplier *= 3;
 								break;
 							default:
 								break;
@@ -625,24 +627,8 @@ public class PlaystateController {
 					+ "'," + points + ", 'word')";
 			databaseController.queryUpdate(beurtUpdateQuery);
 
-			// update letterbakjeletter
-			letterBox.replacePlacedLetters(wordArrayList);
-			// TODO END if the player hand and deck are empty the action_type is
-			// "end"
-			// TODO not sure if letterbakjeletter will need to be updated if
-			// action_type is "end"
-
-			// get the letters that are in the letterBox at the end of the turn,
-			// loop through them
-			// and insert them into the database
-			for (Letter letter : letterBox.getLetters()) {
-				String letterBakjeLetterUpdateQuery = "INSERT INTO letterbakjeletter (`spel_id`,`beurt_id`,`Letter_id`) VALUES ("
-						+ gsm.getUser().getGameNumber() + "," + (lastTurnNumber + 1) + "," + letter.getLetterID() + ")";
-				databaseController.queryUpdate(letterBakjeLetterUpdateQuery);
-			}
-
+			
 			// update gelegde letter
-
 			String tegelBordNaam = "";
 			try {
 				ResultSet rSet = databaseController
@@ -660,7 +646,7 @@ public class PlaystateController {
 				// blancoLetterCharacter to the character it became.
 
 				if (letter.getIsJoker()) {
-					blancoLetterCharacter = letter.getLetterChar();
+					blancoLetterCharacter = "'" + letter.getLetterChar() + "'";
 				}
 				String gelegdeLetterUpdateQuery = ("INSERT INTO gelegdeletter (tegel_bord_naam,spel_id,beurt_id,letter_id,tegel_x,tegel_y,blancoletterkarakter) VALUES ('"
 						+ tegelBordNaam + "'," + gsm.getUser().getGameNumber() + "," + (lastTurnNumber + 1) + ","
@@ -668,6 +654,26 @@ public class PlaystateController {
 						+ blancoLetterCharacter + ")");
 				databaseController.queryUpdate(gelegdeLetterUpdateQuery);
 			}
+			
+			
+			// update letterbakjeletter
+			letterBox.replacePlacedLetters(wordArrayList);
+			// TODO END if the player hand and deck are empty the action_type is
+			// "end"
+			// TODO not sure if letterbakjeletter will need to be updated if
+			// action_type is "end"
+
+			//TODO remove this part (already done in letterBox replaceplaced letters
+			// get the letters that are in the letterBox at the end of the turn,
+			// loop through them
+			// and insert them into the database
+	//		for (Letter letter : letterBox.getLetters()) {
+	//			String letterBakjeLetterUpdateQuery = "INSERT INTO letterbakjeletter (`spel_id`,`beurt_id`,`Letter_id`) VALUES ("
+	//					+ gsm.getUser().getGameNumber() + "," + (lastTurnNumber + 1) + "," + letter.getLetterID() + ")";
+	//			databaseController.queryUpdate(letterBakjeLetterUpdateQuery);
+	//		}
+
+
 
 		} else {
 			System.err.println("Something's gone wrong with the lastTurnNumber in the PlaystateController");
@@ -690,7 +696,7 @@ public class PlaystateController {
 		JOptionPane.showMessageDialog(null, wrongWordsString);
 	}
 
-	public void doPlay() {
+	public boolean doPlay() {
 		String wrongWordsString = "Dit woord kan niet geplaatst worden omdat de volgende woorden niet in het woordenboek staan: ";
 		ArrayList<Letter> wordArrayList = getPlacedLetters();
 		// get number of letters placed down (woordArrayList.size())
@@ -754,6 +760,7 @@ public class PlaystateController {
 
 				if (placementIsValid) {
 					submitValidWord(points, wordArrayList);
+					return true;
 				} else {
 					wordIsInvalid(wrongWordsString);
 				}
@@ -846,6 +853,7 @@ public class PlaystateController {
 
 						if (placementIsValid) {
 							submitValidWord(points, wordArrayList);
+							return true;
 						} else {
 							wordIsInvalid(wrongWordsString);
 						}
@@ -936,6 +944,7 @@ public class PlaystateController {
 
 						if (placementIsValid) {
 							submitValidWord(points, wordArrayList);
+							return true;
 						} else {
 							wordIsInvalid(wrongWordsString);
 						}
@@ -950,6 +959,7 @@ public class PlaystateController {
 				JOptionPane.showMessageDialog(null, "Letters zijn niet volledig horizontaal of verticaal geplaatst.");
 			}
 		}
+		return false;
 	}
 	// methods for Mathijs' score indicator: (getTotalScore() and getMainWord())
 	// to get the orientation of the mainWord use the existing method
@@ -1261,11 +1271,45 @@ public class PlaystateController {
 		int option = JOptionPane.showConfirmDialog(null, "Weet je zeker dat je deze beurt wilt passen?", "Wordfeud",
 				JOptionPane.YES_NO_OPTION);
 		if (option == JOptionPane.YES_OPTION) {
-			int turn = gsm.getUser().getTurnNumber();
+			int turnNumber = gsm.getUser().getTurnNumber();
 			int game = gsm.getUser().getGameNumber();
 			String username = gsm.getUser().getUsername();
 			databaseController.queryUpdate(
-					"INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'pass');");
+					"INSERT INTO beurt VALUES (" + (turnNumber+1) + ", " + game + ",'" + username + "'," + 0 + ", 'pass');");
+			ResultSet passRS = databaseController
+					.query("SELECT * FROM beurt WHERE id = (" + turnNumber + ") OR id = (" + turnNumber + " - 1);");
+			int counter = 1;
+			try {
+				while (passRS.next()) {
+					if (passRS.getString("aktie_type").equals("pass")) {
+						counter++;
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if (counter == 3) {
+				gsm.getUser().setTurnNumber(turnNumber-1);
+				ArrayList<Letter> opponentLetters = letterBox.getLetters();
+				gsm.getUser().setTurnNumber(turnNumber+1);
+				ArrayList<Letter> userLetters = letterBox.getLetters();
+				int userLetterPoints = 0;
+				for (Letter letter : userLetters) {
+					userLetterPoints += letter.getScore();
+				}
+				int opponentLetterPoints = 0;
+				for (Letter letter : opponentLetters) {
+					opponentLetterPoints += letter.getScore();
+				}
+				int userScore = 0;
+				int opponentScore = 0;
+				userScore -= opponentLetterPoints;
+				opponentScore += userLetterPoints;
+				opponentScore -= opponentLetterPoints;
+				this.doEndGame(userScore,opponentScore,turnNumber,game);
+			} else {
+				JOptionPane.showMessageDialog(null, "Het aantal achtereenvolgende pass beurten is nu: "+counter);
+			}
 			return true;
 		}
 		return false;
@@ -1279,51 +1323,21 @@ public class PlaystateController {
 			int game = gsm.getUser().getGameNumber();
 			String username = gsm.getUser().getUsername();
 			databaseController.queryUpdate(
-					"INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'resign');");
+					"INSERT INTO beurt VALUES (" + (turn+1) + ", " + game + ",'" + username + "'," + 0 + ", 'resign');");
+			this.doEndGame(-gsm.getUser().getUserScore(), gsm.getUser().getOpponentScore(), turn, game);
 		}
 	}
-
-	public boolean checkIfGameIsEnded() {
-		if (gsm.getUser().getPlayerTurn().equals(gsm.getUser().getUsername())) {
-			int turn = gsm.getUser().getTurnNumber();
-			ResultSet passRS = databaseController
-					.query("SELECT * FROM beurt WHERE id = (" + turn + " - 2) OR id = (" + turn + " - 4);");
-			ResultSet resignRS = databaseController.query("SELECT * FROM beurt WHERE id = " + (turn - 1));
-			boolean hasResigned = false;
-			boolean hasEnded = false;
-			int counter = 1;
-			try {
-				while (passRS.next()) {
-					if (passRS.getString("aktie_type").equals("pass")) {
-						counter++;
-					}
-				}
-				while (resignRS.next()) {
-					if (resignRS.getString("aktie_type").equals("resign")) {
-						hasResigned = true;
-					} else if (resignRS.getString("aktie_type").equals("end")) {
-						hasEnded = true;
-					}
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			if (counter == 3 || hasResigned || hasEnded) {
-				JOptionPane.showMessageDialog(null,
-						"Het spel is geeindigd!/n" + gsm.getUser().getChallengerName() + " heeft "
-								+ gsm.getUser().getUserScore() + " punten.\n" + gsm.getUser().getOpponentName()
-								+ " heeft " + gsm.getUser().getOpponentScore() + " punten.\n"
-								+ gsm.getUser().getWinner() + " is de winnaar!");
-				int game = gsm.getUser().getGameNumber();
-				String username = gsm.getUser().getUsername();
-				databaseController.queryUpdate(
-						"INSERT INTO beurt VALUES (" + turn + ", " + game + ",'" + username + "'," + 0 + ", 'end');");
-				if (hasEnded) {
-					databaseController.queryUpdate("UPDATE spel SET toestand_type = 'finished' WHERE id = " + game);
-				}
-				return true;
-			}
-		}
-		return false;
+	
+	private void doEndGame(int userScore,int opponentScore,int turn,int game){
+		String userEndQuery = "INSERT INTO beurt VALUES (" + (turn+2) + ", " + game + ",'" + gsm.getUser().getOpponentName() + "'," + opponentScore + ", 'end');";
+		databaseController.queryUpdate(userEndQuery);
+		String opponentEndQuery = "INSERT INTO beurt VALUES (" + (turn+3) + ", " + game + ",'" + gsm.getUser().getChallengerName() + "'," + userScore + ", 'end');";
+		databaseController.queryUpdate(opponentEndQuery);
+		JOptionPane.showMessageDialog(null,
+				"Het spel is geeindigd!/n" + gsm.getUser().getChallengerName() + " heeft "
+						+ gsm.getUser().getUserScore() + " punten.\n" + gsm.getUser().getOpponentName()
+						+ " heeft " + gsm.getUser().getOpponentScore() + " punten.\n"
+						+ gsm.getUser().getWinner() + " is de winnaar!");
+		databaseController.queryUpdate("UPDATE spel SET toestand_type = 'finished' WHERE id = " + game);
 	}
 }

@@ -44,8 +44,8 @@ public class SpectatorCompetitionState extends Gamestate {
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.white);
-		g.setFont(new Font("Arial", Font.BOLD, 35));
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Verdana", Font.BOLD, 40));
 		g.drawString("Competities", (int) (GUI.WIDTH / 2.25), 75);
 	}
 

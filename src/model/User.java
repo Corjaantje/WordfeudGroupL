@@ -15,7 +15,7 @@ public class User {
 	private String username;
 	private String password;
 	private final String errorNotificationNotFoundPassword = "Not found password for this user";
-	private int turnNumber;
+	private int turnNumber; // Note: turnNumber is the max(turnNumber), so it's actually the number of the last turn(not the current turn)
 	private int competitionNumber;
 	private int gameNumber;
 	private int amountOfRoles;
@@ -62,7 +62,7 @@ public class User {
 	public String getUsername() {
 		return this.username;
 	}
-
+	// Note: turnNumber is the max(turnNumber), so it's actually the number of the last turn(not the current turn)
 	public int getTurnNumber() {
 		return turnNumber;
 	}
@@ -103,8 +103,8 @@ public class User {
 	}
 
 	public int getUserScore() {
-		String query = "SELECT sum(score) AS totaalScore FROM beurt WHERE account_naam = 'marijntje42' AND spel_id ="
-				+ this.getGameNumber() + " AND id < " + this.getTurnNumber();
+		String query = "SELECT sum(score) AS totaalScore FROM beurt WHERE account_naam = '"+this.getChallengerName()+"' AND spel_id ="
+				+ this.getGameNumber() + " AND id <= " + this.getTurnNumber();
 		ResultSet rs = databaseController.query(query);
 		int score = -1;
 		try {
@@ -123,7 +123,7 @@ public class User {
 		String query = "SELECT sum(score) AS totaalScore FROM beurt WHERE account_naam = '"
 				+ this.getOpponentName()
 				+ "' AND spel_id = "
-				+ this.getGameNumber() + " AND id < " + this.getTurnNumber();
+				+ this.getGameNumber() + " AND id <= " + this.getTurnNumber();
 		ResultSet rs = databaseController.query(query);
 		int score = -1;
 		try {
@@ -182,9 +182,13 @@ public class User {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return player;
+		if (player.equals(this.getChallengerName())) {
+			return this.getOpponentName();
+		}else{
+			return this.getChallengerName();
+		}
 	}
-
+	// Note: turnNumber is the max(turnNumber), so it's actually the number of the last turn(not the current turn)
 	public void setTurnNumber(int turnNumber) {
 		if (turnNumber > 1) {
 			this.turnNumber = turnNumber;
@@ -239,7 +243,7 @@ public class User {
 			return false;
 		}
 	}
-
+	//TODO Isn't this the same as the turnNumber?
 	public int getMaxTurnNumber() {
 		ResultSet rs = databaseController
 				.query("SELECT max(id) FROM beurt WHERE spel_id = "

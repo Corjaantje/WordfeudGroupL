@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import GameObjects.AdditionalGameInfo;
 import GameObjects.InfoPanel;
 import GameObjects.LetterBox;
 import GameObjects.PlayField;
@@ -30,6 +31,8 @@ public class SpectatorState extends Gamestate {
 	private LetterBox letterBox2;
 
 	private InfoPanel infoPanel;
+	
+	private AdditionalGameInfo additionalGameInfo;
 
 	private boolean isCreated = false;
 
@@ -48,6 +51,7 @@ public class SpectatorState extends Gamestate {
 					gsm.getUser().getOpponentName());
 			infoPanel = new InfoPanel(playField.getX(), playField.getFieldWidth() + 5, playField.getFieldWidth(), 75,
 					db_c, gsm);
+			additionalGameInfo = new AdditionalGameInfo(playField.getX(), playField.getFieldWidth() + 90, playField.getFieldWidth(), 50, db_c, gsm);
 			this.createButtons();
 			isCreated = true;
 		} else {
@@ -62,6 +66,7 @@ public class SpectatorState extends Gamestate {
 			letterBox1.draw(g);
 			letterBox2.draw(g);
 			infoPanel.draw(g);
+			additionalGameInfo.draw(g);
 			g.setColor(Color.red);
 			g.setFont(new Font("Arial", Font.ITALIC, 30));
 			g.drawString(gsm.getUser().getChallengerName(), playField.getX() / 3, letterBox1.getEndY() / 3);
@@ -81,6 +86,7 @@ public class SpectatorState extends Gamestate {
 		letterBox1.reloadLetterBox();
 		letterBox2.reloadLetterBox();
 		infoPanel.reloadInfoPanel();
+		additionalGameInfo.reloadAdditionalInfo();
 	}
 
 	private void goToNext() {
@@ -125,7 +131,14 @@ public class SpectatorState extends Gamestate {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				goToPrevious();
+				int turnNumber = gsm.getUser().getTurnNumber();
+				System.out.println(turnNumber);
+				if (turnNumber > 0) {
+					gsm.getUser().setTurnNumber(turnNumber-1);
+					reloadState();
+				}else {
+					JOptionPane.showMessageDialog(null, "U heeft de eerste beurt bereikt!");
+				}
 			}
 		});
 
@@ -142,7 +155,14 @@ public class SpectatorState extends Gamestate {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				goToNext();
+				int turnNumber = gsm.getUser().getTurnNumber();
+				int maxTurnNumber = gsm.getUser().getMaxTurnNumber();
+				if (turnNumber <= maxTurnNumber) {
+					gsm.getUser().setTurnNumber(turnNumber + 1);
+					reloadState();
+				}else {
+					JOptionPane.showMessageDialog(null, "U heeft de laatste beurt bereikt. Beurt: "+turnNumber+" - Max: "+maxTurnNumber);
+				}
 			}
 		});
 
