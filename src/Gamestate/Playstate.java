@@ -63,7 +63,7 @@ public class Playstate extends Gamestate implements MouseListener {
 	private PlaystateController playstateController;
 
 	private boolean indicatorIsPlaced = false;
-	
+
 	private int lastTurn;
 
 	public Playstate(GamestateManager gsm, DatabaseController db_c) {
@@ -108,18 +108,6 @@ public class Playstate extends Gamestate implements MouseListener {
 			filledTiles = new ArrayList<Tile>();
 			playstateController = new PlaystateController(gsm, playField, letterBox, this);
 			turnIndicator = new TurnIndicator(gsm, playField.getTiles().get(0).getWidth());
-			// Test v
-			Timer timer = new Timer();
-			TimerTask task = new TimerTask() {
-				public void run() {
-					if (gsm.getUser().getMaxTurnNumber() > lastTurn) {
-						JOptionPane.showInternalMessageDialog(null, "U spel gaat nu herladen!");
-						reloadPlaystate();
-					}
-				}
-			};
-			timer.scheduleAtFixedRate(task, 10000, 10000);
-			// Test ^
 			isCreated = true;
 		} else {
 			this.reloadPlaystate();
@@ -127,23 +115,19 @@ public class Playstate extends Gamestate implements MouseListener {
 	}
 
 	public void reloadPlaystate() {
-		if (!playstateController.checkIfGameIsEnded()) {
-			indicatorIsPlaced = false;
-			int maxTurn = gsm.getUser().getMaxTurnNumber();
-			if (gsm.getUser().getPlayerTurn().equals(gsm.getUser().getUsername())) {
-				gsm.getUser().setTurnNumber(maxTurn);
-			} else {
-				gsm.getUser().setTurnNumber(maxTurn - 1);
-			}
-			playField.reloadPlayfield();
-			letterBox.reloadLetterBox();
-			infoPanel.reloadInfoPanel();
-			swapFrame.reloadSwapFrame();
-			filledTiles.clear();
-			chatArea.reloadChat();
+		indicatorIsPlaced = false;
+		int maxTurn = gsm.getUser().getMaxTurnNumber();
+		if (gsm.getUser().getPlayerTurn().equals(gsm.getUser().getUsername())) {
+			gsm.getUser().setTurnNumber(maxTurn);
 		} else {
-			System.out.println("Game has ended");
+			gsm.getUser().setTurnNumber(maxTurn - 1);
 		}
+		playField.reloadPlayfield();
+		letterBox.reloadLetterBox();
+		infoPanel.reloadInfoPanel();
+		swapFrame.reloadSwapFrame();
+		filledTiles.clear();
+		chatArea.reloadChat();
 	}
 
 	@Override
@@ -299,7 +283,7 @@ public class Playstate extends Gamestate implements MouseListener {
 						} else if (button.getText().equals("Schudden")) {
 							letterBox.shuffleLetters();
 						} else if (button.getText().equals("Spelen")) {
-							if(playstateController.doPlay()){
+							if (playstateController.doPlay()) {
 								this.reloadPlaystate();
 							}
 						} else if (button.getText().equals("Swappen")) {
@@ -316,9 +300,9 @@ public class Playstate extends Gamestate implements MouseListener {
 					} else {
 						if (button.getText().equals("Resetten")) {
 							this.resetLetterBoxLetters();
-						}else if(button.getText().equals("Schudden")){
+						} else if (button.getText().equals("Schudden")) {
 							letterBox.shuffleLetters();
-						}else {
+						} else {
 							JOptionPane.showMessageDialog(null, "De beurt is aan: " + gsm.getUser().getPlayerTurn(),
 									"Wordfeud", JOptionPane.ERROR_MESSAGE);
 						}
