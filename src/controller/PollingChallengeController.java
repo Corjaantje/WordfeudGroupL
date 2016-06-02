@@ -52,16 +52,16 @@ public class PollingChallengeController implements Runnable
 	private void fillLetterBoxes(int gameID)
 	{
 		ArrayList<Integer> randomLetterList = new ArrayList<Integer>();
-        for (int i = 1; i < 115; i++) 
+        for (int i = 1; i < 105; i++) 
         {
         	randomLetterList.add(new Integer(i));
         }
         Collections.shuffle(randomLetterList);
-        for (int i = 0; i < 7; i++) 
+        for (int i = 1; i < 8; i++) 
         {
             db_c.queryUpdate("INSERT INTO letterbakjeletter (spel_id,letter_id,beurt_id) VALUES (" + gameID + "," + randomLetterList.get(i) + ",1);");
         }
-        for (int i = 7; i < 14; i++)
+        for (int i = 8; i < 15; i++)
         {
         	db_c.queryUpdate("INSERT INTO letterbakjeletter (spel_id,letter_id,beurt_id) VALUES (" + gameID + "," + randomLetterList.get(i) + ",2);");
         }
