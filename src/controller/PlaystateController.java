@@ -625,24 +625,8 @@ public class PlaystateController {
 					+ "'," + points + ", 'word')";
 			databaseController.queryUpdate(beurtUpdateQuery);
 
-			// update letterbakjeletter
-			letterBox.replacePlacedLetters(wordArrayList);
-			// TODO END if the player hand and deck are empty the action_type is
-			// "end"
-			// TODO not sure if letterbakjeletter will need to be updated if
-			// action_type is "end"
-
-			// get the letters that are in the letterBox at the end of the turn,
-			// loop through them
-			// and insert them into the database
-			for (Letter letter : letterBox.getLetters()) {
-				String letterBakjeLetterUpdateQuery = "INSERT INTO letterbakjeletter (`spel_id`,`beurt_id`,`Letter_id`) VALUES ("
-						+ gsm.getUser().getGameNumber() + "," + (lastTurnNumber + 1) + "," + letter.getLetterID() + ")";
-				databaseController.queryUpdate(letterBakjeLetterUpdateQuery);
-			}
-
+			
 			// update gelegde letter
-
 			String tegelBordNaam = "";
 			try {
 				ResultSet rSet = databaseController
@@ -668,6 +652,26 @@ public class PlaystateController {
 						+ blancoLetterCharacter + ")");
 				databaseController.queryUpdate(gelegdeLetterUpdateQuery);
 			}
+			
+			
+			// update letterbakjeletter
+			letterBox.replacePlacedLetters(wordArrayList);
+			// TODO END if the player hand and deck are empty the action_type is
+			// "end"
+			// TODO not sure if letterbakjeletter will need to be updated if
+			// action_type is "end"
+
+			//TODO remove this part (already done in letterBox replaceplaced letters
+			// get the letters that are in the letterBox at the end of the turn,
+			// loop through them
+			// and insert them into the database
+	//		for (Letter letter : letterBox.getLetters()) {
+	//			String letterBakjeLetterUpdateQuery = "INSERT INTO letterbakjeletter (`spel_id`,`beurt_id`,`Letter_id`) VALUES ("
+	//					+ gsm.getUser().getGameNumber() + "," + (lastTurnNumber + 1) + "," + letter.getLetterID() + ")";
+	//			databaseController.queryUpdate(letterBakjeLetterUpdateQuery);
+	//		}
+
+
 
 		} else {
 			System.err.println("Something's gone wrong with the lastTurnNumber in the PlaystateController");
