@@ -112,7 +112,7 @@ public class Playstate extends Gamestate implements MouseListener {
 			Timer timer = new Timer();
 			TimerTask task = new TimerTask() {
 				public void run() {
-					if (getMaxTurnNumber() > lastTurn) {
+					if (gsm.getUser().getMaxTurnNumber() > lastTurn) {
 						JOptionPane.showInternalMessageDialog(null, "U spel gaat nu herladen!");
 						reloadPlaystate();
 					}
@@ -129,7 +129,7 @@ public class Playstate extends Gamestate implements MouseListener {
 	public void reloadPlaystate() {
 		if (!playstateController.checkIfGameIsEnded()) {
 			indicatorIsPlaced = false;
-			int maxTurn = this.getMaxTurnNumber();
+			int maxTurn = gsm.getUser().getMaxTurnNumber();
 			if (gsm.getUser().getPlayerTurn().equals(gsm.getUser().getUsername())) {
 				gsm.getUser().setTurnNumber(maxTurn);
 			} else {
@@ -144,20 +144,6 @@ public class Playstate extends Gamestate implements MouseListener {
 		} else {
 			System.out.println("Game has ended");
 		}
-	}
-
-	private int getMaxTurnNumber() {
-		String query = "SELECT max(id) AS id FROM beurt WHERE spel_id = " + gsm.getUser().getGameNumber();
-		ResultSet rs = db_c.query(query);
-		int maxTurn = gsm.getUser().getTurnNumber();
-		try {
-			while (rs.next()) {
-				maxTurn = rs.getInt("id");
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return maxTurn;
 	}
 
 	@Override
