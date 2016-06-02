@@ -107,7 +107,7 @@ public class Loginstate extends Gamestate implements ActionListener, KeyListener
 
 	}
 
-	@SuppressWarnings("static-access")
+
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -117,7 +117,7 @@ public class Loginstate extends Gamestate implements ActionListener, KeyListener
 		}
 		else if("switchRegister".equals(e.getActionCommand()))
 		{
-			gsm.setGamestate(gsm.registerState);
+			gsm.setGamestate(GamestateManager.registerState);
 		}
 	}
 	

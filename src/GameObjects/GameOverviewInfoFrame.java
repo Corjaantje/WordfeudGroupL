@@ -56,7 +56,7 @@ public class GameOverviewInfoFrame extends JFrame {
 		}
 		this.setVisible(true);
 	}
-
+	//TODO if game is created check this !
 	private void createLabel() {
 		Font font = new Font("Serif", Font.BOLD, 20);
 
@@ -95,12 +95,13 @@ public class GameOverviewInfoFrame extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					gsm.getUser().setGameNumber(gameNumber);
 					if (gsm.getUser().getPlayerTurn().equals(gsm.getUser().getUsername())) {
-						gsm.getUser().setTurnNumber(maxTurn);
+						gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber());
 					}else{
-						gsm.getUser().setTurnNumber(maxTurn-1);
+						gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber()-1);
 					}
-					gsm.setGamestate(gsm.playState);
+					gsm.setGamestate(GamestateManager.playState);
 					setVisible(false);
 				}
 			}
