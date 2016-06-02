@@ -47,17 +47,17 @@ public class InfoPanel implements Drawable {
 		// TODO Auto-generated method stub
 		g.setColor(Color.gray);
 		g.fillRect(x - 1, y + 2, width, height + 5);
-		g.setColor(Color.black);
-		g.setFont(new Font("Arial", Font.PLAIN, 15));
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("Verdana", Font.BOLD, 14));
 		// User
 		g.drawString(username + " - " + userscore, x + 5, y + (height / 3));
 		// Opponent
 		g.drawString(opponentname + " - " + opponentscore, x + 5, y + (height));
 		// Turn indicator
-		g.setFont(new Font("Arial", Font.BOLD, 20));
-		g.drawString(playerTurn + " is aan de beurt!", x + (width / 3), y + (height));
+		g.setFont(new Font("Verdana", Font.BOLD, 20));
+		g.drawString("'" + playerTurn + "' is aan de beurt!", x + (width / 3), y + (height));
 		//Turn number
-		g.setFont(new Font("Arial", Font.PLAIN, 13));
+		g.setFont(new Font("Verdana", Font.BOLD, 14));
 		g.drawString("Beurtnummer: "+turnNumber, x+(width-(width/4)), y+17);
 	}
 
