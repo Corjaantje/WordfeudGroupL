@@ -182,7 +182,11 @@ public class User {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return player;
+		if (player.equals(this.getChallengerName())) {
+			return this.getOpponentName();
+		}else{
+			return this.getChallengerName();
+		}
 	}
 	// Note: turnNumber is the max(turnNumber), so it's actually the number of the last turn(not the current turn)
 	public void setTurnNumber(int turnNumber) {

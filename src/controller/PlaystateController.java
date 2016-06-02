@@ -690,7 +690,7 @@ public class PlaystateController {
 		JOptionPane.showMessageDialog(null, wrongWordsString);
 	}
 
-	public void doPlay() {
+	public boolean doPlay() {
 		String wrongWordsString = "Dit woord kan niet geplaatst worden omdat de volgende woorden niet in het woordenboek staan: ";
 		ArrayList<Letter> wordArrayList = getPlacedLetters();
 		// get number of letters placed down (woordArrayList.size())
@@ -754,6 +754,7 @@ public class PlaystateController {
 
 				if (placementIsValid) {
 					submitValidWord(points, wordArrayList);
+					return true;
 				} else {
 					wordIsInvalid(wrongWordsString);
 				}
@@ -846,6 +847,7 @@ public class PlaystateController {
 
 						if (placementIsValid) {
 							submitValidWord(points, wordArrayList);
+							return true;
 						} else {
 							wordIsInvalid(wrongWordsString);
 						}
@@ -936,6 +938,7 @@ public class PlaystateController {
 
 						if (placementIsValid) {
 							submitValidWord(points, wordArrayList);
+							return true;
 						} else {
 							wordIsInvalid(wrongWordsString);
 						}
@@ -950,6 +953,7 @@ public class PlaystateController {
 				JOptionPane.showMessageDialog(null, "Letters zijn niet volledig horizontaal of verticaal geplaatst.");
 			}
 		}
+		return false;
 	}
 	// methods for Mathijs' score indicator: (getTotalScore() and getMainWord())
 	// to get the orientation of the mainWord use the existing method
