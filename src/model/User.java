@@ -15,7 +15,7 @@ public class User {
 	private String username;
 	private String password;
 	private final String errorNotificationNotFoundPassword = "Not found password for this user";
-	private int turnNumber;
+	private int turnNumber; // Note: turnNumber is the max(turnNumber), so it's actually the number of the last turn(not the current turn)
 	private int competitionNumber;
 	private int gameNumber;
 	private int amountOfRoles;
@@ -62,7 +62,7 @@ public class User {
 	public String getUsername() {
 		return this.username;
 	}
-
+	// Note: turnNumber is the max(turnNumber), so it's actually the number of the last turn(not the current turn)
 	public int getTurnNumber() {
 		return turnNumber;
 	}
@@ -188,7 +188,7 @@ public class User {
 			return this.getChallengerName();
 		}
 	}
-
+	// Note: turnNumber is the max(turnNumber), so it's actually the number of the last turn(not the current turn)
 	public void setTurnNumber(int turnNumber) {
 		if (turnNumber > 1) {
 			this.turnNumber = turnNumber;
@@ -243,7 +243,7 @@ public class User {
 			return false;
 		}
 	}
-
+	//TODO Isn't this the same as the turnNumber?
 	public int getMaxTurnNumber() {
 		ResultSet rs = databaseController
 				.query("SELECT max(id) FROM beurt WHERE spel_id = "

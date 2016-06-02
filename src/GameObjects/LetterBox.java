@@ -144,7 +144,7 @@ public class LetterBox implements Drawable {
 		// add the unused letters
 		for (Letter letter : unusedLetters) {
 			String updateLetterbakjeletterQuery = "INSERT INTO letterbakjeletter (spel_id,letter_id,beurt_id) VALUES ("
-					+ gsm.getUser().getGameNumber() + ", " + letter.getLetterID() + ", " + gsm.getUser().getTurnNumber()
+					+ gsm.getUser().getGameNumber() + ", " + letter.getLetterID() + ", " + (gsm.getUser().getTurnNumber()+1)
 					+ ")";
 			db_c.queryUpdate(updateLetterbakjeletterQuery);
 		}
