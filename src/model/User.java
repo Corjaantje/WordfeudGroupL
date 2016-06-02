@@ -243,7 +243,11 @@ public class User {
 			return false;
 		}
 	}
+<<<<<<< HEAD
 	//TODO Isn't this the same as the turnNumber?
+=======
+
+>>>>>>> origin/Donneh
 	public int getMaxTurnNumber() {
 		ResultSet rs = databaseController
 				.query("SELECT max(id) FROM beurt WHERE spel_id = "
@@ -260,15 +264,20 @@ public class User {
 		return maxTurn;
 	}
 
+<<<<<<< HEAD
 
 	public String getWinner() {
 
+=======
+	public String getWinner() {
+>>>>>>> origin/Donneh
 		if (this.getOpponentScore() > this.getUserScore()) {
 			return this.getOpponentName();
 		} else {
 			return this.getChallengerName();
 		}
 	}
+<<<<<<< HEAD
 
 }
 
@@ -277,3 +286,6 @@ public class User {
 
 
 
+=======
+}
+>>>>>>> origin/Donneh
