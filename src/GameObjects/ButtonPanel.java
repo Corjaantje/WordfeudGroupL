@@ -1,6 +1,7 @@
 package GameObjects;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class ButtonPanel implements Drawable {
 
 	private void drawButtons(Graphics2D g) {
 		for (Button button : buttons) {
+			g.setFont(new Font("Verdana", Font.BOLD, 32));
 			button.draw(g);
 		}
 	}

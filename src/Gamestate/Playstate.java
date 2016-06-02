@@ -95,7 +95,7 @@ public class Playstate extends Gamestate implements MouseListener {
 		if (!isCreated) {
 			this.setLayout(new BorderLayout());
 			playField = new PlayField(db_c, gsm);
-			letterBox = new LetterBox(playField.getX(), playField.getFieldWidth(), db_c, gsm, "marijntje42");
+			letterBox = new LetterBox(playField.getX(), playField.getFieldWidth(), db_c, gsm, gsm.getUser().getUsername());
 			buttonPanel = new ButtonPanel(playField.getX(), letterBox.getEndY(), playField.getFieldWidth(), 50);
 			int height = (int) (GUI.HEIGHT - buttonPanel.getEndY());
 			infoPanel = new InfoPanel(playField.getX(), buttonPanel.getEndY(), playField.getFieldWidth(), height, db_c,
