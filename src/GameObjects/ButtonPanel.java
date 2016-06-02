@@ -16,7 +16,7 @@ public class ButtonPanel implements Drawable {
 	
 	private boolean buttonIsPushed;
 
-	private String[] buttonText = { "Spelen","Resetten", "Passen", "Schudden", "Swappen", "Opgeven" };
+	private String[] buttonText = { " Spelen","Resetten", " Passen", "Schudden", "Swappen", "Opgeven" };
 
 	private int x;
 	private int y;
