@@ -63,6 +63,8 @@ public class Playstate extends Gamestate implements MouseListener {
 	private PlaystateController playstateController;
 
 	private boolean indicatorIsPlaced = false;
+	
+	private int lastTurn;
 
 	public Playstate(GamestateManager gsm, DatabaseController db_c) {
 		super(gsm, db_c);
@@ -89,6 +91,7 @@ public class Playstate extends Gamestate implements MouseListener {
 
 	@Override
 	public void create() {
+		lastTurn = gsm.getUser().getMaxTurnNumber();
 		if (!isCreated) {
 			this.setLayout(new BorderLayout());
 			playField = new PlayField(db_c, gsm);
@@ -109,7 +112,8 @@ public class Playstate extends Gamestate implements MouseListener {
 			Timer timer = new Timer();
 			TimerTask task = new TimerTask() {
 				public void run() {
-					if (gsm.getUser().getTurnNumber() != getMaxTurnNumber()) {
+					if (getMaxTurnNumber() > lastTurn) {
+						JOptionPane.showInternalMessageDialog(null, "U spel gaat nu herladen!");
 						reloadPlaystate();
 					}
 				}
@@ -309,8 +313,9 @@ public class Playstate extends Gamestate implements MouseListener {
 						} else if (button.getText().equals("Schudden")) {
 							letterBox.shuffleLetters();
 						} else if (button.getText().equals("Spelen")) {
-							playstateController.doPlay();
-							this.reloadPlaystate();
+							if(playstateController.doPlay()){
+								this.reloadPlaystate();
+							}
 						} else if (button.getText().equals("Swappen")) {
 							swapFrame.setVisible(true);
 						} else if (button.getText().equals("Passen")) {
