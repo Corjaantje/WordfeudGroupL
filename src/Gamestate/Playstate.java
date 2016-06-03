@@ -1,9 +1,12 @@
 package Gamestate;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -24,6 +27,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
@@ -124,8 +128,13 @@ public class Playstate extends Gamestate implements MouseListener {
 		JButton button = new JButton("Ververs");
 		button.setPreferredSize(new Dimension(100, 10));
 		button.setSize(button.getPreferredSize());
-		button.setMinimumSize(button.getPreferredSize());
+		button .setMinimumSize(button.getPreferredSize());
 		button.setMaximumSize(button.getPreferredSize());
+		Image image = Toolkit.getDefaultToolkit().getImage("Resources/refresh.png");
+		image = image.getScaledInstance(100,100, Image.SCALE_DEFAULT);
+		ImageIcon icon = new ImageIcon(image);
+		button.setIcon(icon);
+		button.setBackground(Color.black);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
