@@ -48,7 +48,7 @@ public class LetterBox implements Drawable {
 	private void createTiles() {
 		tiles = new ArrayList<Tile>();
 		for (int i = 0; i < 7; i++) {
-			tiles.add(new Tile(startX, startY, tileDiameter, tileDiameter, "--"));
+			tiles.add(new Tile(startX, startY, tileDiameter, tileDiameter, "BOX"));
 			startX += tileDiameter;
 		}
 	}
