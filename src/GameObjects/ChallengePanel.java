@@ -45,6 +45,8 @@ public class ChallengePanel extends JPanel implements ActionListener
 		this.gsm = gsmPar;
 		this.db_c = db_cPar;
 		submit = new JButton("Uitdagen");
+		submit.addActionListener(this);
+		submit.setActionCommand("challenge");
 		this.setLayout(null);
 		this.resetContent();
 		this.validate();
@@ -84,8 +86,6 @@ public class ChallengePanel extends JPanel implements ActionListener
 		userCombo.setBounds(0, 42, (int)(GUI.WIDTH/5), 20);	
 		
 		submit.setBounds(0, 84, (int)(GUI.WIDTH/5), 20);
-		submit.addActionListener(this);
-		submit.setActionCommand("challenge");
 		
 		this.add(mainText);	
 		this.add(langCombo);
