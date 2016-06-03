@@ -22,7 +22,7 @@ public class ChatInput extends JPanel
 	{
 		this.setPreferredSize(new Dimension((int) (GUI.WIDTH/20), (int) (GUI.HEIGHT/14)));;
 		this.setLayout(new BorderLayout());
-		this.setBorder(BorderFactory.createLineBorder(Color.WHITE, 3));
+		this.setBorder(BorderFactory.createLineBorder((new Color(0, 255, 0)), 3));
 		this.addChatInput();
 		this.addConfigButton();
 		this.addSendButton();

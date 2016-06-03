@@ -27,6 +27,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -119,6 +120,7 @@ public class Playstate extends Gamestate implements MouseListener {
 			turnIndicator = new TurnIndicator(gsm, playField.getTiles().get(0).getWidth());
 			this.createButton();
 			isCreated = true;
+			this.setBackground(Color.black);
 		} else {
 			this.reloadPlaystate();
 		}
@@ -126,6 +128,7 @@ public class Playstate extends Gamestate implements MouseListener {
 	
 	private void createButton(){
 		JButton button = new JButton("Ververs");
+		button.setBorder(BorderFactory.createLineBorder((new Color(0, 255, 0)), 3));
 		button.setPreferredSize(new Dimension(100, 10));
 		button.setSize(button.getPreferredSize());
 		button .setMinimumSize(button.getPreferredSize());
