@@ -86,7 +86,6 @@ public class ChallengePanel extends JPanel implements ActionListener
 		userCombo.setBounds(0, 42, (int)(GUI.WIDTH/5), 20);	
 		
 		submit.setBounds(0, 84, (int)(GUI.WIDTH/5), 20);
-		
 		this.add(mainText);	
 		this.add(langCombo);
 		this.add(userCombo);

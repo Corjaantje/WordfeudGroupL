@@ -26,7 +26,7 @@ public class GameOverviewInfoFrame extends JFrame {
 	private DatabaseController db_c;
 
 	private JPanel panel;
-	
+
 	private int gameNumber;
 
 	private boolean isCreated = false;
@@ -51,12 +51,13 @@ public class GameOverviewInfoFrame extends JFrame {
 		}
 		this.createLabel();
 		this.createButton();
-		if(!isCreated){
+		if (!isCreated) {
 			isCreated = true;
 		}
 		this.setVisible(true);
 	}
-	//TODO if game is created check this !
+
+	// TODO if game is created check this !
 	private void createLabel() {
 		Font font = new Font("Serif", Font.BOLD, 20);
 
@@ -80,19 +81,10 @@ public class GameOverviewInfoFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				int option = JOptionPane.showConfirmDialog(null,
-						"Weet u zeker dat u naar het spel: " + button.getText() + " wilt gaan?", "Wordfeud",
-						JOptionPane.YES_NO_OPTION);
-				if (option == JOptionPane.OK_OPTION) {
-					gsm.getUser().setGameNumber(gameNumber);
-					if (gsm.getUser().getPlayerTurn().equals(gsm.getUser().getUsername())) {
-						gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber());
-					}else{
-						gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber()-1);
-					}
-					gsm.setGamestate(GamestateManager.playState);
-					setVisible(false);
-				}
+				gsm.getUser().setGameNumber(gameNumber);
+				gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber());
+				gsm.setGamestate(GamestateManager.playState);
+				setVisible(false);
 			}
 		});
 		this.add(button, BorderLayout.SOUTH);
