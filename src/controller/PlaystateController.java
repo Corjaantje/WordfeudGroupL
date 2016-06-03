@@ -1302,7 +1302,7 @@ public class PlaystateController {
 				userScore -= opponentLetterPoints;
 				opponentScore += userLetterPoints;
 				opponentScore -= opponentLetterPoints;
-				this.doEndGame(userScore,opponentScore,turnNumber,game);
+				this.doEndGame(userScore,opponentScore,turnNumber,game,databaseController);
 			} else {
 				JOptionPane.showMessageDialog(null, "Het aantal achtereenvolgende pass beurten is nu: "+counter);
 			}
@@ -1320,17 +1320,28 @@ public class PlaystateController {
 			String username = gsm.getUser().getUsername();
 			databaseController.queryUpdate(
 					"INSERT INTO beurt VALUES (" + (turn+1) + ", " + game + ",'" + username + "'," + 0 + ", 'resign');");
-			this.doEndGame(-gsm.getUser().getUserScore(), gsm.getUser().getOpponentScore(), turn, game);
+			this.doEndGame((-gsm.getUser().getUserScore()), 0, turn, game,databaseController);
 		}
 	}
 	
-	private void doEndGame(int userScore,int opponentScore,int turn,int game){
-		String userEndQuery = "INSERT INTO beurt VALUES (" + (turn+2) + ", " + game + ",'" + gsm.getUser().getOpponentName() + "'," + opponentScore + ", 'end');";
-		databaseController.queryUpdate(userEndQuery);
-		String opponentEndQuery = "INSERT INTO beurt VALUES (" + (turn+3) + ", " + game + ",'" + gsm.getUser().getChallengerName() + "'," + userScore + ", 'end');";
-		databaseController.queryUpdate(opponentEndQuery);
+	private void doEndGame(int userScore,int opponentScore,int turn,int game,DatabaseController databaseController){
+		if (databaseController.pingedBack()) {
+			turn += 1;
+			String userEndQuery = "INSERT INTO beurt (id, spel_id, account_naam, score, aktie_type) VALUES (" + turn
+					+ ", " + game + ",'" + gsm.getUser().getOpponentName() + "'," + opponentScore + ", 'end');";
+			databaseController.queryUpdate(userEndQuery);
+			turn += 2;
+			String opponentEndQuery = "INSERT INTO beurt (id, spel_id, account_naam, score, aktie_type) VALUES (" + turn
+					+ ", " + game + ",'" + gsm.getUser().getChallengerName() + "'," + userScore + ", 'end');";
+			databaseController.queryUpdate(opponentEndQuery);
+		}else{
+			DatabaseController db_c = new DatabaseController();
+			this.doEndGame(userScore, opponentScore, turn, game, db_c);
+			/*JOptionPane.showMessageDialog(null, "er ging iets fout bij het eindigen");
+			return;*/
+		}
 		JOptionPane.showMessageDialog(null,
-				"Het spel is geeindigd!/n" + gsm.getUser().getChallengerName() + " heeft "
+				"Het spel is geeindigd!\n" + gsm.getUser().getChallengerName() + " heeft "
 						+ gsm.getUser().getUserScore() + " punten.\n" + gsm.getUser().getOpponentName()
 						+ " heeft " + gsm.getUser().getOpponentScore() + " punten.\n"
 						+ gsm.getUser().getWinner() + " is de winnaar!");
