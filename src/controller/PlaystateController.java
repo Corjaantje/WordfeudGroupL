@@ -647,11 +647,41 @@ public class PlaystateController {
 				if (letter.getIsJoker()) {
 					blancoLetterCharacter = "'" + letter.getLetterChar() + "'";
 				}
-				String gelegdeLetterUpdateQuery = ("INSERT INTO gelegdeletter (tegel_bord_naam,spel_id,beurt_id,letter_id,tegel_x,tegel_y,blancoletterkarakter) VALUES ('"
-						+ tegelBordNaam + "'," + gsm.getUser().getGameNumber() + "," + (lastTurnNumber + 1) + ","
-						+ letter.getLetterID() + "," + letter.getBordX() + "," + letter.getBordY() + ","
-						+ blancoLetterCharacter + ")");
-				databaseController.queryUpdate(gelegdeLetterUpdateQuery);
+				// mathijs v
+				boolean isGood = false;
+				int counter = 0;
+				while (!isGood) {
+					if (databaseController.pingedBack()) {
+
+						String gelegdeLetterUpdateQuery = ("INSERT INTO gelegdeletter (tegel_bord_naam,spel_id,beurt_id,letter_id,tegel_x,tegel_y,blancoletterkarakter) VALUES ('"
+								+ tegelBordNaam + "'," + gsm.getUser().getGameNumber() + "," + (lastTurnNumber + 1)
+								+ "," + letter.getLetterID() + "," + letter.getBordX() + "," + letter.getBordY() + ","
+								+ blancoLetterCharacter + ")");
+						databaseController.queryUpdate(gelegdeLetterUpdateQuery);
+						ResultSet rs = databaseController.query("SELECT * FROM gelegdeletter WHERE spel_id = "
+								+ gsm.getUser().getGameNumber() + " AND beurt_id = " + (lastTurnNumber + 1));
+						ArrayList<Integer> identification = new ArrayList<Integer>();
+						try {
+							while (rs.next()) {
+								identification.add(rs.getInt("letter_id"));
+							}
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+						if (identification.contains(letter.getLetterID())) {
+							isGood = true;
+						}
+					} else if (counter == 50) {
+						JOptionPane.showMessageDialog(null, "Er ging iets fout bij het inserten van de letters in de database");
+						gsm.setGamestate(GamestateManager.gameOverviewState);
+						return;
+					} else if (!databaseController.pingedBack()) {
+						databaseController = new DatabaseController();
+					}
+
+				}
+
+				// mathijs^
 			}
 
 			// update letterbakjeletter
@@ -1319,7 +1349,7 @@ public class PlaystateController {
 			String username = gsm.getUser().getUsername();
 			databaseController.queryUpdate("INSERT INTO beurt VALUES (" + (turn + 1) + ", " + game + ",'" + username
 					+ "'," + 0 + ", 'resign');");
-			this.doEndGame((-gsm.getUser().getUserScore()), 0, (turn+1), game, databaseController);
+			this.doEndGame((-gsm.getUser().getUserScore()), 0, (turn + 1), game, databaseController);
 		}
 	}
 
@@ -1346,7 +1376,6 @@ public class PlaystateController {
 				}
 				if (turns.contains(turn)) {
 					isGood = true;
-					JOptionPane.showMessageDialog(null, "database contains turn "+turn);
 				}
 			} else if (counter == 50) {
 				JOptionPane.showMessageDialog(null, "Er ging iets fout bij het inserten van de userscore");
@@ -1379,7 +1408,6 @@ public class PlaystateController {
 				}
 				if (turns.contains(turn)) {
 					isGood = true;
-					JOptionPane.showMessageDialog(null, "database contains turn "+turn);
 				}
 			} else if (counter == 50) {
 				JOptionPane.showMessageDialog(null, "Er ging iets fout bij het inserten van de userscore");
