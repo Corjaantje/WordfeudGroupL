@@ -169,6 +169,7 @@ public class GamestateManager extends JPanel implements ActionListener{
 					invitePlayerInMenu = true;
 				}
 			}
+			challengeFrame.updateChallengePopup();
 		}
 		else
 		{

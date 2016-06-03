@@ -24,7 +24,7 @@ public class ChatOutput extends JPanel
 		this.setLayout(new BorderLayout());
 		DefaultCaret caret = (DefaultCaret)chatOutput.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-		this.setBorder(BorderFactory.createLineBorder(Color.WHITE, 3));
+		this.setBorder(BorderFactory.createLineBorder((new Color(0, 255, 0)), 3));
 		this.addChatOutput();
 	}
 	

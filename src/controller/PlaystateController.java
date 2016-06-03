@@ -627,7 +627,6 @@ public class PlaystateController {
 					+ "'," + points + ", 'word')";
 			databaseController.queryUpdate(beurtUpdateQuery);
 
-			
 			// update gelegde letter
 			String tegelBordNaam = "";
 			try {
@@ -654,8 +653,7 @@ public class PlaystateController {
 						+ blancoLetterCharacter + ")");
 				databaseController.queryUpdate(gelegdeLetterUpdateQuery);
 			}
-			
-			
+
 			// update letterbakjeletter
 			letterBox.replacePlacedLetters(wordArrayList);
 			// TODO END if the player hand and deck are empty the action_type is
@@ -663,17 +661,18 @@ public class PlaystateController {
 			// TODO not sure if letterbakjeletter will need to be updated if
 			// action_type is "end"
 
-			//TODO remove this part (already done in letterBox replaceplaced letters
+			// TODO remove this part (already done in letterBox replaceplaced
+			// letters
 			// get the letters that are in the letterBox at the end of the turn,
 			// loop through them
 			// and insert them into the database
-	//		for (Letter letter : letterBox.getLetters()) {
-	//			String letterBakjeLetterUpdateQuery = "INSERT INTO letterbakjeletter (`spel_id`,`beurt_id`,`Letter_id`) VALUES ("
-	//					+ gsm.getUser().getGameNumber() + "," + (lastTurnNumber + 1) + "," + letter.getLetterID() + ")";
-	//			databaseController.queryUpdate(letterBakjeLetterUpdateQuery);
-	//		}
-
-
+			// for (Letter letter : letterBox.getLetters()) {
+			// String letterBakjeLetterUpdateQuery = "INSERT INTO
+			// letterbakjeletter (`spel_id`,`beurt_id`,`Letter_id`) VALUES ("
+			// + gsm.getUser().getGameNumber() + "," + (lastTurnNumber + 1) +
+			// "," + letter.getLetterID() + ")";
+			// databaseController.queryUpdate(letterBakjeLetterUpdateQuery);
+			// }
 
 		} else {
 			System.err.println("Something's gone wrong with the lastTurnNumber in the PlaystateController");
@@ -1270,8 +1269,8 @@ public class PlaystateController {
 			int turnNumber = gsm.getUser().getTurnNumber();
 			int game = gsm.getUser().getGameNumber();
 			String username = gsm.getUser().getUsername();
-			databaseController.queryUpdate(
-					"INSERT INTO beurt VALUES (" + (turnNumber+1) + ", " + game + ",'" + username + "'," + 0 + ", 'pass');");
+			databaseController.queryUpdate("INSERT INTO beurt VALUES (" + (turnNumber + 1) + ", " + game + ",'"
+					+ username + "'," + 0 + ", 'pass');");
 			ResultSet passRS = databaseController
 					.query("SELECT * FROM beurt WHERE id = (" + turnNumber + ") OR id = (" + turnNumber + " - 1);");
 			int counter = 1;
@@ -1285,9 +1284,9 @@ public class PlaystateController {
 				e.printStackTrace();
 			}
 			if (counter == 3) {
-				gsm.getUser().setTurnNumber(turnNumber-1);
+				gsm.getUser().setTurnNumber(turnNumber - 1);
 				ArrayList<Letter> opponentLetters = letterBox.getLetters();
-				gsm.getUser().setTurnNumber(turnNumber+1);
+				gsm.getUser().setTurnNumber(turnNumber + 1);
 				ArrayList<Letter> userLetters = letterBox.getLetters();
 				int userLetterPoints = 0;
 				for (Letter letter : userLetters) {
@@ -1302,9 +1301,9 @@ public class PlaystateController {
 				userScore -= opponentLetterPoints;
 				opponentScore += userLetterPoints;
 				opponentScore -= opponentLetterPoints;
-				this.doEndGame(userScore,opponentScore,turnNumber,game);
+				this.doEndGame(userScore, opponentScore, turnNumber, game, databaseController);
 			} else {
-				JOptionPane.showMessageDialog(null, "Het aantal achtereenvolgende pass beurten is nu: "+counter);
+				JOptionPane.showMessageDialog(null, "Het aantal achtereenvolgende pass beurten is nu: " + counter);
 			}
 			return true;
 		}
@@ -1318,22 +1317,82 @@ public class PlaystateController {
 			int turn = gsm.getUser().getTurnNumber();
 			int game = gsm.getUser().getGameNumber();
 			String username = gsm.getUser().getUsername();
-			databaseController.queryUpdate(
-					"INSERT INTO beurt VALUES (" + (turn+1) + ", " + game + ",'" + username + "'," + 0 + ", 'resign');");
-			this.doEndGame(-gsm.getUser().getUserScore(), gsm.getUser().getOpponentScore(), turn, game);
+			databaseController.queryUpdate("INSERT INTO beurt VALUES (" + (turn + 1) + ", " + game + ",'" + username
+					+ "'," + 0 + ", 'resign');");
+			this.doEndGame((-gsm.getUser().getUserScore()), 0, (turn+1), game, databaseController);
 		}
 	}
-	
-	private void doEndGame(int userScore,int opponentScore,int turn,int game){
-		String userEndQuery = "INSERT INTO beurt VALUES (" + (turn+2) + ", " + game + ",'" + gsm.getUser().getOpponentName() + "'," + opponentScore + ", 'end');";
-		databaseController.queryUpdate(userEndQuery);
-		String opponentEndQuery = "INSERT INTO beurt VALUES (" + (turn+3) + ", " + game + ",'" + gsm.getUser().getChallengerName() + "'," + userScore + ", 'end');";
-		databaseController.queryUpdate(opponentEndQuery);
-		JOptionPane.showMessageDialog(null,
-				"Het spel is geeindigd!/n" + gsm.getUser().getChallengerName() + " heeft "
-						+ gsm.getUser().getUserScore() + " punten.\n" + gsm.getUser().getOpponentName()
-						+ " heeft " + gsm.getUser().getOpponentScore() + " punten.\n"
-						+ gsm.getUser().getWinner() + " is de winnaar!");
+
+	private void doEndGame(int userScore, int opponentScore, int turn, int game,
+			DatabaseController databaseController) {
+		boolean isGood = false;
+		int counter = 0;
+		turn += 1;
+		while (!isGood) {
+			counter++;
+			if (databaseController.pingedBack()) {
+				String userEndQuery = "INSERT INTO beurt (id, spel_id, account_naam, score, aktie_type) VALUES (" + turn
+						+ ", " + game + ",'" + gsm.getUser().getOpponentName() + "'," + opponentScore + ", 'end');";
+				databaseController.queryUpdate(userEndQuery);
+				ResultSet rs = databaseController.query("SELECT * FROM beurt WHERE spel_id = " + game);
+				ArrayList<Integer> turns = new ArrayList<Integer>();
+				try {
+					while (rs.next()) {
+						turns.add(rs.getInt("id"));
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (turns.contains(turn)) {
+					isGood = true;
+					JOptionPane.showMessageDialog(null, "database contains turn "+turn);
+				}
+			} else if (counter == 50) {
+				JOptionPane.showMessageDialog(null, "Er ging iets fout bij het inserten van de userscore");
+				gsm.setGamestate(GamestateManager.gameOverviewState);
+				return;
+			} else if (!databaseController.pingedBack()) {
+				databaseController = new DatabaseController();
+			}
+
+		}
+		counter = 0;
+		isGood = false;
+		turn += 1;
+		while (!isGood) {
+			if (databaseController.pingedBack()) {
+				counter++;
+				String opponentEndQuery = "INSERT INTO beurt (id, spel_id, account_naam, score, aktie_type) VALUES ("
+						+ turn + ", " + game + ",'" + gsm.getUser().getChallengerName() + "'," + userScore
+						+ ", 'end');";
+				databaseController.queryUpdate(opponentEndQuery);
+				ResultSet rs = databaseController.query("SELECT * FROM beurt WHERE spel_id = " + game);
+				ArrayList<Integer> turns = new ArrayList<Integer>();
+				try {
+					while (rs.next()) {
+						turns.add(rs.getInt("id"));
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (turns.contains(turn)) {
+					isGood = true;
+					JOptionPane.showMessageDialog(null, "database contains turn "+turn);
+				}
+			} else if (counter == 50) {
+				JOptionPane.showMessageDialog(null, "Er ging iets fout bij het inserten van de userscore");
+				gsm.setGamestate(GamestateManager.gameOverviewState);
+				return;
+			} else if (!databaseController.pingedBack()) {
+				databaseController = new DatabaseController();
+			}
+		}
+		JOptionPane.showMessageDialog(null, "Het spel is geeindigd!\n" + gsm.getUser().getChallengerName() + " heeft "
+				+ gsm.getUser().getUserScore() + " punten.\n" + gsm.getUser().getOpponentName() + " heeft "
+				+ gsm.getUser().getOpponentScore() + " punten.\n" + gsm.getUser().getWinner() + " is de winnaar!");
 		databaseController.queryUpdate("UPDATE spel SET toestand_type = 'finished' WHERE id = " + game);
+		gsm.setGamestate(GamestateManager.gameOverviewState);
 	}
 }
