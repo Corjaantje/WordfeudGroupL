@@ -324,6 +324,7 @@ public class Playstate extends Gamestate implements MouseListener {
 							turnIndicator.resetTurnIndicator();
 						} else if (button.getText().equals("Swappen")) {
 							swapFrame.setVisible(true);
+							this.reloadPlaystate();
 						} else if (button.getText().equals(" Passen")) {
 							if (playstateController.doPass()) {
 								letterBox.replacePlacedLetters(new ArrayList<Letter>());
