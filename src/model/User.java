@@ -269,7 +269,9 @@ public class User {
 
 		if (this.getOpponentScore() > this.getUserScore()) {
 			return this.getOpponentName();
-		} else {
+		}else if(this.getOpponentScore() == this.getUserScore()){
+			return this.getOpponentName();
+		}else {
 			return this.getChallengerName();
 		}
 	}

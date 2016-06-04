@@ -1,8 +1,14 @@
 package Gamestate;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -21,7 +27,11 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
 
 import GameObjects.Button;
 import GameObjects.ButtonPanel;
@@ -63,7 +73,7 @@ public class Playstate extends Gamestate implements MouseListener {
 	private PlaystateController playstateController;
 
 	private boolean indicatorIsPlaced = false;
-	
+
 	private int lastTurn;
 
 	public Playstate(GamestateManager gsm, DatabaseController db_c) {
@@ -95,7 +105,7 @@ public class Playstate extends Gamestate implements MouseListener {
 		if (!isCreated) {
 			this.setLayout(new BorderLayout());
 			playField = new PlayField(db_c, gsm);
-			letterBox = new LetterBox(playField.getX(), playField.getFieldWidth(), db_c, gsm, "marijntje42");
+			letterBox = new LetterBox(playField.getX(), playField.getFieldWidth(), db_c, gsm, gsm.getUser().getUsername());
 			buttonPanel = new ButtonPanel(playField.getX(), letterBox.getEndY(), playField.getFieldWidth(), 50);
 			int height = (int) (GUI.HEIGHT - buttonPanel.getEndY());
 			infoPanel = new InfoPanel(playField.getX(), buttonPanel.getEndY(), playField.getFieldWidth(), height, db_c,
@@ -108,42 +118,53 @@ public class Playstate extends Gamestate implements MouseListener {
 			filledTiles = new ArrayList<Tile>();
 			playstateController = new PlaystateController(gsm, playField, letterBox, this);
 			turnIndicator = new TurnIndicator(gsm, playField.getTiles().get(0).getWidth());
-			// Test v
-			Timer timer = new Timer();
-			TimerTask task = new TimerTask() {
-				public void run() {
-					if (gsm.getUser().getMaxTurnNumber() > lastTurn) {
-						JOptionPane.showInternalMessageDialog(null, "U spel gaat nu herladen!");
-						reloadPlaystate();
-					}
-				}
-			};
-			timer.scheduleAtFixedRate(task, 10000, 10000);
-			// Test ^
+			this.createButton();
 			isCreated = true;
+			this.setBackground(Color.black);
 		} else {
 			this.reloadPlaystate();
 		}
 	}
+	
+	private void createButton(){
+		JButton button = new JButton("Ververs");
+		button.setBorder(BorderFactory.createLineBorder((new Color(0, 255, 0)), 3));
+		button.setPreferredSize(new Dimension(100, 10));
+		button.setSize(button.getPreferredSize());
+		button .setMinimumSize(button.getPreferredSize());
+		button.setMaximumSize(button.getPreferredSize());
+		Image image = Toolkit.getDefaultToolkit().getImage("Resources/refresh.png");
+		image = image.getScaledInstance(100,100, Image.SCALE_DEFAULT);
+		ImageIcon icon = new ImageIcon(image);
+		button.setIcon(icon);
+		button.setBackground(Color.black);
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reloadPlaystate();
+			}
+		});
+		this.add(button, BorderLayout.WEST);
+	}
 
 	public void reloadPlaystate() {
-		if (!playstateController.checkIfGameIsEnded()) {
-			indicatorIsPlaced = false;
-			int maxTurn = gsm.getUser().getMaxTurnNumber();
-			if (gsm.getUser().getPlayerTurn().equals(gsm.getUser().getUsername())) {
-				gsm.getUser().setTurnNumber(maxTurn);
-			} else {
-				gsm.getUser().setTurnNumber(maxTurn - 1);
-			}
-			playField.reloadPlayfield();
-			letterBox.reloadLetterBox();
-			infoPanel.reloadInfoPanel();
-			swapFrame.reloadSwapFrame();
-			filledTiles.clear();
-			chatArea.reloadChat();
+		indicatorIsPlaced = false;
+		boolean turnNumberChanged = false;
+		if (gsm.getUser().getPlayerTurn().equals(gsm.getUser().getUsername())) {
+			gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber());
 		} else {
-			System.out.println("Game has ended");
+			gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber() - 1);
+			turnNumberChanged = true;
 		}
+		letterBox.reloadLetterBox();
+		if (turnNumberChanged) {
+			gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber());
+		}
+		playField.reloadPlayfield();
+		infoPanel.reloadInfoPanel();
+		swapFrame.reloadSwapFrame();
+		filledTiles.clear();
+		chatArea.reloadChat();
 	}
 
 	@Override
@@ -298,13 +319,12 @@ public class Playstate extends Gamestate implements MouseListener {
 							this.resetLetterBoxLetters();
 						} else if (button.getText().equals("Schudden")) {
 							letterBox.shuffleLetters();
-						} else if (button.getText().equals("Spelen")) {
-							if(playstateController.doPlay()){
-								this.reloadPlaystate();
-							}
+						} else if (button.getText().equals(" Spelen")) {
+							playstateController.doPlay();
+							turnIndicator.resetTurnIndicator();
 						} else if (button.getText().equals("Swappen")) {
 							swapFrame.setVisible(true);
-						} else if (button.getText().equals("Passen")) {
+						} else if (button.getText().equals(" Passen")) {
 							if (playstateController.doPass()) {
 								letterBox.replacePlacedLetters(new ArrayList<Letter>());
 								this.reloadPlaystate();
@@ -316,9 +336,9 @@ public class Playstate extends Gamestate implements MouseListener {
 					} else {
 						if (button.getText().equals("Resetten")) {
 							this.resetLetterBoxLetters();
-						}else if(button.getText().equals("Schudden")){
+						} else if (button.getText().equals("Schudden")) {
 							letterBox.shuffleLetters();
-						}else {
+						} else {
 							JOptionPane.showMessageDialog(null, "De beurt is aan: " + gsm.getUser().getPlayerTurn(),
 									"Wordfeud", JOptionPane.ERROR_MESSAGE);
 						}

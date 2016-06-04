@@ -101,4 +101,13 @@ public class DatabaseController
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean pingedBack(){
+		try {
+			return connection.isValid(1000);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }
