@@ -669,6 +669,7 @@ public class PlaystateController {
 							e.printStackTrace();
 						}
 						if (identification.contains(letter.getLetterID())) {
+							System.out.println("char: "+letter.getLetterID()+" is added to the database.");
 							isGood = true;
 						}
 					} else if (counter == 50) {
