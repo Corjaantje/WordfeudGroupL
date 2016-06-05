@@ -16,6 +16,7 @@ import Gamestate.GamestateManager;
 import Gamestate.Playstate;
 
 public class PlaystateController {
+	
 	private GamestateManager gsm;
 	private DatabaseController databaseController;
 	private PlayField playField;
@@ -28,92 +29,90 @@ public class PlaystateController {
 	// either "vertical" or "horizontal"
 	private String mainWordOrientation;
 
-	public PlaystateController(GamestateManager gsm, PlayField playField, LetterBox letterBox, Playstate playstate) {
+	public PlaystateController(GamestateManager gsm, PlayField playField, LetterBox letterBox, Playstate playstate) 
+	{
+		this.databaseController = gsm.getDatabaseController();
 		this.gsm = gsm;
 		this.playField = playField;
 		this.letterBox = letterBox;
 		this.playstate = playstate;
-		databaseController = gsm.getDatabaseController();
 	}
 
-	private ArrayList<Letter> getPlacedLetters() {
+	private ArrayList<Letter> getPlacedLetters() 
+	{
 		ArrayList<Letter> allPlacedLetters = new ArrayList<>();
-		for (Letter letter : letterBox.getLetters()) {
-
-			if (letter.isOnPlayField()) {
-				// testMessage
-				System.out.println("Letter " + letter.getLetterChar() + " is placed on coordinates x: "
-						+ letter.getBordX() + ", y: " + letter.getBordY());
-				// add to the array
+		for (Letter letter : letterBox.getLetters()) 
+		{
+			if (letter.isOnPlayField()) 
+			{
+				System.out.println("Letter " + letter.getLetterChar() + " is placed on coordinates x: " + letter.getBordX() + ", y: " + letter.getBordY());
 				allPlacedLetters.add(letter);
 			}
 		}
 		return allPlacedLetters;
 	}
 
-	private boolean isLetterAttached(Letter letter) {
-		// METHOD: boolean isLetterAttached(Letter letter)
-
-		// get the necessary objects and values
+	private boolean isLetterAttached(Letter letter) 
+	{
 		int letterX = letter.getBordX();
 		int letterY = letter.getBordY();
 		ArrayList<Letter> allPlayedLetters = playField.getPlayedLetters();
-		// loop through all played letters
 		for (Letter playedLetter : allPlayedLetters) {
-			// check if there's a playedLetter at any of these coordinates of
-			// letter
 			// (x+=1; y= y)
-			if (letterX == playedLetter.getBordX() + 1 && letterY == playedLetter.getBordY()) {
+			if (letterX == playedLetter.getBordX() + 1 && letterY == playedLetter.getBordY()) 
+			{
 				return true;
 			}
 			// (x-=1;y=y)
-			if (letterX == playedLetter.getBordX() - 1 && letterY == playedLetter.getBordY()) {
+			if (letterX == playedLetter.getBordX() - 1 && letterY == playedLetter.getBordY()) 
+			{
 				return true;
 			}
 			// (x=x;y+=1)
-			if (letterX == playedLetter.getBordX() && letterY == playedLetter.getBordY() + 1) {
+			if (letterX == playedLetter.getBordX() && letterY == playedLetter.getBordY() + 1) 
+			{
 				return true;
 			}
 			// (x=x;y-=1)
-			if (letterX == playedLetter.getBordX() && letterY == playedLetter.getBordY() - 1) {
+			if (letterX == playedLetter.getBordX() && letterY == playedLetter.getBordY() - 1) 
+			{
 				return true;
 			}
 		}
-		// IF THIS IS NOT TRUE CHECK IF THE LETTER IS ON THE STARTSTAR
-		// method requires ArrayList<Letter> as input so put the letter in an
-		// arrayList
 		ArrayList<Letter> letterArrayList = new ArrayList<>();
 		letterArrayList.add(letter);
-		// if it's not on the startstar isOnStartStar() will return false and so
-		// will this method.
+		
 		return isOnStartStar(letterArrayList);
 	}
 
-	private boolean isOnStartStar(ArrayList<Letter> letterArrayList) {
-		// get the coordinates of the startstar
-		String getStartStarQuery = "SELECT x, y FROM tegel LEFT JOIN bord ON tegel.bord_naam = bord.naam LEFT JOIN spel ON bord.naam = spel.bord_naam WHERE spel.id = "
-				+ gsm.getUser().getGameNumber() + " AND tegel.tegeltype_soort = '*'";
+	private boolean isOnStartStar(ArrayList<Letter> letterArrayList) 
+	{
+		String getStartStarQuery = "SELECT x, y FROM tegel LEFT JOIN bord ON tegel.bord_naam = bord.naam LEFT JOIN spel ON bord.naam = spel.bord_naam WHERE spel.id = " + gsm.getUser().getGameNumber() + " AND tegel.tegeltype_soort = '*'";
 		int x = -1;
 		int y = -1;
-		try {
+		try 
+		{
 			ResultSet rSet = databaseController.query(getStartStarQuery);
-			if (rSet.next()) {
+			if (rSet.next()) 
+			{
 				x = rSet.getInt("x");
 				y = rSet.getInt("y");
 			}
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
-		if (x != -1 && y != -1) {
-			// loop through all letters in arrayList
+		if (x != -1 && y != -1) 
+		{
 			for (Letter letter : letterArrayList) {
-				// check if the letter is on the startstar
 				if (letter.getBordX() == x && letter.getBordY() == y) {
-					// if it is
 					return true;
 				}
 			}
-		} else {
+		} 
+		else 
+		{
 			System.err.println("Something went wrong with the isOnStartStar method");
 		}
 
@@ -127,139 +126,146 @@ public class PlaystateController {
 		// -1 = Invalid (invalid placement(neither horizontal or vertical))
 		boolean horizontal = true;
 		boolean vertical = true;
-		// get the first letter
-
 		// compare every letter with all others in double loop
 		loop: {
-			for (int i = 0; i < wordArrayList.size(); i++) {
-				for (int j = i + 1; j < wordArrayList.size(); j++) {
+			for (int i = 0; i < wordArrayList.size(); i++) 
+			{
+				for (int j = i + 1; j < wordArrayList.size(); j++) 
+				{
 					// compare wordArrayList.get(i) and wordArrayList.get(j)
 					// if x aren't the same the word is not vertical
-					if (wordArrayList.get(i).getBordX() != wordArrayList.get(j).getBordX()) {
+					if (wordArrayList.get(i).getBordX() != wordArrayList.get(j).getBordX()) 
+					{
 						vertical = false;
 					}
 					// if y aren't the same the word is not horizontal
-					if (wordArrayList.get(i).getBordY() != wordArrayList.get(j).getBordY()) {
+					if (wordArrayList.get(i).getBordY() != wordArrayList.get(j).getBordY()) 
+					{
 						horizontal = false;
 					}
-
-					// if vertical and horizontal are both false already, abort
-					// the loop
 					// TODO is this faster than not breaking the loop?
-					if (horizontal == false && vertical == false) {
+					if (horizontal == false && vertical == false) 
+					{
 						break loop;
 					}
 				}
 			}
 		}
-
-		// determine orientation; vertical, horizontal or invalid
-		// if horizontal and vertical are both false or both true the word is
-		// invalid
-		if (horizontal == true && vertical == false) {
+		if (horizontal == true && vertical == false) 
+		{
 			return 0;
-		} else if (vertical == true && horizontal == false) {
+		} 
+		else if (vertical == true && horizontal == false) 
+		{
 			return 1;
-		} else // it is invalid
+		} 
+		else
 		{
 			return -1;
 		}
 	}
 
-	private boolean isWordAttached(ArrayList<Letter> wordArrayList) {
+	private boolean isWordAttached(ArrayList<Letter> wordArrayList) 
+	{
 		boolean attached = false;
-		// for all letters check if they are attached to an already existing
-		// letter (using method isLetterAttached())
-		for (Letter letter : wordArrayList) {
-			if (isLetterAttached(letter)) {
+		for (Letter letter : wordArrayList) 
+		{
+			if (isLetterAttached(letter)) 
+			{
 				attached = true;
 			}
 		}
 		return attached;
 	}
 
-	private Letter getLowestXLetter(ArrayList<Letter> wordArrayList) {
+	private Letter getLowestXLetter(ArrayList<Letter> wordArrayList) 
+	{
 		Letter lowestXLetter = null;
-		for (Letter letter : wordArrayList) {
-
-			if (lowestXLetter == null) {
+		for (Letter letter : wordArrayList) 
+		{
+			if (lowestXLetter == null) 
+			{
 				lowestXLetter = letter;
 			}
-			// if the new letter has a lower x make that letter the new
-			// lowestXLetter
-			if (letter.getBordX() < lowestXLetter.getBordX()) {
+			if (letter.getBordX() < lowestXLetter.getBordX()) 
+			{
 				lowestXLetter = letter;
 			}
 		}
 		return lowestXLetter;
 	}
 
-	private Letter getHighestXLetter(ArrayList<Letter> wordArrayList) {
+	private Letter getHighestXLetter(ArrayList<Letter> wordArrayList) 
+	{
 		Letter highestXLetter = null;
-		for (Letter letter : wordArrayList) {
-			if (highestXLetter == null) {
+		for (Letter letter : wordArrayList) 
+		{
+			if (highestXLetter == null) 
+			{
 				highestXLetter = letter;
 			}
-			// if the new letter had a higher x make that letter the new
-			// highestXLetter
-			if (letter.getBordX() > highestXLetter.getBordX()) {
+			if (letter.getBordX() > highestXLetter.getBordX()) 
+			{
 				highestXLetter = letter;
 			}
 		}
 		return highestXLetter;
 	}
 
-	private Letter getLowestYLetter(ArrayList<Letter> wordArrayList) {
+	private Letter getLowestYLetter(ArrayList<Letter> wordArrayList) 
+	{
 		Letter lowestYLetter = null;
-		for (Letter letter : wordArrayList) {
-
-			if (lowestYLetter == null) {
+		for (Letter letter : wordArrayList) 
+		{
+			if (lowestYLetter == null) 
+			{
 				lowestYLetter = letter;
 			}
-			// if the new letter has a lower x make that letter the new
-			// lowestXLetter
-			if (letter.getBordY() < lowestYLetter.getBordY()) {
+			if (letter.getBordY() < lowestYLetter.getBordY()) 
+			{
 				lowestYLetter = letter;
 			}
 		}
 		return lowestYLetter;
 	}
 
-	private Letter getHighestYLetter(ArrayList<Letter> wordArrayList) {
+	private Letter getHighestYLetter(ArrayList<Letter> wordArrayList) 
+	{
 		Letter highestYLetter = null;
-		for (Letter letter : wordArrayList) {
-			if (highestYLetter == null) {
+		for (Letter letter : wordArrayList) 
+		{
+			if (highestYLetter == null) 
+			{
 				highestYLetter = letter;
 			}
-			// if the new letter had a higher x make that letter the new
-			// highestXLetter
-			if (letter.getBordY() > highestYLetter.getBordY()) {
+			if (letter.getBordY() > highestYLetter.getBordY()) 
+			{
 				highestYLetter = letter;
 			}
 		}
 		return highestYLetter;
 	}
 
-	private Letter getFirstHorizontalWordLetter(Letter firstLetterInWord) {
-
+	private Letter getFirstHorizontalWordLetter(Letter firstLetterInWord) 
+	{
 		Letter currentLetter = null;
 		Letter newLowestLetter = firstLetterInWord;
 		boolean firstLetterFound = false;
 
-		while (!firstLetterFound) {
+		while (!firstLetterFound) 
+		{
 			currentLetter = newLowestLetter;
-			for (Letter letter : playField.getPlayedLetters()) {
-				// if there's a letter at x-=1 take that letter and break out of
-				// this loop
-				if ((letter.getBordX() == currentLetter.getBordX() - 1)
-						&& letter.getBordY() == currentLetter.getBordY()) {
-
+			for (Letter letter : playField.getPlayedLetters()) 
+			{
+				if ((letter.getBordX() == currentLetter.getBordX() - 1) && letter.getBordY() == currentLetter.getBordY()) 
+				{
 					newLowestLetter = letter;
 					break;
 				}
 
 			}
-			if (currentLetter.equals(newLowestLetter)) {
+			if (currentLetter.equals(newLowestLetter)) 
+			{
 				firstLetterFound = true;
 			}
 		}
@@ -268,185 +274,143 @@ public class PlaystateController {
 	}
 
 	private boolean isHorizontalWordPlacedWithoutGaps(ArrayList<Letter> wordArrayList) {
-		// first check if the letters are all attached (in a line to either each
-		// other or a letter in the playfield
-		// find the played letter with the lowest x and the played letter with
-		// the highest x
 		Letter lowestXLetter = getLowestXLetter(wordArrayList);
 		Letter highestXLetter = getHighestXLetter(wordArrayList);
-
-		// get the amount of letters after the first letter (= highestx -
-		// lowestx)
 		int amountOfLetters = highestXLetter.getBordX() - lowestXLetter.getBordX();
-
-		// grab the first letter
 		Letter currentLetter = null;
 		Letter nextLetter = lowestXLetter;
-		for (int i = 0; i < amountOfLetters; i++) {
+		for (int i = 0; i < amountOfLetters; i++) 
+		{
 			currentLetter = nextLetter;
-
-			// check if the next letter is in the wordArrayList
-			for (Letter letter : wordArrayList) {
-				// if it contains the next letter
-				if ((letter.getBordX() == currentLetter.getBordX() + 1)
-						&& letter.getBordY() == currentLetter.getBordY()) {
+			for (Letter letter : wordArrayList) 
+			{
+				if ((letter.getBordX() == currentLetter.getBordX() + 1) && letter.getBordY() == currentLetter.getBordY()) 
+				{
 					nextLetter = letter;
 					break;
 				}
 			}
-			// if it's not check if the next letter is already on the playfield
-			if (currentLetter.equals(nextLetter)) {
-
-				for (Letter letter : playField.getPlayedLetters()) {
-					if ((letter.getBordX() == currentLetter.getBordX() + 1)
-							&& letter.getBordY() == currentLetter.getBordY()) {
+			if (currentLetter.equals(nextLetter)) 
+			{
+				for (Letter letter : playField.getPlayedLetters()) 
+				{
+					if ((letter.getBordX() == currentLetter.getBordX() + 1) && letter.getBordY() == currentLetter.getBordY()) 
+					{
 						nextLetter = letter;
 						break;
 					}
 				}
 			}
-
-			// if the next letter is still the same as the current letter it
-			// means
-			// there isn't a letter at x+1 which means the letters have been
-			// placed incorrectly
-			if (currentLetter.equals(nextLetter)) {
+			if (currentLetter.equals(nextLetter)) 
+			{
 				return false;
-
 			}
 		}
 		return true;
 	}
 
-	private boolean isVerticalWordPlacedWithoutGaps(ArrayList<Letter> wordArrayList) {
-		// first check if the letters are all attached (in a line to either each
-		// other or a letter in the playfield
-		// find the played letter with the lowest Y and the played letter with
-		// the highest Y
+	private boolean isVerticalWordPlacedWithoutGaps(ArrayList<Letter> wordArrayList) 
+	{
 		Letter lowestYLetter = getLowestYLetter(wordArrayList);
 		Letter highestYLetter = getHighestYLetter(wordArrayList);
-
-		// get the amount of letters after the first letter (= highestx -
-		// lowestx)
 		int amountOfLetters = highestYLetter.getBordY() - lowestYLetter.getBordY();
-
-		// grab the first letter
 		Letter currentLetter = null;
 		Letter nextLetter = lowestYLetter;
-		for (int i = 0; i < amountOfLetters; i++) {
+		for (int i = 0; i < amountOfLetters; i++) 
+		{
 			currentLetter = nextLetter;
-
-			// check if the next letter is in the wordArrayList
-			for (Letter letter : wordArrayList) {
-				// if it contains the next letter
-				if ((letter.getBordY() == currentLetter.getBordY() + 1)
-						&& letter.getBordX() == currentLetter.getBordX()) {
+			for (Letter letter : wordArrayList) 
+			{
+				if ((letter.getBordY() == currentLetter.getBordY() + 1) && letter.getBordX() == currentLetter.getBordX()) 
+				{
 					nextLetter = letter;
 					break;
 				}
 			}
-			// if it's not check if the next letter is already on the playfield
-			if (currentLetter.equals(nextLetter)) {
-
-				for (Letter letter : playField.getPlayedLetters()) {
-					if ((letter.getBordY() == currentLetter.getBordY() + 1)
-							&& letter.getBordX() == currentLetter.getBordX()) {
+			if (currentLetter.equals(nextLetter)) 
+			{
+				for (Letter letter : playField.getPlayedLetters()) 
+				{
+					if ((letter.getBordY() == currentLetter.getBordY() + 1) && letter.getBordX() == currentLetter.getBordX()) 
+					{
 						nextLetter = letter;
 						break;
 					}
 				}
 			}
-
-			// if the next letter is still the same as the current letter it
-			// means
-			// there isn't a letter at y+1 which means the letters have been
-			// placed incorrectly
-			if (currentLetter.equals(nextLetter)) {
+			if (currentLetter.equals(nextLetter)) 
+			{
 				return false;
-
 			}
 		}
 		return true;
 	}
 
-	private ArrayList<Letter> getHorizontalWord(Letter anyLetter, ArrayList<Letter> wordArrayList) {
-		// make an arrayList
+	private ArrayList<Letter> getHorizontalWord(Letter anyLetter, ArrayList<Letter> wordArrayList) 
+	{
 		ArrayList<Letter> horizontalWord = new ArrayList<>();
-		// find the first letter in the word and add it to the arrayList
 		Letter firstLetter = getFirstHorizontalWordLetter(anyLetter);
 		horizontalWord.add(firstLetter);
-
-		// keep checking if there's a letter at x+1, if yes add it to the
-		// arrayList
-
 		Letter currentLetter = null;
 		Letter nextLetter = firstLetter;
 		boolean lastLetterFound = false;
 
-		while (!lastLetterFound) {
+		while (!lastLetterFound) 
+		{
 			currentLetter = nextLetter;
-
-			// check if the next letter is in the wordArrayList
-			for (Letter letter : wordArrayList) {
-				// if it contains the next letter
-				if ((letter.getBordX() == currentLetter.getBordX() + 1)
-						&& letter.getBordY() == currentLetter.getBordY()) {
-
+			for (Letter letter : wordArrayList) 
+			{
+				if ((letter.getBordX() == currentLetter.getBordX() + 1) && letter.getBordY() == currentLetter.getBordY()) 
+				{
 					nextLetter = letter;
 					horizontalWord.add(nextLetter);
 					break;
 				}
 			}
-			// if it's not check if the next letter is already on the playfield
-			if (currentLetter.equals(nextLetter)) {
-
-				for (Letter letter : playField.getPlayedLetters()) {
-					if ((letter.getBordX() == currentLetter.getBordX() + 1)
-							&& letter.getBordY() == currentLetter.getBordY()) {
+			if (currentLetter.equals(nextLetter)) 
+			{
+				for (Letter letter : playField.getPlayedLetters()) 
+				{
+					if ((letter.getBordX() == currentLetter.getBordX() + 1) && letter.getBordY() == currentLetter.getBordY()) 
+					{
 						nextLetter = letter;
 						horizontalWord.add(nextLetter);
 						break;
 					}
 				}
 			}
-
-			// if the next letter is still the same as the current letter it
-			// means
-			// there isn't a letter at x+1 which means the letters have been
-			// placed incorrectly
-			if (currentLetter.equals(nextLetter)) {
+			if (currentLetter.equals(nextLetter)) 
+			{
 				lastLetterFound = true;
 			}
 		}
-
 		return horizontalWord;
 	}
 
-	private Letter getFirstVerticalWordLetter(Letter firstLetterInWord) {
-
+	private Letter getFirstVerticalWordLetter(Letter firstLetterInWord) 
+	{
 		Letter currentLetter = null;
 		Letter newLowestLetter = firstLetterInWord;
 		boolean firstLetterFound = false;
 
-		while (!firstLetterFound) {
+		while (!firstLetterFound) 
+		{
 			currentLetter = newLowestLetter;
-			for (Letter letter : playField.getPlayedLetters()) {
-				// if there's a letter at y-=1 take that letter and break out of
-				// this loop
-				if ((letter.getBordY() == currentLetter.getBordY() - 1)
-						&& letter.getBordX() == currentLetter.getBordX()) {
-
+			for (Letter letter : playField.getPlayedLetters()) 
+			{
+				if ((letter.getBordY() == currentLetter.getBordY() - 1) && letter.getBordX() == currentLetter.getBordX()) 
+				{
 					newLowestLetter = letter;
 					break;
 				}
 
 			}
-			if (currentLetter.equals(newLowestLetter)) {
+			if (currentLetter.equals(newLowestLetter)) 
+			{
 				firstLetterFound = true;
 			}
 		}
 		return newLowestLetter;
-
 	}
 
 	private ArrayList<Letter> getVerticalWord(Letter anyLetter, ArrayList<Letter> wordArrayList) {
