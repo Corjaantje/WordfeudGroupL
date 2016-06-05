@@ -1,0 +1,1557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" automaticImage="JPEG" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
+  router="FAN">  
+  <class id="1" language="java" name="Gamestate.InfoUserState" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/InfoUserState.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="102" x="1586" y="274"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="GameObjects.SwapFrame" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/SwapFrame.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="92" x="1142" y="176"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="controller.InfoUserController" project="Wordfeud" 
+    file="/Wordfeud/src/controller/InfoUserController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="128" x="1388" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="model.User" project="Wordfeud" file="/Wordfeud/src/model/User.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="1854" y="568"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="GameObjects.Competition" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/Competition.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="92" x="1854" y="470"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="GameObjects.Tile" project="Wordfeud" file="/Wordfeud/src/GameObjects/Tile.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="399" y="470"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="Gamestate.MainMenuState" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/MainMenuState.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="112" x="2555" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="controller.LoginController" project="Wordfeud" 
+    file="/Wordfeud/src/controller/LoginController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="111" x="2197" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="controller.PlaystateController" project="Wordfeud" 
+    file="/Wordfeud/src/controller/PlaystateController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="133" x="528" y="274"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="Gamestate.AdminState" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/AdminState.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="90" x="176" y="78"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="Gamestate.NewWordstate" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/NewWordstate.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="109" x="927" y="470"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="Gamestate.RankingState" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/RankingState.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="100" x="306" y="78"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="Gamestate.ReviewWordstate" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/ReviewWordstate.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="125" x="3115" y="274"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="Gamestate.Competitionstate" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/Competitionstate.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="121" x="1988" y="78"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="Main.GUI" project="Wordfeud" file="/Wordfeud/src/Main/GUI.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="1571" y="568"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="Main.MainClass" project="Wordfeud" file="/Wordfeud/src/Main/MainClass.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="821" y="-20"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="controller.CompetitionController" project="Wordfeud" 
+    file="/Wordfeud/src/controller/CompetitionController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="148" x="1988" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="Gamestate.SpectatorCompetitionState" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/SpectatorCompetitionState.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="178" x="1772" y="176"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="controller.RegisterController" project="Wordfeud" 
+    file="/Wordfeud/src/controller/RegisterController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="128" x="2966" y="176"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="GameObjects.ChallengePanel" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/ChallengePanel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="112" x="2707" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="GameObjects.Letter" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/Letter.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="502" y="568"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="Gamestate.SpectatorState" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/SpectatorState.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="110" x="722" y="274"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="Gamestate.GamestateManager" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/GamestateManager.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="136" x="1571" y="470"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="Gamestate.Loginstate" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/Loginstate.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="2197" y="78"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="25" language="java" name="GameObjects.ChatConfigFrame" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/ChatConfigFrame.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="122" x="1076" y="470"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="26" language="java" name="controller.ReviewWordController" project="Wordfeud" 
+    file="/Wordfeud/src/controller/ReviewWordController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="152" x="3115" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="27" language="java" name="Gamestate.Gamestate" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/Gamestate.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="1720" y="-20"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="28" language="java" name="controller.DatabaseController" project="Wordfeud" 
+    file="/Wordfeud/src/controller/DatabaseController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="134" x="1967" y="666"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="29" language="java" name="GameObjects.ChatConfig" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/ChatConfig.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="1111" y="568"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="30" language="java" name="GameObjects.NotificationPanel" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/NotificationPanel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="120" x="218" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="31" language="java" name="GameObjects.PlayField" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/PlayField.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="420" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="32" language="java" name="GameObjects.Button" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/Button.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="49" y="568"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="33" language="java" name="controller.AdminDBController" project="Wordfeud" 
+    file="/Wordfeud/src/controller/AdminDBController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="132" x="1556" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="34" language="java" name="GameObjects.ChallengeFrame" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/ChallengeFrame.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="116" x="1698" y="568"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="35" language="java" name="GameObjects.ChatInput" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/ChatInput.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="1280" y="470"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="36" language="java" name="GameObjects.ChatOutput" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/ChatOutput.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="88" x="1219" y="666"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="37" language="java" name="Gamestate.GameOverviewState" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/GameOverviewState.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="140" x="2324" y="78"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="38" language="java" name="Gamestate.Playstate" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/Playstate.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="682" y="78"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="39" language="java" name="Gamestate.Registerstate" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/Registerstate.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="101" x="2525" y="78"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="40" language="java" name="GameObjects.GamePanel" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/GamePanel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="89" x="2324" y="274"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="41" language="java" name="GameObjects.GameOverviewInfoFrame" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/GameOverviewInfoFrame.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="167" x="2348" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="42" language="java" name="GameObjects.SwapPane" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/SwapPane.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="1327" y="274"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="43" language="java" name="GameObjects.AdditionalGameInfo" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/AdditionalGameInfo.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="134" x="737" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="44" language="java" name="GameObjects.Chat" project="Wordfeud" file="/Wordfeud/src/GameObjects/Chat.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="1219" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="45" language="java" name="GameObjects.TurnIndicator" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/TurnIndicator.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="99" x="1059" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="46" language="java" name="GameObjects.CompetitionFrame" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/CompetitionFrame.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="128" x="1772" y="274"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="47" language="java" name="GameObjects.NotificationFrame" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/NotificationFrame.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="124" x="197" y="568"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="48" language="java" name="GameObjects.ButtonPanel" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/ButtonPanel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="93" x="83" y="470"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <interface id="49" language="java" name="Main.Drawable" project="Wordfeud" file="/Wordfeud/src/Main/Drawable.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="103" x="610" y="666"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </interface>  
+  <class id="50" language="java" name="controller.NewWordController" project="Wordfeud" 
+    file="/Wordfeud/src/controller/NewWordController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="136" x="1812" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="51" language="java" name="Gamestate.SpectatorGameOverviewState" project="Wordfeud" 
+    file="/Wordfeud/src/Gamestate/SpectatorGameOverviewState.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="196" x="446" y="78"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="52" language="java" name="controller.PollingChallengeController" project="Wordfeud" 
+    file="/Wordfeud/src/controller/PollingChallengeController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="174" x="2880" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="53" language="java" name="GameObjects.InfoPanel" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/InfoPanel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="911" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="54" language="java" name="GameObjects.LetterBox" project="Wordfeud" 
+    file="/Wordfeud/src/GameObjects/LetterBox.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="589" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <association id="55">    
+    <bendpoint x="206" y="470"/>    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="56" name="fr"/>      
+      <multiplicity id="57" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="47" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="58">    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="59" name="tiles"/>      
+      <multiplicity id="60" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="61">    
+    <bendpoint x="2333" y="176"/>    
+    <end type="SOURCE" refId="37" navigable="false">      
+      <attribute id="62" name="gamePanel"/>      
+      <multiplicity id="63" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="64">    
+    <bendpoint x="925" y="78"/>    
+    <bendpoint x="925" y="176"/>    
+    <bendpoint x="862" y="274"/>    
+    <bendpoint x="706" y="372"/>    
+    <bendpoint x="640" y="470"/>    
+    <bendpoint x="640" y="568"/>    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="49"/>  
+  </realization>  
+  <realization id="65">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="49"/>  
+  </realization>  
+  <association id="66">    
+    <bendpoint x="2870" y="470"/>    
+    <bendpoint x="2870" y="568"/>    
+    <end type="SOURCE" refId="52" navigable="false">      
+      <attribute id="67" name="db_c"/>      
+      <multiplicity id="68" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="69">    
+    <bendpoint x="1540" y="568"/>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="70" name="db_c"/>      
+      <multiplicity id="71" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="72">    
+    <bendpoint x="1760" y="78"/>    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <association id="73">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="74" name="infoPanel"/>      
+      <multiplicity id="75" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="53" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="76">    
+    <end type="SOURCE" refId="43" navigable="false">      
+      <attribute id="77" name="gsm"/>      
+      <multiplicity id="78" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="79">    
+    <bendpoint x="3297" y="78"/>    
+    <bendpoint x="3297" y="176"/>    
+    <bendpoint x="3297" y="274"/>    
+    <bendpoint x="3297" y="372"/>    
+    <bendpoint x="3297" y="470"/>    
+    <bendpoint x="3297" y="568"/>    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="80" name="db_c"/>      
+      <multiplicity id="81" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="82">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="83" name="registerController"/>      
+      <multiplicity id="84" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="85">    
+    <end type="SOURCE" refId="40" navigable="false">      
+      <attribute id="86" name="frame"/>      
+      <multiplicity id="87" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="41" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="88">    
+    <end type="SOURCE" refId="54" navigable="false">      
+      <attribute id="89" name="gsm"/>      
+      <multiplicity id="90" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="91">    
+    <end type="SOURCE" refId="50" navigable="false">      
+      <attribute id="92" name="gsm"/>      
+      <multiplicity id="93" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="94">    
+    <end type="SOURCE" refId="52" navigable="false">      
+      <attribute id="95" name="gsm"/>      
+      <multiplicity id="96" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="97">    
+    <bendpoint x="1336" y="372"/>    
+    <bendpoint x="1397" y="470"/>    
+    <bendpoint x="1397" y="568"/>    
+    <end type="SOURCE" refId="42" navigable="false">      
+      <attribute id="98" name="db_c"/>      
+      <multiplicity id="99" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="100">    
+    <end type="SOURCE" refId="44" navigable="false">      
+      <attribute id="101" name="config"/>      
+      <multiplicity id="102" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="103">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="104" name="additionalGameInfo"/>      
+      <multiplicity id="105" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="43" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="106">    
+    <bendpoint x="1930" y="274"/>    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="107" name="competitionController"/>      
+      <multiplicity id="108" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="109">    
+    <bendpoint x="516" y="470"/>    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="110" name="playedLetters"/>      
+      <multiplicity id="111" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="112">    
+    <bendpoint x="862" y="176"/>    
+    <bendpoint x="862" y="78"/>    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <association id="113">    
+    <end type="SOURCE" refId="42" navigable="false">      
+      <attribute id="114" name="letterBox"/>      
+      <multiplicity id="115" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="54" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="116">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="117" name="gsm"/>      
+      <multiplicity id="118" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="119">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="120" name="gsm"/>      
+      <multiplicity id="121" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="122">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="123" name="reviewWordController"/>      
+      <multiplicity id="124" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="125">    
+    <bendpoint x="703" y="470"/>    
+    <bendpoint x="703" y="568"/>    
+    <end type="SOURCE" refId="43"/>    
+    <end type="TARGET" refId="49"/>  
+  </realization>  
+  <association id="126">    
+    <end type="SOURCE" refId="48" navigable="false">      
+      <attribute id="127" name="buttons"/>      
+      <multiplicity id="128" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="32" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="129">    
+    <bendpoint x="1662" y="176"/>    
+    <bendpoint x="1662" y="78"/>    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <association id="130">    
+    <bendpoint x="1249" y="470"/>    
+    <bendpoint x="1249" y="568"/>    
+    <end type="SOURCE" refId="44" navigable="false">      
+      <attribute id="131" name="database"/>      
+      <multiplicity id="132" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="133">    
+    <bendpoint x="372" y="568"/>    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="49"/>  
+  </realization>  
+  <association id="134">    
+    <bendpoint x="598" y="470"/>    
+    <end type="SOURCE" refId="54" navigable="false">      
+      <attribute id="135" name="letters"/>      
+      <multiplicity id="136" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="137">    
+    <end type="SOURCE" refId="41" navigable="false">      
+      <attribute id="138" name="gsm"/>      
+      <multiplicity id="139" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="140">    
+    <bendpoint x="1228" y="470"/>    
+    <bendpoint x="1228" y="568"/>    
+    <end type="SOURCE" refId="44" navigable="false">      
+      <attribute id="141" name="output"/>      
+      <multiplicity id="142" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="36" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="143">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <association id="144">    
+    <bendpoint x="2178" y="470"/>    
+    <bendpoint x="2178" y="568"/>    
+    <end type="SOURCE" refId="41" navigable="false">      
+      <attribute id="145" name="db_c"/>      
+      <multiplicity id="146" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="147">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="148" name="letter"/>      
+      <multiplicity id="149" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="150">    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="151" name="gsm"/>      
+      <multiplicity id="152" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="153">    
+    <end type="SOURCE" refId="54" navigable="false">      
+      <attribute id="154" name="tiles"/>      
+      <multiplicity id="155" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="156">    
+    <bendpoint x="2494" y="274"/>    
+    <bendpoint x="2494" y="176"/>    
+    <bendpoint x="2494" y="78"/>    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <association id="157">    
+    <end type="SOURCE" refId="45" navigable="false">      
+      <attribute id="158" name="gsm"/>      
+      <multiplicity id="159" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="160">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="161" name="databaseController"/>      
+      <multiplicity id="162" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="163">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="164" name="gsm"/>      
+      <multiplicity id="165" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="166">    
+    <bendpoint x="691" y="176"/>    
+    <bendpoint x="691" y="274"/>    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="167" name="letterBox"/>      
+      <multiplicity id="168" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="54" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="169">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="170" name="letterBox"/>      
+      <multiplicity id="171" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="54" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="172">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="173" name="gsm"/>      
+      <multiplicity id="174" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="175">    
+    <bendpoint x="1718" y="78"/>    
+    <bendpoint x="1718" y="176"/>    
+    <bendpoint x="1718" y="274"/>    
+    <bendpoint x="1718" y="372"/>    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="176" name="gsm"/>      
+      <multiplicity id="177" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="178">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <association id="179">    
+    <bendpoint x="2206" y="176"/>    
+    <bendpoint x="2206" y="274"/>    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="180" name="loginController"/>      
+      <multiplicity id="181" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="182">    
+    <bendpoint x="625" y="176"/>    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="183" name="playstate"/>      
+      <multiplicity id="184" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="38" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="185">    
+    <end type="SOURCE" refId="29" navigable="false">      
+      <attribute id="186" name="textPane"/>      
+      <multiplicity id="187" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="36" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="188">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="189" name="letterBox1"/>      
+      <multiplicity id="190" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="54" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="191">    
+    <bendpoint x="1976" y="470"/>    
+    <bendpoint x="1976" y="568"/>    
+    <end type="SOURCE" refId="50" navigable="false">      
+      <attribute id="192" name="databaseController"/>      
+      <multiplicity id="193" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="194">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="195" name="playField"/>      
+      <multiplicity id="196" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="31" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="197">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="198" name="user"/>      
+      <multiplicity id="199" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="200">    
+    <bendpoint x="497" y="176"/>    
+    <bendpoint x="497" y="274"/>    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="201" name="playField"/>      
+      <multiplicity id="202" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="31" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="203">    
+    <bendpoint x="389" y="176"/>    
+    <bendpoint x="389" y="274"/>    
+    <bendpoint x="389" y="372"/>    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="204" name="filledTiles"/>      
+      <multiplicity id="205" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="206">    
+    <bendpoint x="2136" y="470"/>    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="207" name="currentUser"/>      
+      <multiplicity id="208" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="209">    
+    <bendpoint x="875" y="470"/>    
+    <bendpoint x="812" y="568"/>    
+    <end type="SOURCE" refId="45"/>    
+    <end type="TARGET" refId="49"/>  
+  </realization>  
+  <association id="210">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="211" name="letterBox2"/>      
+      <multiplicity id="212" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="54" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="213">    
+    <bendpoint x="347" y="470"/>    
+    <bendpoint x="351" y="568"/>    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="49"/>  
+  </realization>  
+  <association id="214">    
+    <bendpoint x="883" y="176"/>    
+    <bendpoint x="883" y="274"/>    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="215" name="infoPanel"/>      
+      <multiplicity id="216" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="53" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="217">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="218" name="adbc"/>      
+      <multiplicity id="219" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="33" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="220">    
+    <bendpoint x="904" y="176"/>    
+    <bendpoint x="904" y="274"/>    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="221" name="turnIndicator"/>      
+      <multiplicity id="222" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="45" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="223">    
+    <bendpoint x="326" y="470"/>    
+    <bendpoint x="393" y="568"/>    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="224" name="db_c"/>      
+      <multiplicity id="225" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="226">    
+    <bendpoint x="896" y="470"/>    
+    <end type="SOURCE" refId="43" navigable="false">      
+      <attribute id="227" name="user"/>      
+      <multiplicity id="228" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="229">    
+    <bendpoint x="3105" y="470"/>    
+    <bendpoint x="3105" y="568"/>    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="230" name="databaseController"/>      
+      <multiplicity id="231" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="232">    
+    <bendpoint x="166" y="568"/>    
+    <end type="SOURCE" refId="48"/>    
+    <end type="TARGET" refId="49"/>  
+  </realization>  
+  <association id="233">    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="234" name="swapFrame"/>      
+      <multiplicity id="235" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="236">    
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <association id="237">    
+    <bendpoint x="537" y="372"/>    
+    <bendpoint x="537" y="470"/>    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="238" name="mainWord"/>      
+      <multiplicity id="239" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="240">    
+    <end type="SOURCE" refId="44" navigable="false">      
+      <attribute id="241" name="input"/>      
+      <multiplicity id="242" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="35" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="243">    
+    <end type="SOURCE" refId="46" navigable="false">      
+      <attribute id="244" name="competitionController"/>      
+      <multiplicity id="245" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="246">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="247" name="swapPane"/>      
+      <multiplicity id="248" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="42" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="249">    
+    <bendpoint x="558" y="372"/>    
+    <bendpoint x="661" y="470"/>    
+    <bendpoint x="745" y="568"/>    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="250" name="databaseController"/>      
+      <multiplicity id="251" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="252">    
+    <bendpoint x="1781" y="372"/>    
+    <end type="SOURCE" refId="46" navigable="false">      
+      <attribute id="253" name="gsm"/>      
+      <multiplicity id="254" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="255">    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="256" name="gsm"/>      
+      <multiplicity id="257" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="258">    
+    <end type="SOURCE" refId="32"/>    
+    <end type="TARGET" refId="49"/>  
+  </realization>  
+  <association id="259">    
+    <bendpoint x="1357" y="372"/>    
+    <end type="SOURCE" refId="42" navigable="false">      
+      <attribute id="260" name="gsm"/>      
+      <multiplicity id="261" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="262">    
+    <bendpoint x="2849" y="372"/>    
+    <bendpoint x="2849" y="470"/>    
+    <bendpoint x="2849" y="568"/>    
+    <end type="SOURCE" refId="40" navigable="false">      
+      <attribute id="263" name="db_c"/>      
+      <multiplicity id="264" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="265">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <association id="266">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="267" name="gui"/>      
+      <multiplicity id="268" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="269">    
+    <bendpoint x="1997" y="470"/>    
+    <bendpoint x="1997" y="568"/>    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="270" name="databaseController"/>      
+      <multiplicity id="271" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="272">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="273" name="competitionFrame"/>      
+      <multiplicity id="274" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="46" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="275">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="276" name="infoC"/>      
+      <multiplicity id="277" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="278">    
+    <bendpoint x="3084" y="274"/>    
+    <bendpoint x="3084" y="372"/>    
+    <bendpoint x="3084" y="470"/>    
+    <bendpoint x="3084" y="568"/>    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="279" name="databaseController"/>      
+      <multiplicity id="280" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="281">    
+    <end type="SOURCE" refId="51"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <association id="282">    
+    <bendpoint x="2346" y="470"/>    
+    <bendpoint x="2346" y="568"/>    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="283" name="db_c"/>      
+      <multiplicity id="284" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="285">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <association id="286">    
+    <bendpoint x="604" y="176"/>    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="287" name="playstateController"/>      
+      <multiplicity id="288" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="289">    
+    <bendpoint x="187" y="176"/>    
+    <bendpoint x="187" y="274"/>    
+    <bendpoint x="187" y="372"/>    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="290" name="buttonPanel"/>      
+      <multiplicity id="291" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="48" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="292">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="293" name="bgLetters"/>      
+      <multiplicity id="294" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="295">    
+    <end type="SOURCE" refId="33" navigable="false">      
+      <attribute id="296" name="gsm"/>      
+      <multiplicity id="297" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="298">    
+    <end type="SOURCE" refId="50" navigable="false">      
+      <attribute id="299" name="newWordstate"/>      
+      <multiplicity id="300" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="301">    
+    <bendpoint x="2157" y="470"/>    
+    <bendpoint x="2157" y="568"/>    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="302" name="databaseController"/>      
+      <multiplicity id="303" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="304">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="305" name="gsm"/>      
+      <multiplicity id="306" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="307">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="308" name="gsm"/>      
+      <multiplicity id="309" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="310">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="311" name="challengeFrame"/>      
+      <multiplicity id="312" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="313">    
+    <bendpoint x="682" y="470"/>    
+    <bendpoint x="766" y="568"/>    
+    <end type="SOURCE" refId="54" navigable="false">      
+      <attribute id="314" name="db_c"/>      
+      <multiplicity id="315" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="316">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="317" name="Notify"/>      
+      <multiplicity id="318" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="47" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="319">    
+    <bendpoint x="1739" y="372"/>    
+    <bendpoint x="1739" y="274"/>    
+    <bendpoint x="1739" y="176"/>    
+    <bendpoint x="1739" y="78"/>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="320" name="gamestates"/>      
+      <multiplicity id="321" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="322">    
+    <bendpoint x="854" y="470"/>    
+    <bendpoint x="854" y="568"/>    
+    <end type="SOURCE" refId="53" navigable="false">      
+      <attribute id="323" name="db_c"/>      
+      <multiplicity id="324" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="325">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="326" name="playField"/>      
+      <multiplicity id="327" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="31" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="328">    
+    <bendpoint x="577" y="470"/>    
+    <bendpoint x="661" y="568"/>    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="329" name="db_c"/>      
+      <multiplicity id="330" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="331">    
+    <bendpoint x="833" y="470"/>    
+    <bendpoint x="833" y="568"/>    
+    <end type="SOURCE" refId="43" navigable="false">      
+      <attribute id="332" name="db_c"/>      
+      <multiplicity id="333" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="334">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="335" name="users"/>      
+      <multiplicity id="336" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="337">    
+    <bendpoint x="368" y="176"/>    
+    <bendpoint x="368" y="274"/>    
+    <bendpoint x="368" y="372"/>    
+    <bendpoint x="368" y="470"/>    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="338" name="moveLetter"/>      
+      <multiplicity id="339" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="340">    
+    <bendpoint x="1188" y="372"/>    
+    <bendpoint x="1188" y="274"/>    
+    <bendpoint x="1264" y="176"/>    
+    <bendpoint x="1264" y="78"/>    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <generalization id="341">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <association id="342">    
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="343" name="config"/>      
+      <multiplicity id="344" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="29" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="345">    
+    <bendpoint x="724" y="470"/>    
+    <bendpoint x="724" y="568"/>    
+    <end type="SOURCE" refId="53"/>    
+    <end type="TARGET" refId="49"/>  
+  </realization>  
+  <association id="346">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="347" name="eigenaar"/>      
+      <multiplicity id="348" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="349">    
+    <bendpoint x="227" y="470"/>    
+    <end type="SOURCE" refId="47" navigable="false">      
+      <attribute id="350" name="notifyPanel"/>      
+      <multiplicity id="351" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="352">    
+    <bendpoint x="619" y="470"/>    
+    <bendpoint x="619" y="568"/>    
+    <end type="SOURCE" refId="54"/>    
+    <end type="TARGET" refId="49"/>  
+  </realization>  
+  <association id="353">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="354" name="reviewWordstate"/>      
+      <multiplicity id="355" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="356">    
+    <bendpoint x="2270" y="470"/>    
+    <bendpoint x="2270" y="568"/>    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="357" name="db_c"/>      
+      <multiplicity id="358" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="359">    
+    <end type="SOURCE" refId="53" navigable="false">      
+      <attribute id="360" name="gsm"/>      
+      <multiplicity id="361" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="362">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="363" name="newWordController"/>      
+      <multiplicity id="364" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="50" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="365">    
+    <bendpoint x="1028" y="372"/>    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="366" name="gsm"/>      
+      <multiplicity id="367" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="368">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="369" name="newWordController"/>      
+      <multiplicity id="370" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="50" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="371">    
+    <bendpoint x="2166" y="372"/>    
+    <end type="SOURCE" refId="40" navigable="false">      
+      <attribute id="372" name="gsm"/>      
+      <multiplicity id="373" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="374">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="375" name="gsm"/>      
+      <multiplicity id="376" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="377">    
+    <bendpoint x="1111" y="176"/>    
+    <bendpoint x="1209" y="274"/>    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="378" name="chatArea"/>      
+      <multiplicity id="379" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="44" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="380">    
+    <bendpoint x="1760" y="372"/>    
+    <bendpoint x="1760" y="470"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="381" name="currentUser"/>      
+      <multiplicity id="382" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="383">    
+    <bendpoint x="3124" y="176"/>    
+    <bendpoint x="3124" y="78"/>    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <association id="384">    
+    <end type="SOURCE" refId="44" navigable="false">      
+      <attribute id="385" name="gamestateMananger"/>      
+      <multiplicity id="386" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="387">    
+    <bendpoint x="1997" y="176"/>    
+    <bendpoint x="1997" y="274"/>    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="388" name="competitionController"/>      
+      <multiplicity id="389" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="390">    
+    <end type="SOURCE" refId="37"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="false" package="false" protected="true" private="false" static="false"/>    
+    <operations public="false" package="false" protected="false" private="false" static="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
