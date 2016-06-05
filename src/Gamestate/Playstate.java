@@ -1,9 +1,12 @@
 package Gamestate;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -24,6 +27,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
@@ -115,6 +120,7 @@ public class Playstate extends Gamestate implements MouseListener {
 			turnIndicator = new TurnIndicator(gsm, playField.getTiles().get(0).getWidth());
 			this.createButton();
 			isCreated = true;
+			this.setBackground(Color.black);
 		} else {
 			this.reloadPlaystate();
 		}
@@ -122,10 +128,16 @@ public class Playstate extends Gamestate implements MouseListener {
 	
 	private void createButton(){
 		JButton button = new JButton("Ververs");
+		button.setBorder(BorderFactory.createLineBorder((new Color(0, 255, 0)), 3));
 		button.setPreferredSize(new Dimension(100, 10));
 		button.setSize(button.getPreferredSize());
-		button.setMinimumSize(button.getPreferredSize());
+		button .setMinimumSize(button.getPreferredSize());
 		button.setMaximumSize(button.getPreferredSize());
+		Image image = Toolkit.getDefaultToolkit().getImage("Resources/refresh.png");
+		image = image.getScaledInstance(100,100, Image.SCALE_DEFAULT);
+		ImageIcon icon = new ImageIcon(image);
+		button.setIcon(icon);
+		button.setBackground(Color.black);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -312,6 +324,7 @@ public class Playstate extends Gamestate implements MouseListener {
 							turnIndicator.resetTurnIndicator();
 						} else if (button.getText().equals("Swappen")) {
 							swapFrame.setVisible(true);
+							this.reloadPlaystate();
 						} else if (button.getText().equals(" Passen")) {
 							if (playstateController.doPass()) {
 								letterBox.replacePlacedLetters(new ArrayList<Letter>());

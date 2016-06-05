@@ -76,7 +76,7 @@ public class Letter implements Drawable {
 		this.setWantedSize(width, height);
 		speed = 0.3;
 		rightLocation = true;
-		font = new Font("Verdana", Font.BOLD, 11);
+		font = new Font("Verdana", Font.BOLD, 10);
 		bgImage = Toolkit.getDefaultToolkit().getImage("Resources/backgroundTile.png");
 	}
 
