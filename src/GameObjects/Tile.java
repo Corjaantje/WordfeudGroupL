@@ -45,6 +45,8 @@ public class Tile implements Drawable {
 			image = Toolkit.getDefaultToolkit().getImage("Resources/Scores/TW.png");
 		} else if (score.equals("DL")) {
 			image = Toolkit.getDefaultToolkit().getImage("Resources/Scores/DL.png");
+		} else if (score.equals("BOX")){
+			image = Toolkit.getDefaultToolkit().getImage("Resources/LetterBox.png");
 		} else {
 			image = Toolkit.getDefaultToolkit().getImage("Resources/Scores/START.png");
 		}

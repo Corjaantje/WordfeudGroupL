@@ -119,7 +119,6 @@ public class GamestateManager extends JPanel implements ActionListener{
 		{
 			if(!returnInitialized)
 			{
-				System.out.println("init");
 				backButton = new JMenuItem();
 				backButton.setText("Terug");
 				backButton.addActionListener(this);
@@ -170,6 +169,7 @@ public class GamestateManager extends JPanel implements ActionListener{
 					invitePlayerInMenu = true;
 				}
 			}
+			challengeFrame.updateChallengePopup();
 		}
 		else
 		{

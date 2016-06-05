@@ -87,7 +87,7 @@ public class PlayField implements Drawable {
 		int space = 2;
 		int turn = gsm.getUser().getTurnNumber();
 		int game = gsm.getUser().getGameNumber();
-		ResultSet rs = db_c.query("SELECT * FROM gelegdeletter AS gl INNER JOIN letter AS l ON gl.letter_id = l.id INNER JOIN lettertype AS lt ON lt.karakter = l.lettertype_karakter WHERE gl.spel_id = "+game+" AND letterset_code = 'NL' AND gl.beurt_id < "+turn+";");
+		ResultSet rs = db_c.query("SELECT * FROM gelegdeletter AS gl INNER JOIN letter AS l ON gl.letter_id = l.id INNER JOIN lettertype AS lt ON lt.karakter = l.lettertype_karakter WHERE gl.spel_id = "+game+" AND l.spel_id = "+game+" AND letterset_code = 'NL' AND gl.beurt_id <= "+turn+";");
 		try {
 			while (rs.next()) {
 				int letterX = rs.getInt("tegel_x");

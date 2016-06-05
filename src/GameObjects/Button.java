@@ -33,8 +33,8 @@ public class Button implements Drawable {
 		this.height = height;
 		this.width = width;
 		this.text = text;
-		buttonColor = Color.DARK_GRAY;
-		buttonFont = new Font("Arial", Font.ITALIC, 15);
+		buttonColor = Color.WHITE;
+		buttonFont = new Font("Verdana", Font.BOLD, 12);
 		buttonImg = Toolkit.getDefaultToolkit().getImage("Resources/ButtonImg.png");
 		selectedButtonImg = Toolkit.getDefaultToolkit().getImage("Resources/SelectedButtonImg.png");
 	}
@@ -49,7 +49,7 @@ public class Button implements Drawable {
 		}
 		g.setColor(Color.WHITE);
 		g.setFont(buttonFont);
-		g.drawString(text, x + (width / 3), y + (height / 2));
+		g.drawString(text, x + (width / 4)-5, y + (height / 2));
 	}
 
 	@Override

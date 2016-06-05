@@ -26,7 +26,7 @@ public class GameOverviewInfoFrame extends JFrame {
 	private DatabaseController db_c;
 
 	private JPanel panel;
-	
+
 	private int gameNumber;
 
 	private boolean isCreated = false;
@@ -51,19 +51,24 @@ public class GameOverviewInfoFrame extends JFrame {
 		}
 		this.createLabel();
 		this.createButton();
-		if(!isCreated){
+		if (!isCreated) {
 			isCreated = true;
 		}
 		this.setVisible(true);
 	}
+<<<<<<< HEAD
 	//TODO if game is created check this !
+=======
+
+	// TODO if game is created check this !
+>>>>>>> refs/remotes/origin/master
 	private void createLabel() {
 		Font font = new Font("Serif", Font.BOLD, 20);
 
 		Box box = Box.createVerticalBox();
 		JLabel turn = new JLabel("De beurt is aan: " + gsm.getUser().getPlayerTurn());
 		turn.setFont(font);
-		JLabel score = new JLabel(gsm.getUser().getUsername() + " - " + gsm.getUser().getUserScore() + " ~ VS ~ "
+		JLabel score = new JLabel(gsm.getUser().getChallengerName() + " - " + gsm.getUser().getUserScore() + " ~ VS ~ "
 				+ gsm.getUser().getOpponentName() + " - " + gsm.getUser().getOpponentScore());
 		score.setFont(font);
 		box.add(score);
@@ -80,6 +85,7 @@ public class GameOverviewInfoFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+<<<<<<< HEAD
 				int option = JOptionPane.showConfirmDialog(null,
 						"Weet u zeker dat u naar het spel: " + button.getText() + " wilt gaan?", "Wordfeud",
 						JOptionPane.YES_NO_OPTION);
@@ -103,6 +109,12 @@ public class GameOverviewInfoFrame extends JFrame {
 					gsm.setGamestate(GamestateManager.playState);
 					setVisible(false);
 				}
+=======
+				gsm.getUser().setGameNumber(gameNumber);
+				gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber());
+				gsm.setGamestate(GamestateManager.playState);
+				setVisible(false);
+>>>>>>> refs/remotes/origin/master
 			}
 		});
 		this.add(button, BorderLayout.SOUTH);

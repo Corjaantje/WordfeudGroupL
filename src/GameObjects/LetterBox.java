@@ -48,7 +48,7 @@ public class LetterBox implements Drawable {
 	private void createTiles() {
 		tiles = new ArrayList<Tile>();
 		for (int i = 0; i < 7; i++) {
-			tiles.add(new Tile(startX, startY, tileDiameter, tileDiameter, "--"));
+			tiles.add(new Tile(startX, startY, tileDiameter, tileDiameter, "BOX"));
 			startX += tileDiameter;
 		}
 	}
@@ -59,10 +59,12 @@ public class LetterBox implements Drawable {
 		// worden gezet
 		int turn = 0;
 		int game = gsm.getUser().getGameNumber();
-		if (player.equals(gsm.getUser().getPlayerTurn())) {
-			turn = gsm.getUser().getTurnNumber();
-		} else {
+		if (gsm.getUser().getUsername().equals(gsm.getUser().getPlayerTurn())) {
 			turn = gsm.getUser().getTurnNumber() - 1;
+			System.out.println("player is: " + gsm.getUser().getUsername() + " and turn belongs to: " + gsm.getUser().getPlayerTurn());
+		} else {
+			turn = gsm.getUser().getTurnNumber() - 2;
+			System.out.println("player is: " + gsm.getUser().getUsername() + " and turn belongs to: " + gsm.getUser().getPlayerTurn());
 		}
 		String query = "SELECT *  FROM letterbakjeletter AS lb  INNER JOIN letter AS l  ON l.id = lb.letter_id  INNER JOIN lettertype AS lt  ON lt.karakter = l.lettertype_karakter  INNER JOIN beurt AS b ON b.id = lb.beurt_id WHERE l.spel_id = "
 				+ game + " AND lb.beurt_id = " + turn + " AND letterset_code = 'NL' AND lb.spel_id = " + game
@@ -96,19 +98,24 @@ public class LetterBox implements Drawable {
 	public void replacePlacedLetters(ArrayList<Letter> placedLetters) {
 		int desiredNumberOfLetters = placedLetters.size();
 
+		// TODO remove this commented code
 		// get all unused letters (not on field not in player's hands)
 		// ( letter is not in gelegdeletter and letter is not in a letterbakje
 		// letter with last two turns
-		String query = "SELECT * FROM letter WHERE NOT id = ANY( SELECT letter_id FROM gelegdeletter WHERE beurt_id <= "
-				+ gsm.getUser().getTurnNumber() + " AND spel_id = " + gsm.getUser().getGameNumber() + ") "
-				+ "AND NOT id = ANY( SELECT letter_id from letterbakjeletter where beurt_id ="
-				+ (gsm.getUser().getTurnNumber() - 1) + " OR beurt_id =" + (gsm.getUser().getTurnNumber() - 2);
+	//	String query = "SELECT * FROM letter WHERE NOT id = ANY( SELECT letter_id FROM gelegdeletter WHERE beurt_id <= "
+	//			+ (gsm.getUser().getTurnNumber()+1) + " AND spel_id = " + gsm.getUser().getGameNumber() + ") "
+	//			+ "AND NOT id = ANY( SELECT letter_id from letterbakjeletter where beurt_id ="
+	//			+ (gsm.getUser().getTurnNumber()) + " OR beurt_id =" + (gsm.getUser().getTurnNumber() - 1) + ")";
+		
+		// get all letters from the pot
+		String query = "SELECT * FROM pot WHERE spel_id =" + gsm.getUser().getGameNumber();
 		ResultSet rSet = db_c.query(query);
-
 		ArrayList<Integer> charNumberList = new ArrayList<Integer>();
 		try {
-			charNumberList.add(rSet.getInt("id"));
-
+			while (rSet.next())
+			{
+				charNumberList.add(rSet.getInt("letter_id"));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -121,15 +128,17 @@ public class LetterBox implements Drawable {
 		// if there's not enough letters available; change the number of letters
 		// that gets returned to the maximum number that is available
 		if (charNumberList.size() < desiredNumberOfLetters) {
-			desiredNumberOfLetters = newLetters.size();
+			desiredNumberOfLetters = charNumberList.size();
 		}
 		// take desiredNumberOfLetters unused letters
 		for (int i = 0; i < desiredNumberOfLetters; i++) {
 			newLetters.add(charNumberList.get(i));
 		}
+		
+		
 		// place the unused letters in the letterbakjeletter again
 		// get the unused letter_ids
-		ArrayList<Letter> unusedLetters = letters;
+		ArrayList<Letter> unusedLetters = (ArrayList<Letter>) letters.clone();
 		// for every letter in the letterbox check if they have been used (if
 		// they are also in the placedLetters arraylist
 		for (Letter letter : letters) {
@@ -143,14 +152,14 @@ public class LetterBox implements Drawable {
 		// add the unused letters
 		for (Letter letter : unusedLetters) {
 			String updateLetterbakjeletterQuery = "INSERT INTO letterbakjeletter (spel_id,letter_id,beurt_id) VALUES ("
-					+ gsm.getUser().getGameNumber() + ", " + letter.getLetterID() + ", " + gsm.getUser().getTurnNumber()
+					+ gsm.getUser().getGameNumber() + ", " + letter.getLetterID() + ", " + (gsm.getUser().getTurnNumber()+1)
 					+ ")";
 			db_c.queryUpdate(updateLetterbakjeletterQuery);
 		}
 		// finally replace the placed letters with the new letters
 		for (Integer letter_id : newLetters) {
 			String updateLetterbakjeletterQuery = "INSERT INTO letterbakjeletter (spel_id,letter_id,beurt_id) VALUES ("
-					+ gsm.getUser().getGameNumber() + ", " + letter_id + ", " + gsm.getUser().getTurnNumber() + ")";
+					+ gsm.getUser().getGameNumber() + ", " + letter_id + ", " + (gsm.getUser().getTurnNumber()+1) + ")";
 			db_c.queryUpdate(updateLetterbakjeletterQuery);
 		}
 	}

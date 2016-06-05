@@ -12,6 +12,7 @@ import Main.GUI;
 @SuppressWarnings("serial")
 public class ChallengeFrame extends JFrame
 {
+	private ChallengePanel challenge;
 	public ChallengeFrame(GamestateManager gsm, DatabaseController db_c)
 	{
 		this.setPreferredSize(new Dimension((int) (GUI.WIDTH/4.9), (int) (GUI.HEIGHT/4)));;
@@ -19,8 +20,13 @@ public class ChallengeFrame extends JFrame
 		this.setResizable(false);
 		this.setTitle("Speler Uitdagen");
 		this.setLayout(new BorderLayout());
-		ChallengePanel Challenge = new ChallengePanel(gsm, db_c);
-		this.add(Challenge);
+		challenge = new ChallengePanel(gsm, db_c);
+		this.add(challenge);
 		this.pack();
+	}
+	
+	public void updateChallengePopup()
+	{
+		challenge.resetContent();
 	}
 }
