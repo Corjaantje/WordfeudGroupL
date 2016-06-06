@@ -66,7 +66,7 @@ public class InfoPanel implements Drawable {
 		g.drawString("'" + playerTurn + "' is aan de beurt!", x + (width / 3), y + (height));
 		//Turn number
 		g.setFont(new Font("Verdana", Font.BOLD, 14));
-		g.drawString("Beurtnummer: "+turnNumber, x+(width-(width/4)), y+17);
+		g.drawString("Beurtnummer: "+(turnNumber-1), x+(width-(width/4)), y+17);
 	}
 
 	@Override
