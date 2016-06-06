@@ -34,8 +34,8 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 	private ChatOutput output = new ChatOutput();
 	private ChatConfigFrame config = new ChatConfigFrame(this.output);;
 
-	private boolean FilledChat = false;
-	private String LastTimeMessage;
+	private boolean filledChat = false;
+	private String lastTimeMessage;
 	private int savedGameNumber;
 
 	Timer timer = new Timer();
@@ -105,10 +105,10 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 		{
 			userName = gamestateMananger.getUser().getUsername();
 		}
-		String bericht = input.chatInput.getText();
-		if(!bericht.contains("\\"))
+		String message = input.chatInput.getText();
+		if(!message.contains("\\"))
 		{
-			if(!bericht.contains("'"))
+			if(!message.contains("'"))
 			{
 				DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 				Date date = new Date();
@@ -143,20 +143,20 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 				savedGameNumber = gamestateMananger.getUser().getGameNumber();
 				ResultSet resultFull = database.query("SELECT * FROM chatregel WHERE spel_id = " + this.savedGameNumber + " ORDER BY tijdstip");
 
-				if (!FilledChat) // Chat already filled with previous messages?
+				if (!filledChat) // Chat already filled with previous messages?
 				{				
 					output.addLine("Console", "Ingelogd als "+ gamestateMananger.getUser().getUsername()+ ". Huidig spelnummer "+ this.savedGameNumber);
-					LastTimeMessage = "00000000";
+					lastTimeMessage = "00000000";
 					while (resultFull.next())
 					{
 						String user = this.properCapsNames(resultFull.getString("account_naam"));
 						String message = resultFull.getString("bericht");
-						LastTimeMessage = resultFull.getString("tijdstip");
+						lastTimeMessage = resultFull.getString("tijdstip");
 						output.addLine(user, message);
 					}
 					if (!resultFull.next())
 					{
-						FilledChat = true;
+						filledChat = true;
 					}
 				}
 			 else	// Chat has been filled
@@ -165,11 +165,12 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 				resultPartial = database.query("SELECT * FROM chatregel WHERE spel_id = " + this.savedGameNumber + " ORDER BY tijdstip DESC LIMIT 1");
 				if (resultPartial.next())
 				{
-					if (!LastTimeMessage.equals(resultPartial.getString("tijdstip")))
+					String time = resultPartial.getString("tijdstip");
+					if (!lastTimeMessage.equals(time))
 					{
 						String user = this.properCapsNames(resultPartial.getString("account_naam"));
 						String message = resultPartial.getString("bericht");
-						LastTimeMessage = resultPartial.getString("tijdstip");
+						lastTimeMessage = resultPartial.getString("tijdstip");
 						output.addLine(user, message);
 					}
 				}
@@ -198,7 +199,8 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 	
 	public void reloadChat()
 	{
-		this.FilledChat = false;
+		this.filledChat = false;
+		lastTimeMessage = "";
 		this.output.chatOutput.setText("");
 	}
 
