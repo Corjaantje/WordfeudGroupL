@@ -24,8 +24,6 @@ public class CompetitionController {
 	}
 
 	public void addCompetition(String description) {
-
-		int competitieID = 0;
 		try {
 			if (description.length() < 5 || description.length() > 25) 
 			{
@@ -45,14 +43,22 @@ public class CompetitionController {
 				}
 				if(!description.contains("\\"))
 				{
-					if(!description.contains("'"))
+					if (description.matches("[A-za-z0-9]+") )
 					{
-					databaseController.queryUpdate("INSERT INTO competitie (`account_naam_eigenaar`,`omschrijving`) VALUES ('"+gsm.getUser().getUsername()+"', '"+description+"');");
-					JOptionPane.showMessageDialog(null, "Je hebt een nieuwe competitie gemaakt!");
+						if(!description.contains("'"))
+						{
+						databaseController.queryUpdate("INSERT INTO competitie (`account_naam_eigenaar`,`omschrijving`) VALUES ('"+gsm.getUser().getUsername()+"', '"+description+"');");
+								JOptionPane.showMessageDialog(null, "Je hebt een nieuwe competitie gemaakt!");
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, "Het leesteken 'apostrof' is niet toegestaan!");
+						}
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Het leesteken 'apostrof' is niet toegestaan!");
+						JOptionPane.showMessageDialog(null, "Competitienaam mag alleen maar bestaan uit letters en cijfers");
+						
 					}
 				}
 				else

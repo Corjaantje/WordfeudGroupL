@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import Gamestate.GamestateManager;
 import Main.Drawable;
@@ -40,8 +42,7 @@ public class TurnIndicator implements Drawable{
 			g.drawString(""+score, (int)(x+location+(diameter/2.5)), (int)(y+location+(diameter/1.2)));
 		}else{
 			g.drawString(""+score, (int)(x+location+(diameter/4.4)), (int)(y+location+(diameter/1.2)));
-		}
-		
+		}		
 	}
 
 	@Override
@@ -64,4 +65,5 @@ public class TurnIndicator implements Drawable{
 		this.score = score;
 	}
 
+	
 }
