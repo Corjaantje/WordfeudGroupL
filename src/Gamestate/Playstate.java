@@ -156,10 +156,11 @@ public class Playstate extends Gamestate implements MouseListener {
 			gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber() - 1);
 			turnNumberChanged = true;
 		}
-		letterBox.reloadLetterBox();
+		
 		if (turnNumberChanged) {
 			gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber());
 		}
+		letterBox.reloadLetterBox();
 		playField.reloadPlayfield();
 		infoPanel.reloadInfoPanel();
 		swapFrame.reloadSwapFrame();
