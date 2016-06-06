@@ -63,7 +63,7 @@ public class LetterBox implements Drawable {
 			turn = gsm.getUser().getTurnNumber() - 1;
 			System.out.println("player is: " + gsm.getUser().getUsername() + " and turn belongs to: " + gsm.getUser().getPlayerTurn());
 		} else {
-			turn = gsm.getUser().getTurnNumber() - 2;
+			turn = gsm.getUser().getTurnNumber();
 			System.out.println("player is: " + gsm.getUser().getUsername() + " and turn belongs to: " + gsm.getUser().getPlayerTurn());
 		}
 		String query = "SELECT *  FROM letterbakjeletter AS lb  INNER JOIN letter AS l  ON l.id = lb.letter_id  INNER JOIN lettertype AS lt  ON lt.karakter = l.lettertype_karakter  INNER JOIN beurt AS b ON b.id = lb.beurt_id WHERE l.spel_id = "
