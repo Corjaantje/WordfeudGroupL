@@ -15,8 +15,7 @@ public class NewWordController
 {
 	private GamestateManager gsm;
 	private DatabaseController databaseController;
-	
-	@SuppressWarnings("rawtypes")
+
 	private JList addedWordList;
 	private NewWordstate newWordstate;
 	
@@ -87,7 +86,7 @@ public class NewWordController
 			lettersetComboBox.addItem(lettersetCode);
 		}
 		
-	}
+	}	
 	
 	private ArrayList<String> getAddedWords() {
 		ArrayList<String> allAddedWords = new ArrayList<>();

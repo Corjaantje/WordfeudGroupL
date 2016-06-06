@@ -122,15 +122,14 @@ public class SwapPane extends JPanel {
 			if (checkbox.getState()) {
 				lettersAreSwapped = true;
 				swappedLetters.add(checkbox.getLabel());
-				String query = "SELECT * FROM letter WHERE NOT id = ANY( SELECT letter_id FROM gelegdeletter WHERE beurt_id <= "
-						+ turn + " AND spel_id = " + game + ")";
+				String query = "SELECT * FROM pot WHERE spel_id = "+gsm.getUser().getGameNumber()+";";
 				// TODO add this to the query above? - Marc
 				// TODO + "AND NOT id = ANY( SELECT letter_id from letterbakjeletter where beurt_id =" + (turn-1) + " OR beurt_id =" + (turn-2);
 				ArrayList<Integer> charNumberList = new ArrayList<Integer>();
 				ResultSet rs = db_c.query(query);
 				try {
 					while (rs.next()) {
-						charNumberList.add(rs.getInt("id"));
+						charNumberList.add(rs.getInt("letter_id"));
 					}
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -193,12 +192,11 @@ public class SwapPane extends JPanel {
 				counter--;
 			}
 		}
-		String query = "SELECT lettertype_karakter,count(lettertype_karakter) AS aantal FROM letter WHERE NOT id = ANY( SELECT letter_id FROM gelegdeletter WHERE beurt_id < "
-				+ gsm.getUser().getTurnNumber() + ") GROUP BY lettertype_karakter;";
+		String query = "SELECT karakter,count(karakter) AS aantal FROM pot WHERE spel_id = "+gsm.getUser().getGameNumber()+" GROUP BY karakter;";
 		ResultSet rs = db_c.query(query);
 		try {
 			while (rs.next()) {
-				model.addRow(new Object[] { rs.getString("lettertype_karakter"), rs.getString("aantal") });
+				model.addRow(new Object[] { rs.getString("karakter"), rs.getString("aantal") });
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -3,6 +3,8 @@ package GameObjects;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.plaf.metal.OceanTheme;
 
@@ -31,6 +33,9 @@ public class InfoPanel implements Drawable {
 	private String playerTurn;
 	
 	private int turnNumber;
+	
+	private Image image;
+	private Color color;
 
 	public InfoPanel(int x, int y, int width, int height, DatabaseController db_c, GamestateManager gsm) {
 		this.x = x;
@@ -39,15 +44,18 @@ public class InfoPanel implements Drawable {
 		this.width = width;
 		this.db_c = db_c;
 		this.gsm = gsm;
+		image = Toolkit.getDefaultToolkit().getImage("Resources/infoPanelBackground.jpg");
+		color = new Color(17,190,7);
 		this.reloadInfoPanel();
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.gray);
-		g.fillRect(x - 1, y + 2, width, height + 5);
-		g.setColor(Color.BLACK);
+		/*g.setColor(Color.gray);
+		g.fillRect(x - 1, y + 2, width, height + 5);*/
+		g.drawImage(image, x-1, y+2, width, height, null);
+		g.setColor(color);
 		g.setFont(new Font("Verdana", Font.BOLD, 14));
 		// User
 		g.drawString(username + " - " + userscore, x + 5, y + (height / 3));
