@@ -115,7 +115,7 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 		
 				try
 				{
-					database.queryUpdate("INSERT INTO chatregel VALUES ('" + userName + "', " + this.savedGameNumber + ", " + dateFormat.format(date) + ", '" + bericht + "')");
+					database.queryUpdate("INSERT INTO chatregel VALUES ('" + userName + "', " + this.savedGameNumber + ", " + dateFormat.format(date) + ", '" + message + "')");
 				} catch (Exception e)
 				{
 					e.printStackTrace();
