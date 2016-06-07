@@ -634,7 +634,7 @@ public class Playstate extends Gamestate implements MouseListener {
 	}
 
 	private void playSound(String url) {
-		File f = new File("Resources/Sound/" + url);
+		File f = new File("resources/Sound/" + url);
 		try {
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(f.getAbsoluteFile());
 			try {
