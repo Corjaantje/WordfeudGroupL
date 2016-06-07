@@ -319,7 +319,6 @@ public class Playstate extends Gamestate implements MouseListener {
 			if (buttonPanel.getButtonsAreSelected() && x > button.getX() && x < (button.getX() + button.getWidth())) {
 				if (buttonPanel.getButtonsAreSelected() && y > button.getY()
 						&& y < (button.getY() + button.getHeight())) {
-					this.playSound("ButtonClick.wav");
 					if (gsm.getUser().userCanPlay()) {
 
 						if (button.getText().equals("Resetten")) {
@@ -359,7 +358,6 @@ public class Playstate extends Gamestate implements MouseListener {
 
 	private void placeIndicator() {
 		if (indicatorIsPlaced && moveLetter.getRightLocation()) {
-			this.playSound("LetterDrop.wav");
 			playstateController.setScoreTrackingVariables();
 			int score = playstateController.getScore();
 			// check if the word is on a wrong location
@@ -382,7 +380,6 @@ public class Playstate extends Gamestate implements MouseListener {
 						return 0;
 					}
 				});
-				System.out.println("Horizontal word ordered");
 				turnIndicator.setToPoint(new Point((int) wordLetters.get(0).getX(), (int) wordLetters.get(0).getY()));
 				turnIndicator.setScore(score);
 			} else if (playstateController.getMainWordOrientation().equals("vertical")) {
@@ -399,11 +396,8 @@ public class Playstate extends Gamestate implements MouseListener {
 					}
 
 				});
-				System.out.println("Vertical word ordered");
 				turnIndicator.setToPoint(new Point((int) wordLetters.get(0).getX(), (int) wordLetters.get(0).getY()));
 				turnIndicator.setScore(score);
-			} else {
-				System.out.println("Word Orientation went wrong");
 			}
 			indicatorIsPlaced = false;
 		}
@@ -421,237 +415,6 @@ public class Playstate extends Gamestate implements MouseListener {
 		filledTiles.clear();
 		turnIndicator.resetTurnIndicator();
 		moveLetter = null;
-	}
-
-	@Deprecated
-	private void checkCorrectPlacedLetters() {
-		int counter = 0;
-		boolean isWrongTurn = false;
-		ArrayList<Letter> letters = new ArrayList<Letter>();
-		for (Letter letter : letterBox.getLetters()) {
-			if (!letter.isOnStartPosition()) {
-				counter++;
-				letters.add(letter);
-				// check for every letter that isn't on start position on which
-				// tile they are
-				for (Tile tile : playField.getTiles()) {
-					if (letter.getX() - 5 < tile.getX() && letter.getX() + 5 > tile.getX()) {
-						if (letter.getY() - 5 < tile.getY() && letter.getY() + 5 > tile.getY()) {
-							letter.setBordX(tile.getBordX());
-							letter.setBordY(tile.getBordY());
-						}
-					}
-				}
-			}
-		}
-		// if all letters are on start position give warning
-		if (counter == 0) {
-			isWrongTurn = true;
-		}
-		if (counter == 1) {
-			// only one letter is placed so dont need to check for axis
-
-			// check if the one letter is placed right
-			return;
-		}
-		if (isWrongTurn) {
-			JOptionPane.showMessageDialog(this, "U letter(s) staan op een ongeldige locatie!",
-					"Letter(s) op een ongeldige locatie!", JOptionPane.ERROR_MESSAGE);
-		} else {
-			this.checkForAxis(letters);
-		}
-	}
-
-	@Deprecated
-	private void checkForAxis(ArrayList<Letter> letters) {
-		boolean isVerticalLayed = true;
-		boolean isHorizontalLayed = true;
-		ArrayList<Integer> letterX = new ArrayList<Integer>();
-		ArrayList<Integer> letterY = new ArrayList<Integer>();
-		for (Letter letter : letters) {
-			letterX.add(letter.getBordX());
-			letterY.add(letter.getBordY());
-			System.out.println("Letter = " + letter.getLetterChar() + " X waarde = " + letter.getBordX()
-					+ " Y waarde = " + letter.getBordY());
-		}
-		// test
-		int sequenceX = letters.get(0).getBordX();
-		int sequenceY = letters.get(0).getBordY();
-		// checks if all horizontal letters are the same.
-		for (int i = 0; i < letterX.size(); i++) {
-			if (i > 0 && sequenceX != letterX.get(i)) {
-				isHorizontalLayed = false;
-			}
-		}
-		// checks if all vertical letters are the same.
-		for (int i = 0; i < letterY.size(); i++) {
-			if (i > 0 && sequenceY != letterY.get(i)) {
-				isVerticalLayed = false;
-			}
-		}
-		if (isHorizontalLayed && !isVerticalLayed) {
-			this.checkYAxis(letters, letterX, sequenceY);
-		} else if (isVerticalLayed && !isHorizontalLayed) {
-			this.checkXAxis(letters, letterX, sequenceY);
-		} else {
-			// wrong placed letters
-		}
-	}
-
-	@Deprecated
-	private void checkYAxis(ArrayList<Letter> letters, ArrayList<Integer> letterY, int sequenceX) {
-		// orders integer array
-		Arrays.sort(letterY.toArray());
-		// all loops are for checking sequence
-		ArrayList<Letter> placedLetters = new ArrayList<Letter>();
-		// add all letters on the right x-ax
-		placedLetters.addAll(letters);
-		for (Letter placedLetter : playField.getPlayedLetters()) {
-			if (sequenceX == placedLetter.getBordX()) {
-				placedLetters.add(placedLetter);
-			}
-		}
-		// order all placed letters on their x position
-		Collections.sort(placedLetters, new Comparator<Letter>() {
-			@Override
-			public int compare(Letter z1, Letter z2) {
-				if (z1.getBordY() > z2.getBordY())
-					return 1;
-				if (z1.getBordY() < z2.getBordY())
-					return -1;
-				return 0;
-			}
-		});
-		// check in which sequence the placed letters are
-		Letter previousGood = new Letter(0, 0, 0, 0, "", -1);
-		ArrayList<Letter> sequence = new ArrayList<Letter>();
-		for (Letter letter : placedLetters) {
-			for (Letter letter2 : letters) {
-				if (letter.getBordY() == letter2.getBordY()) {
-					sequence.add(letter);
-					previousGood = letter;
-					break;
-				} else if (letter.getBordY() == letter2.getBordY() - 1 || letter.getBordY() == letter2.getBordY() + 1) {
-					sequence.add(letter);
-					previousGood = letter;
-					break;
-				} else if (letter.getBordY() == previousGood.getBordY() - 1
-						|| letter.getBordY() == previousGood.getBordY() + 1) {
-					sequence.add(letter);
-					previousGood = letter;
-					break;
-				} else {
-					System.out.println("Wrong");
-				}
-			}
-		}
-		// last sort to get the right sequence order
-		Collections.sort(sequence, new Comparator<Letter>() {
-			@Override
-			public int compare(Letter z1, Letter z2) {
-				if (z1.getBordY() > z2.getBordY())
-					return 1;
-				if (z1.getBordY() < z2.getBordY())
-					return -1;
-				return 0;
-			}
-		});
-		String word = "";
-		for (Letter letter : sequence) {
-			word.concat(letter.getLetterChar());
-		}
-		JOptionPane.showMessageDialog(this, "U heeft '" + word + "' gespeeld");
-	}
-
-	@Deprecated
-	private void checkXAxis(ArrayList<Letter> letters, ArrayList<Integer> letterX, int sequenceY) {
-		// orders integer array
-		Arrays.sort(letterX.toArray());
-		// all loops are for checking sequence
-		ArrayList<Letter> placedLetters = new ArrayList<Letter>();
-		// add all letters on the right x-ax
-		placedLetters.addAll(letters);
-		for (Letter placedLetter : playField.getPlayedLetters()) {
-			if (sequenceY == placedLetter.getBordY()) {
-				placedLetters.add(placedLetter);
-			}
-		}
-		// order all placed letters on their x position
-		Collections.sort(placedLetters, new Comparator<Letter>() {
-			@Override
-			public int compare(Letter z1, Letter z2) {
-				if (z1.getBordX() > z2.getBordX())
-					return 1;
-				if (z1.getBordX() < z2.getBordX())
-					return -1;
-				return 0;
-			}
-		});
-		// check in which sequence the placed letters are
-
-		// PROBLEM: only 3 letters can be selected
-		Letter previousGood = new Letter(0, 0, 0, 0, "", -1);
-		ArrayList<Letter> sequence = new ArrayList<Letter>();
-		for (Letter letter : placedLetters) {
-			for (Letter letter2 : letters) {
-				if (!sequence.contains(letter)) {
-					if (letter.getBordX() == letter2.getBordX()) {
-						sequence.add(letter);
-						previousGood = letter;
-						break;
-					} else if (letter.getBordX() == letter2.getBordX() - 1
-							|| letter.getBordX() == letter2.getBordX() + 1) {
-						sequence.add(letter);
-						previousGood = letter;
-						break;
-					} else if (letter.getBordX() == previousGood.getBordX() - 1
-							|| letter.getBordX() == previousGood.getBordX() + 1) {
-						sequence.add(letter);
-						previousGood = letter;
-						break;
-					} else {
-
-					}
-				}
-			}
-		}
-		// last sort to get the right sequence order
-		Collections.sort(sequence, new Comparator<Letter>() {
-			@Override
-			public int compare(Letter z1, Letter z2) {
-				if (z1.getBordX() > z2.getBordX())
-					return 1;
-				if (z1.getBordX() < z2.getBordX())
-					return -1;
-				return 0;
-			}
-		});
-		String word = "";
-		for (Letter letter : sequence) {
-			word = word.concat(word + letter.getLetterChar());
-		}
-		JOptionPane.showMessageDialog(this, "U heeft '" + word + "' gespeeld");
-	}
-
-	private void playSound(String url) {
-		File f = new File("resources/Sound/" + url);
-		try {
-			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(f.getAbsoluteFile());
-			try {
-				Clip clip = AudioSystem.getClip();
-				clip.open(audioInputStream);
-				clip.start();
-			} catch (LineUnavailableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }

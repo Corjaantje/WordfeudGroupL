@@ -1244,10 +1244,10 @@ public class PlaystateController {
 				e.printStackTrace();
 			}
 			if (counter == 3) {
-				gsm.getUser().setTurnNumber(turnNumber);
-				ArrayList<Letter> opponentLetters = letterBox.getLetters();
-				gsm.getUser().setTurnNumber(turnNumber + 1);
 				ArrayList<Letter> userLetters = letterBox.getLetters();
+				gsm.getUser().setTurnNumber(turnNumber - 1);
+				letterBox.reloadLetterBox();
+				ArrayList<Letter> opponentLetters = letterBox.getLetters();
 				int userLetterPoints = 0;
 				for (Letter letter : userLetters) {
 					userLetterPoints += letter.getScore();
@@ -1301,11 +1301,11 @@ public class PlaystateController {
 						turns.add(rs.getInt("id"));
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if (turns.contains(turn)) {
 					isGood = true;
+					System.out.println("first end turn is number: "+turn);
 				}
 			} else if (counter == 50) {
 				JOptionPane.showMessageDialog(null, "Er ging iets fout bij het inserten van de userscore");
@@ -1333,11 +1333,11 @@ public class PlaystateController {
 						turns.add(rs.getInt("id"));
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if (turns.contains(turn)) {
 					isGood = true;
+					System.out.println("first end turn is number: "+turn);
 				}
 			} else if (counter == 50) {
 				JOptionPane.showMessageDialog(null, "Er ging iets fout bij het inserten van de userscore");
