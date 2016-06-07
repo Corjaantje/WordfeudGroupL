@@ -8,12 +8,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -82,7 +87,11 @@ public class Loginstate extends Gamestate implements ActionListener, KeyListener
 		this.loginPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		this.loginPanel.add(switchToRegister);
 	
-		this.bgImage = getToolkit().getImage("Resources/WordfeudLogin.png");
+		try {
+			this.bgImage = ImageIO.read(this.getClass().getClassLoader().getResource("resources/WordfeudLogin.png"));
+		} catch (IOException e) {
+			System.out.println("Something went wrong at the image loader: "+e.getMessage());
+		}
 	}
 
 	@Override
