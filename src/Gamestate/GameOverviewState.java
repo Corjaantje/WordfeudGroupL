@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -79,8 +80,10 @@ public class GameOverviewState extends Gamestate {
 		unfinishedGamesPanel.setPreferredSize(new Dimension((int) (GUI.WIDTH / 3), (int) (GUI.HEIGHT / 1.5)));
 		JLabel label = new JLabel("Bezige spellen");
 		label.setFont(new Font("Comic Sans", Font.BOLD, 30));
-		label.setBackground(Color.lightGray);
+		label.setForeground(Color.BLACK);
 		unfinishedGamesPanel.add(label);
+		unfinishedGamesPanel.setBackground(Color.GRAY);
+		unfinishedGamesPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 255, 0), 4));
 		String query = "SELECT * FROM spel WHERE competitie_id = " + gsm.getUser().getCompetitionNumber()
 				+ " AND toestand_type = 'playing' AND (account_naam_uitdager = '" + gsm.getUser().getUsername() + "' OR account_naam_tegenstander = '" + gsm.getUser().getUsername() +"');";
 		this.executeQuery(query, unfinishedGamesPanel);
@@ -91,7 +94,10 @@ public class GameOverviewState extends Gamestate {
 		finishedGamesPanel.setPreferredSize(new Dimension((int) (GUI.WIDTH / 3), (int) (GUI.HEIGHT / 1.5)));
 		JLabel label = new JLabel("Geëindigde spellen");
 		label.setFont(new Font("Comic Sans", Font.BOLD, 30));
-		label.setBackground(Color.lightGray);
+		label.setForeground(Color.BLACK);
+		finishedGamesPanel.add(label);
+		finishedGamesPanel.setBackground(Color.GRAY);
+		finishedGamesPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 255, 0), 4));;
 		finishedGamesPanel.add(label);
 		String query = "SELECT * FROM spel WHERE competitie_id = " + gsm.getUser().getCompetitionNumber()
 				+ " AND toestand_type = 'finished' AND (account_naam_uitdager = '" + gsm.getUser().getUsername() + "' OR account_naam_tegenstander = '" + gsm.getUser().getUsername() +"');";

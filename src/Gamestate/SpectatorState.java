@@ -9,7 +9,9 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -120,7 +122,12 @@ public class SpectatorState extends Gamestate {
 	private void createButtons() {
 		JButton previous = new JButton();
 		previous.setBackground(new Color(26, 142, 76));
-		Image previousImage = Toolkit.getDefaultToolkit().getImage("Resources/LeftPointer.png");
+		Image previousImage = null;
+		try {
+			previousImage = ImageIO.read(this.getClass().getClassLoader().getResource("resources/LeftPointer.png"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		previousImage = previousImage.getScaledInstance((int) (GUI.WIDTH / 5), 50, Image.SCALE_DEFAULT);
 		ImageIcon leftIcon = new ImageIcon(previousImage);
 		previous.setIcon(leftIcon);
@@ -144,7 +151,12 @@ public class SpectatorState extends Gamestate {
 
 		JButton next = new JButton();
 		next.setBackground(new Color(26, 142, 76));
-		Image nextImage = Toolkit.getDefaultToolkit().getImage("Resources/RightPointer.png");
+		Image nextImage = null;
+		try {
+			nextImage = ImageIO.read(this.getClass().getResource("resources/RightPointer.png"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		nextImage = nextImage.getScaledInstance((int) (GUI.WIDTH / 5), 50, Image.SCALE_DEFAULT);
 		ImageIcon rightIcon = new ImageIcon(nextImage);
 		next.setIcon(rightIcon);

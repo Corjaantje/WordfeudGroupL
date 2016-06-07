@@ -6,7 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -71,7 +73,11 @@ public class Registerstate extends Gamestate implements ActionListener{
 		this.registerPanel.add(register);
 		this.registerPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		this.registerPanel.add(switchToLogin);
-		this.bgImage = getToolkit().getImage("Resources/WordfeudRegister.png");
+		try {
+			this.bgImage = ImageIO.read(this.getClass().getClassLoader().getResource("resources/WordfeudRegister.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

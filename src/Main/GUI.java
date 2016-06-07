@@ -1,39 +1,21 @@
 package Main;
 
-import java.awt.BorderLayout;
-import java.awt.Checkbox;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.Label;
-import java.awt.List;
 import java.awt.Point;
-import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.io.IOException;
 
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
-import controller.AdminDBController;
-import model.User;
-import GameObjects.Button;
-import GameObjects.NotificationFrame;
 import Gamestate.GamestateManager;
 
 @SuppressWarnings("serial")
@@ -60,9 +42,12 @@ public class GUI extends JFrame {
 
 	private void create() {
 		this.setUndecorated(true);
-		Image image = Toolkit.getDefaultToolkit().getImage("Resources/wordfeudlogo.png");
-		this.setIconImage(image);
-		Image cursorImage = Toolkit.getDefaultToolkit().getImage("Resources/cursor.png");
+		Image cursorImage = null;
+		try {
+			cursorImage = ImageIO.read(this.getClass().getClassLoader().getResource("resources/cursor.png"));
+		} catch (IOException e) {
+			System.out.println("Something went wrong at the image loader: "+e.getMessage());
+		}
 		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(this.getX(), this.getY()), "cursorImg");
 		this.setCursor(cursor);
 		this.setTitle("Wordfeud");
@@ -84,7 +69,7 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ImageIcon icon = new ImageIcon("Resources/wordfeudLogo.png");
+				ImageIcon icon = new ImageIcon(this.getClass().getClassLoader().getResource("resources/wordfeudLogo.png"));
 				int option = JOptionPane.showConfirmDialog(null, "De applicatie zal nu worden afgelosten",
 						"Bent u zeker van deze keuze?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 						icon);

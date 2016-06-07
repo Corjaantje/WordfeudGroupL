@@ -17,7 +17,6 @@ public class SwapFrame extends JFrame{
 		this.setResizable(false);
 		this.setTitle("Verwissel je letters!");
 		swapPane = new SwapPane(letterBox,db_c,gsm);
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Resources/wordfeudLogo.png"));
 		this.setContentPane(swapPane);
 		this.pack();
 	}
