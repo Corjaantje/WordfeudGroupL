@@ -38,7 +38,7 @@ public class DatabaseController
 		{
 			// TODO Update connection to exam server on exam day.
 			connection = DriverManager.getConnection(
-					"jdbc:mysql://databases.aii.avans.nl:3306/mjschink_db?user=mjschink&password=Ab12345");
+					"jdbc:mysql://databases.aii.avans.nl:3306/2016_soprj4_wordfeud?user=42IN04SOl&password=loketfunctie");
 		} catch (SQLException ex)
 		{
 			// handle any errors
