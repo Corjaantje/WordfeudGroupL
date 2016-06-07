@@ -5,7 +5,11 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import javax.imageio.ImageIO;
 import javax.swing.plaf.metal.OceanTheme;
 
 import Gamestate.GamestateManager;
@@ -44,16 +48,18 @@ public class InfoPanel implements Drawable {
 		this.width = width;
 		this.db_c = db_c;
 		this.gsm = gsm;
-		image = Toolkit.getDefaultToolkit().getImage("Resources/infoPanelBackground.jpg");
+		try {
+			image = ImageIO.read(this.getClass().getClassLoader().getResource("resources/infoPanelBackground.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		color = new Color(17,190,7);
 		this.reloadInfoPanel();
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		// TODO Auto-generated method stub
-		/*g.setColor(Color.gray);
-		g.fillRect(x - 1, y + 2, width, height + 5);*/
+		//Background
 		g.drawImage(image, x-1, y+2, width, height, null);
 		g.setColor(color);
 		g.setFont(new Font("Verdana", Font.BOLD, 14));
@@ -66,12 +72,12 @@ public class InfoPanel implements Drawable {
 		g.drawString("'" + playerTurn + "' is aan de beurt!", x + (width / 3), y + (height));
 		//Turn number
 		g.setFont(new Font("Verdana", Font.BOLD, 14));
-		g.drawString("Beurtnummer: "+turnNumber, x+(width-(width/4)), y+17);
+		g.drawString("Beurtnummer: "+(turnNumber-1), x+(width-(width/4)), y+17);
+		g.drawString("pot grootte: " + this.getTotalLettersStillAvailable(), x + 225, y + (height / 3) );
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 	}
 	
 	public void reloadInfoPanel(){
@@ -82,5 +88,19 @@ public class InfoPanel implements Drawable {
 		username = gsm.getUser().getChallengerName();
 		turnNumber = gsm.getUser().getTurnNumber();
 		db_c.closeConnection();
+	}
+	
+	public int getTotalLettersStillAvailable()
+	{
+		int totalLetters = 0;
+		ResultSet results = gsm.getDatabaseController().query("SELECT * FROM pot WHERE spel_id = " + gsm.getUser().getGameNumber());
+		try{
+			while(results.next())
+			{
+				totalLetters++;
+			}
+		}
+		catch(SQLException sql){sql.printStackTrace();}
+		return totalLetters;
 	}
 }

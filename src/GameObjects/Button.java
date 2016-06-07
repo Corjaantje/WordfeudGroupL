@@ -5,6 +5,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import Main.Drawable;
 
@@ -35,8 +38,16 @@ public class Button implements Drawable {
 		this.text = text;
 		buttonColor = Color.WHITE;
 		buttonFont = new Font("Verdana", Font.BOLD, 12);
-		buttonImg = Toolkit.getDefaultToolkit().getImage("Resources/ButtonImg.png");
-		selectedButtonImg = Toolkit.getDefaultToolkit().getImage("Resources/SelectedButtonImg.png");
+		try {
+			buttonImg = ImageIO.read(this.getClass().getClassLoader().getResource("resources/ButtonImg.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			selectedButtonImg = ImageIO.read(this.getClass().getClassLoader().getResource("resources/SelectedButtonImg.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import java.util.Comparator;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -133,7 +134,12 @@ public class Playstate extends Gamestate implements MouseListener {
 		button.setSize(button.getPreferredSize());
 		button .setMinimumSize(button.getPreferredSize());
 		button.setMaximumSize(button.getPreferredSize());
-		Image image = Toolkit.getDefaultToolkit().getImage("Resources/refresh.png");
+		Image image = null;
+		try {
+			image = ImageIO.read(this.getClass().getClassLoader().getResource("resources/refresh.png"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		image = image.getScaledInstance(100,100, Image.SCALE_DEFAULT);
 		ImageIcon icon = new ImageIcon(image);
 		button.setIcon(icon);
@@ -156,10 +162,11 @@ public class Playstate extends Gamestate implements MouseListener {
 			gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber() - 1);
 			turnNumberChanged = true;
 		}
-		letterBox.reloadLetterBox();
+		
 		if (turnNumberChanged) {
 			gsm.getUser().setTurnNumber(gsm.getUser().getMaxTurnNumber());
 		}
+		letterBox.reloadLetterBox();
 		playField.reloadPlayfield();
 		infoPanel.reloadInfoPanel();
 		swapFrame.reloadSwapFrame();

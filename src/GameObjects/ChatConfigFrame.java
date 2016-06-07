@@ -12,9 +12,9 @@ public class ChatConfigFrame extends JFrame
 	
 	public ChatConfigFrame(ChatOutput textarea)
 	{
-		this.setPreferredSize(new Dimension((int) (GUI.WIDTH/3), (int) (GUI.HEIGHT/5.75)));;
+		this.setPreferredSize(new Dimension((int) (GUI.WIDTH/3), (int) (GUI.HEIGHT/4.8)));;
 		this.setLocation((int)(GUI.WIDTH/3), (int)GUI.HEIGHT/3);
-		this.setUndecorated(true);
+		this.setUndecorated(false);
 		this.setResizable(false);
 		this.setTitle("Chat Configuratie");
 		this.addConfigPanel(textarea);

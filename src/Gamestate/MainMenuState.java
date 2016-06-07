@@ -11,7 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -247,7 +249,11 @@ public class MainMenuState extends Gamestate implements ActionListener
 			currentUser = gsm.getUser();
 			this.createMenu();
 		}
-		this.bgImage = getToolkit().getImage("Resources/MainMenu.png");
+		try {
+			this.bgImage = ImageIO.read(this.getClass().getClassLoader().getResource(("resources/MainMenu.png")));
+		} catch (IOException e) {
+			System.out.println("Something went wrong at the image loader: "+e.getMessage());
+		}
 	}
 	
 	private void createMenu()

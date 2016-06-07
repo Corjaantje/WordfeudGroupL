@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.Timestamp;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,6 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 //Maintained by Corne
+
 
 
 
@@ -34,8 +36,8 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 	private ChatOutput output = new ChatOutput();
 	private ChatConfigFrame config = new ChatConfigFrame(this.output);;
 
-	private boolean FilledChat = false;
-	private String LastTimeMessage;
+	private boolean filledChat = false;
+	private java.sql.Timestamp lastTimeMessage;
 	private int savedGameNumber;
 
 	Timer timer = new Timer();
@@ -105,17 +107,17 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 		{
 			userName = gamestateMananger.getUser().getUsername();
 		}
-		String bericht = input.chatInput.getText();
-		if(!bericht.contains("\\"))
+		String message = input.chatInput.getText();
+		if(!message.contains("\\"))
 		{
-			if(!bericht.contains("'"))
+			if(!message.contains("'"))
 			{
 				DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 				Date date = new Date();
 		
 				try
 				{
-					database.queryUpdate("INSERT INTO chatregel VALUES ('" + userName + "', " + this.savedGameNumber + ", " + dateFormat.format(date) + ", '" + bericht + "')");
+					database.queryUpdate("INSERT INTO chatregel VALUES ('" + userName + "', " + this.savedGameNumber + ", " + dateFormat.format(date) + ", '" + message + "')");
 				} catch (Exception e)
 				{
 					e.printStackTrace();
@@ -143,36 +145,40 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 				savedGameNumber = gamestateMananger.getUser().getGameNumber();
 				ResultSet resultFull = database.query("SELECT * FROM chatregel WHERE spel_id = " + this.savedGameNumber + " ORDER BY tijdstip");
 
-				if (!FilledChat) // Chat already filled with previous messages?
+				if (!filledChat) // Chat already filled with previous messages?
 				{				
 					output.addLine("Console", "Ingelogd als "+ gamestateMananger.getUser().getUsername()+ ". Huidig spelnummer "+ this.savedGameNumber);
-					LastTimeMessage = "00000000";
 					while (resultFull.next())
 					{
 						String user = this.properCapsNames(resultFull.getString("account_naam"));
 						String message = resultFull.getString("bericht");
-						LastTimeMessage = resultFull.getString("tijdstip");
+						lastTimeMessage = resultFull.getTimestamp("tijdstip");
 						output.addLine(user, message);
 					}
 					if (!resultFull.next())
 					{
-						FilledChat = true;
+						filledChat = true;
 					}
 				}
 			 else	// Chat has been filled
 			{
-				ResultSet resultPartial;
-				resultPartial = database.query("SELECT * FROM chatregel WHERE spel_id = " + this.savedGameNumber + " ORDER BY tijdstip DESC LIMIT 1");
-				if (resultPartial.next())
+				try
 				{
-					if (!LastTimeMessage.equals(resultPartial.getString("tijdstip")))
+					ResultSet resultPartial;
+					resultPartial = database.query("SELECT * FROM chatregel WHERE spel_id = " + this.savedGameNumber + " ORDER BY tijdstip DESC LIMIT 1");
+					if (resultPartial.next())
 					{
-						String user = this.properCapsNames(resultPartial.getString("account_naam"));
-						String message = resultPartial.getString("bericht");
-						LastTimeMessage = resultPartial.getString("tijdstip");
-						output.addLine(user, message);
+						java.sql.Timestamp time = resultPartial.getTimestamp("tijdstip");
+						if (!lastTimeMessage.equals(time))
+						{
+							String user = this.properCapsNames(resultPartial.getString("account_naam"));
+							String message = resultPartial.getString("bericht");
+							lastTimeMessage = resultPartial.getTimestamp("tijdstip");
+							output.addLine(user, message);
+						}
 					}
 				}
+				catch(NullPointerException NPE){}
 			}
 		}
 		} catch (Exception e)
@@ -198,7 +204,7 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 	
 	public void reloadChat()
 	{
-		this.FilledChat = false;
+		this.filledChat = false;
 		this.output.chatOutput.setText("");
 	}
 
