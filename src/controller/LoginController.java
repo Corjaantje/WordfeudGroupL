@@ -37,7 +37,6 @@ public class LoginController {
 		try{
 			if(rs.next()){
 				if(gsm.getUser() == null){
-					System.out.println("Test database query login");
 					User user = new User(rs.getString("naam"), databaseController);
 					gsm.setUser(user);
 					gsm.setGamestate(GamestateManager.mainMenuState);
@@ -51,6 +50,5 @@ public class LoginController {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		System.out.println(username + " is ingelogd met dit wachtwoord: " + password);
 	}
 }
