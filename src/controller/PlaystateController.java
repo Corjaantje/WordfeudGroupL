@@ -1232,7 +1232,7 @@ public class PlaystateController {
 			databaseController.queryUpdate("INSERT INTO beurt VALUES (" + (turnNumber + 1) + ", " + game + ",'"
 					+ username + "'," + 0 + ", 'pass');");
 			ResultSet passRS = databaseController
-					.query("SELECT * FROM beurt WHERE id = (" + turnNumber + ") OR id = (" + turnNumber + " - 1);");
+					.query("SELECT * FROM beurt WHERE spel_id = "+game+" AND (id = "+(turnNumber-1)+" OR id = "+turnNumber+");");
 			int counter = 1;
 			try {
 				while (passRS.next()) {
@@ -1244,7 +1244,7 @@ public class PlaystateController {
 				e.printStackTrace();
 			}
 			if (counter == 3) {
-				gsm.getUser().setTurnNumber(turnNumber - 1);
+				gsm.getUser().setTurnNumber(turnNumber);
 				ArrayList<Letter> opponentLetters = letterBox.getLetters();
 				gsm.getUser().setTurnNumber(turnNumber + 1);
 				ArrayList<Letter> userLetters = letterBox.getLetters();
