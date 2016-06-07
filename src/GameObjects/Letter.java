@@ -5,7 +5,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.IconifyAction;
 
 import Main.Drawable;
@@ -77,12 +79,15 @@ public class Letter implements Drawable {
 		speed = 0.3;
 		rightLocation = true;
 		font = new Font("Verdana", Font.BOLD, 10);
-		bgImage = Toolkit.getDefaultToolkit().getImage("Resources/backgroundTile.png");
+		try {
+			bgImage = ImageIO.read(this.getClass().getClassLoader().getResource("resources/backgroundTile.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		// TODO Auto-generated method stub
 		g.drawImage(bgImage, (int) x, (int) y, (int) width, (int) height, null);
 		g.setColor(Color.BLACK);
 		g.setFont(font);
@@ -92,7 +97,6 @@ public class Letter implements Drawable {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 		if (x <= headingX + vectorX && x >= headingX - vectorX && y <= headingY + vectorY && y >= headingY - vectorY) {
 			rightLocation = true;
 			x = headingX;

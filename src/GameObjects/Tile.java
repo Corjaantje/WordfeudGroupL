@@ -3,6 +3,9 @@ package GameObjects;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import Main.Drawable;
 
@@ -35,20 +38,26 @@ public class Tile implements Drawable {
 		this.height = height;
 		this.score = score;
 		this.isEmpty = true;
+		String url = "";
 		if (score.equals("--")) {
-			image = Toolkit.getDefaultToolkit().getImage("Resources/Scores/NONE.png");
+			url = "resources/Scores/NONE.png";
 		} else if (score.equals("TL")) {
-			image = Toolkit.getDefaultToolkit().getImage("Resources/Scores/TL.png");
+			url = "resources/Scores/TL.png";
 		} else if (score.equals("DW")) {
-			image = Toolkit.getDefaultToolkit().getImage("Resources/Scores/DW.png");
+			url = "resources/Scores/DW.png";
 		} else if (score.equals("TW")) {
-			image = Toolkit.getDefaultToolkit().getImage("Resources/Scores/TW.png");
+			url = "resources/Scores/TW.png";
 		} else if (score.equals("DL")) {
-			image = Toolkit.getDefaultToolkit().getImage("Resources/Scores/DL.png");
+			url = "resources/Scores/DL.png";
 		} else if (score.equals("BOX")){
-			image = Toolkit.getDefaultToolkit().getImage("Resources/LetterBox.png");
+			url = "resources/LetterBox.png";
 		} else {
-			image = Toolkit.getDefaultToolkit().getImage("Resources/Scores/START.png");
+			url = "resources/Scores/START.png";
+		}
+		try {
+			image = ImageIO.read(this.getClass().getClassLoader().getResource(url));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
