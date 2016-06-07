@@ -113,7 +113,7 @@ public class Playstate extends Gamestate implements MouseListener {
 					gsm);
 			this.addMouseListener(this);
 
-			swapFrame = new SwapFrame(letterBox, db_c, gsm);
+			swapFrame = new SwapFrame(letterBox, db_c, gsm, this);
 			chatArea = new Chat(db_c, gsm);
 			this.add(chatArea, BorderLayout.EAST);
 			filledTiles = new ArrayList<Tile>();
@@ -329,8 +329,9 @@ public class Playstate extends Gamestate implements MouseListener {
 							playstateController.doPlay();
 							turnIndicator.resetTurnIndicator();
 						} else if (button.getText().equals("Swappen")) {
-							swapFrame.setVisible(true);
 							this.reloadPlaystate();
+							swapFrame = new SwapFrame(letterBox, db_c, gsm, this);
+							swapFrame.setVisible(true);
 						} else if (button.getText().equals(" Passen")) {
 							if (playstateController.doPass()) {
 								letterBox.replacePlacedLetters(new ArrayList<Letter>());

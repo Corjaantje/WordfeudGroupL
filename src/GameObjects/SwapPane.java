@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,14 +15,17 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import Gamestate.GamestateManager;
+import Gamestate.Playstate;
 import Main.GUI;
 import controller.DatabaseController;
 
@@ -45,9 +49,12 @@ public class SwapPane extends JPanel {
 
 	private JTable table;
 
-	public SwapPane(LetterBox letterBox, DatabaseController db_c, GamestateManager gsm) {
+	private Playstate playState;
+	
+	public SwapPane(LetterBox letterBox, DatabaseController db_c, GamestateManager gsm, Playstate playState) {
 		this.db_c = db_c;
 		this.gsm = gsm;
+		this.playState = playState;
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setPreferredSize(new Dimension((int) (GUI.WIDTH / 3), (int) (GUI.HEIGHT / 2)));
 		this.letterBox = letterBox;
@@ -99,8 +106,55 @@ public class SwapPane extends JPanel {
 			box.add(changeButton);
 		}
 	}
-
-	private void doSwap() {
+	
+	private void doSwap()
+	{
+		// make an arraylist of all letters that have been selected to swap
+		int counter = 0;
+		ArrayList<Letter> swappedLetters = new ArrayList<>();
+		for (Checkbox checkbox : checkboxs)
+		{
+			if (checkbox.getState())
+			{
+				swappedLetters.add(letterBox.getLetters().get(counter));
+			}
+			counter++;
+		}
+		// check if there are that many letters available in the pot
+		int potSize = 999;
+		String potQuery = "SELECT COUNT(letter_id) FROM pot WHERE spel_id = " + gsm.getUser().getGameNumber();
+		ResultSet pot = db_c.query(potQuery);
+		try
+		{
+			if (pot.next())
+			{
+				potSize = pot.getInt(1);
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		if (swappedLetters.size() <= potSize)
+		{
+			// create the turn
+			String beurtUpdateQuery = "INSERT INTO beurt (`id`, `spel_id`,`account_naam`,`score`,aktie_type) VALUES(" + (gsm.getUser().getMaxTurnNumber() + 1) + "," + gsm.getUser().getGameNumber() + ", '" + gsm.getUser().getUsername() + "',0, 'swap')";
+			db_c.queryUpdate(beurtUpdateQuery);
+			// swap the letters
+			letterBox.replacePlacedLetters(swappedLetters);
+			// refresh playstate
+			playState.reloadPlaystate();
+			// close SwapFrame
+			((JFrame) SwingUtilities.getWindowAncestor(this)).dispatchEvent(new WindowEvent(((JFrame) SwingUtilities.getWindowAncestor(this)), WindowEvent.WINDOW_CLOSING));
+			JOptionPane.showMessageDialog(null, "Swap succesvol!");
+		} else 
+		{
+			JOptionPane.showMessageDialog(null, "Er zijn niet genoeg letters in de pot voor deze swap!");
+		}
+		
+	}
+	
+	@Deprecated
+	private void oldDoSwap() {
 		int turn = gsm.getUser().getTurnNumber();
 		int game = gsm.getUser().getGameNumber();
 		ArrayList<String> swappedLetters = new ArrayList<String>();
