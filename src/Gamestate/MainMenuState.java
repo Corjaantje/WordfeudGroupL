@@ -11,12 +11,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -56,6 +60,9 @@ public class MainMenuState extends Gamestate implements ActionListener
 	private JButton spectatorCompetition;
 	
 	private boolean mainMenuCreated;
+	
+	private String[] users;
+	private JComboBox<String> userCombo;
 	
 	public  MainMenuState(GamestateManager gsmanager,DatabaseController db_controller)
 	{
@@ -325,14 +332,33 @@ public class MainMenuState extends Gamestate implements ActionListener
 	    f.setPreferredSize(new Dimension(300, 230));
 	    f.setResizable(true);
 	    f.setLayout(new BorderLayout());
-	    JTextField searchBar = new JTextField(); 
+	    
+	    ResultSet usersResult = db_c.query("SELECT * FROM account");
+		ArrayList<String> usernames = new ArrayList<String>();
+		try
+		{
+			while(usersResult.next())
+			{
+				usernames.add(usersResult.getString("naam"));
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		users = new String[usernames.size()];
+		for(int i=0; i< usernames.size(); i++)
+		{
+			users[i] = usernames.get(i);
+		}
+		userCombo = new JComboBox(users);
+		userCombo.setSelectedItem(1);
 	    
 	    JButton searchBarButton = new JButton("Zoek gebruiker");
 	    searchBarButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//Makes a string variable of what is filled in into the search bar
-				String usernameField = searchBar.getText();
+				String usernameField = (String)userCombo.getSelectedItem();
 				
 				//Checks if the user exists in the app
 				if(db_con.checkIfUserExists(usernameField)){
@@ -474,7 +500,7 @@ public class MainMenuState extends Gamestate implements ActionListener
 	    });
 	    
 	    //Adds the search bar to find users and the button to actually start searching
-	    f.add(searchBar, BorderLayout.NORTH);
+	    f.add(userCombo, BorderLayout.NORTH);
 	    f.add(searchBarButton, BorderLayout.CENTER);
 	    f.pack();
 	    f.setLocationRelativeTo(null);
