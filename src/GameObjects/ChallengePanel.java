@@ -115,7 +115,7 @@ public class ChallengePanel extends JPanel implements ActionListener
 					//TODO Self-check, cannot invite yourself
 					if(!input.toLowerCase().equals(gsm.getUser().getUsername().toLowerCase()))
 					{
-						ResultSet alreadyAGameWithinThisCompetition = db_c.query("SELECT * FROM spel WHERE toestand_type != 'finished' AND reaktie_type != 'rejected' AND competitie_id = "+gsm.getUser().getCompetitionNumber()+" AND account_naam_uitdager = '"+gsm.getUser().getUsername()+"' AND account_naam_tegenstander = '"+input+"';");
+						ResultSet alreadyAGameWithinThisCompetition = db_c.query("SELECT * FROM spel WHERE toestand_type != 'finished' AND toestand_type != 'resigned' AND reaktie_type != 'rejected' AND competitie_id = "+gsm.getUser().getCompetitionNumber()+" AND account_naam_uitdager = '"+gsm.getUser().getUsername()+"' AND account_naam_tegenstander = '"+input+"';");
 						if(!alreadyAGameWithinThisCompetition.next()) //Already a game running within this competition
 						{
 							ResultSet alreadyInviteOpen = db_c.query("SELECT * FROM spel WHERE toestand_type = 'request' AND reaktie_type = 'unknown' AND account_naam_uitdager = '" + gsm.getUser().getUsername() + "'  AND competitie_id = " + gsm.getUser().getCompetitionNumber() + " AND account_naam_tegenstander = '" + input + "'  AND account_naam_tegenstander != '" + gsm.getUser().getUsername() + "';");
