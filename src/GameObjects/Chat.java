@@ -143,10 +143,9 @@ public class Chat extends JPanel implements ActionListener, KeyListener
 			if (gamestateMananger.getUser() != null)
 			{
 				savedGameNumber = gamestateMananger.getUser().getGameNumber();
-				ResultSet resultFull = database.query("SELECT * FROM chatregel WHERE spel_id = " + this.savedGameNumber + " ORDER BY tijdstip");
-
 				if (!filledChat) // Chat already filled with previous messages?
 				{				
+					ResultSet resultFull = database.query("SELECT * FROM chatregel WHERE spel_id = " + this.savedGameNumber + " ORDER BY tijdstip");
 					output.addLine("Console", "Ingelogd als "+ gamestateMananger.getUser().getUsername()+ ". Huidig spelnummer "+ this.savedGameNumber);
 					while (resultFull.next())
 					{
