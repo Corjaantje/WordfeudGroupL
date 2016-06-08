@@ -140,12 +140,12 @@ public class CompetitionController {
 	}
 	
 	public DefaultTableModel loadRankingModel(DefaultTableModel rankingModel,int competitionNumber){
-		String query = "SELECT * FROM competitiestand WHERE competitie_id = " + competitionNumber + " ORDER BY gemidddelde_score DESC";
+		String query = "SELECT * FROM competitiestand WHERE competitie_id = " + competitionNumber + " ORDER BY gemiddelde_score DESC";
 		ResultSet rs = databaseController.query(query);
 		try {
 			int counter = 1;
 			while (rs.next()) {
-				rankingModel.addRow(new Object[] { counter, rs.getString("account_naam"), rs.getString("gemidddelde_score"), rs.getString("aantal_gespeelde_spellen"), rs.getString("aantal_gewonnen_spellen"), rs.getString("aantal_verloren_spellen"),rs.getString("aantal_gelijke_spellen") });
+				rankingModel.addRow(new Object[] { counter, rs.getString("account_naam"), rs.getString("gemiddelde_score"), rs.getString("aantal_gespeelde_spellen"), rs.getString("aantal_gewonnen_spellen"), rs.getString("aantal_verloren_spellen"),rs.getString("aantal_gelijke_spellen") });
 				counter++;
 			}
 		} catch (SQLException e) {

@@ -47,7 +47,6 @@ public class DatabaseController
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
 			JOptionPane.showMessageDialog(null, "U heeft geen internetverbinding.","Wordfeud",JOptionPane.ERROR_MESSAGE);
-			System.exit(0);
 		}
 
 	}
