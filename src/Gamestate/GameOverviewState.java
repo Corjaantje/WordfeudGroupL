@@ -100,7 +100,7 @@ public class GameOverviewState extends Gamestate {
 		finishedGamesPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 255, 0), 4));;
 		finishedGamesPanel.add(label);
 		String query = "SELECT * FROM spel WHERE competitie_id = " + gsm.getUser().getCompetitionNumber()
-				+ " AND toestand_type = 'finished' AND (account_naam_uitdager = '" + gsm.getUser().getUsername() + "' OR account_naam_tegenstander = '" + gsm.getUser().getUsername() +"');";
+				+ " AND (toestand_type = 'finished' OR toestand_type = 'resigned') AND (account_naam_uitdager = '" + gsm.getUser().getUsername() + "' OR account_naam_tegenstander = '" + gsm.getUser().getUsername() +"');";
 		executeQuery(query, finishedGamesPanel);
 		this.add(finishedGamesPanel, BorderLayout.EAST);
 	}

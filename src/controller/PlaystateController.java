@@ -669,7 +669,7 @@ public class PlaystateController {
 			System.out.println("opponent hand score: " + opponentHandScore);
 			// set userScore as opponentHandScore
 			// set opponentScore as -opponentHandScore
-			this.doEndGame(opponentHandScore, -opponentHandScore, (gsm.getUser().getTurnNumber()), gsm.getUser().getGameNumber(), databaseController);
+			this.doEndGame(opponentHandScore, -opponentHandScore, (gsm.getUser().getTurnNumber()), gsm.getUser().getGameNumber(), databaseController, false);
 		}
 		
 	}
@@ -1289,7 +1289,7 @@ public class PlaystateController {
 				userScore -= opponentLetterPoints;
 				opponentScore += userLetterPoints;
 				opponentScore -= opponentLetterPoints;
-				this.doEndGame(userScore, opponentScore, turnNumber, game, databaseController);
+				this.doEndGame(userScore, opponentScore, turnNumber, game, databaseController, false);
 			} else {
 				JOptionPane.showMessageDialog(null, "Het aantal achtereenvolgende pass beurten is nu: " + counter);
 			}
@@ -1307,12 +1307,12 @@ public class PlaystateController {
 			String username = gsm.getUser().getUsername();
 			databaseController.queryUpdate("INSERT INTO beurt VALUES (" + (turn + 1) + ", " + game + ",'" + username
 					+ "'," + 0 + ", 'resign');");
-			this.doEndGame((-gsm.getUser().getUserScore()), 0, (turn + 1), game, databaseController);
+			this.doEndGame((-gsm.getUser().getUserScore()), 0, (turn + 1), game, databaseController, true);
 		}
 	}
-
+	// If this method is triggered via doResign, set isResign to true, otherwise set it to false.
 	private void doEndGame(int userScore, int opponentScore, int turn, int game,
-			DatabaseController databaseController) {
+			DatabaseController databaseController, boolean isResign) {
 		boolean isGood = false;
 		int counter = 0;
 		turn += 1;
@@ -1385,7 +1385,13 @@ public class PlaystateController {
 		JOptionPane.showMessageDialog(null, "Het spel is geeindigd!\n" + gsm.getUser().getChallengerName() + " heeft "
 				+ gsm.getUser().getUserScore() + " punten.\n" + gsm.getUser().getOpponentName() + " heeft "
 				+ gsm.getUser().getOpponentScore() + " punten.\n" + gsm.getUser().getWinner() + " is de winnaar!");
-		databaseController.queryUpdate("UPDATE spel SET toestand_type = 'finished' WHERE id = " + game);
+		if (isResign)
+		{
+			databaseController.queryUpdate("UPDATE spel SET toestand_type = 'resigned' WHERE id = " + game);
+		} else 
+		{
+			databaseController.queryUpdate("UPDATE spel SET toestand_type = 'finished' WHERE id = " + game);
+		}
 		gsm.setGamestate(GamestateManager.gameOverviewState);
 	}
 }
