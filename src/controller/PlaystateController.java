@@ -1258,12 +1258,14 @@ public class PlaystateController {
 			databaseController.queryUpdate("INSERT INTO beurt VALUES (" + (turnNumber + 1) + ", " + game + ",'"
 					+ username + "'," + 0 + ", 'pass');");
 			ResultSet passRS = databaseController
-					.query("SELECT * FROM beurt WHERE spel_id = "+game+" AND (id = "+(turnNumber-1)+" OR id = "+turnNumber+");");
+					.query("SELECT * FROM beurt WHERE spel_id = "+game+" AND (id = "+(turnNumber-1)+" OR id = "+turnNumber+") ORDER BY id DESC;");
 			int counter = 1;
 			try {
 				while (passRS.next()) {
 					if (passRS.getString("aktie_type").equals("pass")) {
 						counter++;
+					}else{
+						break;
 					}
 				}
 			} catch (SQLException e) {
