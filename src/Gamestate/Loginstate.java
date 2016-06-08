@@ -51,9 +51,7 @@ public class Loginstate extends Gamestate implements ActionListener, KeyListener
 		this.add(loginPanel);
 
 		user = new JTextField(10);
-		user.setText("allrights");			//For Testing Only!
 		password = new JPasswordField(10);
-		password.setText("12345");			//For Testing Only!
 
 		password.addKeyListener(this); //Hit enter while in password to activate the login
 		
