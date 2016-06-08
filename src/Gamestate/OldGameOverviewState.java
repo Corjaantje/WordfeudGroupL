@@ -1,17 +1,10 @@
 package Gamestate;
 
-import java.awt.BorderLayout;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-
-import java.awt.ScrollPane;
-
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 
 import GameObjects.GamePanel;
 import Main.GUI;

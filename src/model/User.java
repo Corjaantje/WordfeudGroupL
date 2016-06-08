@@ -4,9 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
-import GameObjects.Letter;
 import Gamestate.GamestateManager;
 import controller.DatabaseController;
 

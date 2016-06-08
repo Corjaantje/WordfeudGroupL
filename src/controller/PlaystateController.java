@@ -7,8 +7,6 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
-import org.w3c.dom.css.Counter;
-
 import GameObjects.Letter;
 import GameObjects.LetterBox;
 import GameObjects.PlayField;

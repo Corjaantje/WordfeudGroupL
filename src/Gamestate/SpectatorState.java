@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -153,7 +152,7 @@ public class SpectatorState extends Gamestate {
 		next.setBackground(new Color(26, 142, 76));
 		Image nextImage = null;
 		try {
-			nextImage = ImageIO.read(this.getClass().getResource("resources/RightPointer.png"));
+			nextImage = ImageIO.read(this.getClass().getClassLoader().getResource("resources/RightPointer.png"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

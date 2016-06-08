@@ -1,14 +1,8 @@
 package Gamestate;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.LayoutManager;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -20,8 +14,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-
-import com.mysql.fabric.xmlrpc.base.Array;
 
 import GameObjects.Letter;
 import Main.GUI;

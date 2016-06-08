@@ -1,7 +1,6 @@
 package Gamestate;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -12,10 +11,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import model.User;
 import GameObjects.ChallengeFrame;
 import GameObjects.NotificationFrame;
 import Main.GUI;
-import model.User;
 import controller.DatabaseController;
 import controller.PollingChallengeController;
 
