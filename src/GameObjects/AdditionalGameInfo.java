@@ -6,10 +6,10 @@ import java.awt.Graphics2D;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import model.User;
 import Gamestate.GamestateManager;
 import Main.Drawable;
 import controller.DatabaseController;
-import model.User;
 
 public class AdditionalGameInfo implements Drawable{
 	

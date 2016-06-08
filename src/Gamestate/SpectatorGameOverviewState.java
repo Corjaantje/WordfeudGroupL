@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -97,7 +96,7 @@ public class SpectatorGameOverviewState extends Gamestate {
 		finishedGamesPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 255, 0), 4));;
 		finishedGamesPanel.add(label);
 		String query = "SELECT * FROM spel WHERE competitie_id = " + gsm.getUser().getCompetitionNumber()
-				+ " AND toestand_type = 'finished';";
+				+ " AND (toestand_type = 'finished' OR toestand_type = 'resigned');";
 		executeQuery(query, finishedGamesPanel);
 		this.add(finishedGamesPanel, BorderLayout.EAST);
 	}

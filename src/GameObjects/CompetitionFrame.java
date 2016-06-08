@@ -1,18 +1,12 @@
 package GameObjects;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -24,7 +18,6 @@ import javax.swing.table.DefaultTableModel;
 import Gamestate.GamestateManager;
 import Main.GUI;
 import controller.CompetitionController;
-import controller.DatabaseController;
 
 public class CompetitionFrame extends JFrame {
 

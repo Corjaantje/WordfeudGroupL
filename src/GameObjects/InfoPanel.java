@@ -4,18 +4,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
-import javax.swing.plaf.metal.OceanTheme;
 
 import Gamestate.GamestateManager;
 import Main.Drawable;
 import controller.DatabaseController;
-import model.User;
 
 public class InfoPanel implements Drawable {
 

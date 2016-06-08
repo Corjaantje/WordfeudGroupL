@@ -6,9 +6,9 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
-import controller.DatabaseController;
 import Gamestate.GamestateManager;
 import Main.GUI;
+import controller.DatabaseController;
 
 public class NotificationFrame extends JFrame
 {
