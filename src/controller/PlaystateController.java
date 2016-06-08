@@ -3,6 +3,7 @@ package controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
@@ -14,6 +15,7 @@ import GameObjects.PlayField;
 import GameObjects.Tile;
 import Gamestate.GamestateManager;
 import Gamestate.Playstate;
+import Main.GUI;
 
 public class PlaystateController {
 	
@@ -22,7 +24,7 @@ public class PlaystateController {
 	private PlayField playField;
 	private LetterBox letterBox;
 	private Playstate playstate;
-
+	private String letterSetCode;
 	// Variables for Mathijs' scoretracking
 	private int score;
 	private ArrayList<Letter> mainWord;
@@ -466,7 +468,7 @@ public class PlaystateController {
 	private boolean isInDictionary(ArrayList<Letter> foundWordArraylist) 
 	{
 		String foundWord = getConvertedWordArrayListToString(foundWordArraylist);
-		String letterSetCode = new String();
+		letterSetCode = new String();
 		String getLetterSetCodeQuery = "SELECT letterset_naam FROM spel WHERE id =" + gsm.getUser().getGameNumber();
 		try 
 		{
@@ -644,6 +646,32 @@ public class PlaystateController {
 		JOptionPane.showMessageDialog(null, "Je hebt met deze zet " + points + " punten behaald.");
 		updateDatabase(points, wordArrayList);
 		playstate.reloadPlaystate();
+		// if letterbox is empty after replacing letters, it means the pot is also empty and the game is over. so end the game
+		// TODO maybe put in extra check to make sure the pot is empty too
+		if(letterBox.getLetters().isEmpty())
+		{
+			int opponentHandScore = 0;
+			int gameNumber = gsm.getUser().getGameNumber();
+			// get the number of points the opponent still has in his hands
+			String opponentHandQuery = "SELECT lt.waarde from letterbakjeletter lbl INNER JOIN letter l ON lbl.letter_id = l.id INNER JOIN lettertype lt ON l.lettertype_karakter = lt.karakter WHERE lbl.spel_id = " + gameNumber + " AND lbl.beurt_id = (SELECT MAX(beurt_id) from letterbakjeletter where spel_id = " + gameNumber + " ) AND l.spel_id = " + gameNumber + " AND lt.letterset_code = '" + letterSetCode + "';";
+			ResultSet opponentHandResultSet = databaseController.query(opponentHandQuery);
+			try
+			{
+				while (opponentHandResultSet.next())
+				{
+					opponentHandScore += opponentHandResultSet.getInt("lt.waarde");
+				}
+			} catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+			
+			System.out.println("opponent hand score: " + opponentHandScore);
+			// set userScore as opponentHandScore
+			// set opponentScore as -opponentHandScore
+			this.doEndGame(opponentHandScore, -opponentHandScore, (gsm.getUser().getTurnNumber()), gsm.getUser().getGameNumber(), databaseController);
+		}
+		
 	}
 
 	private void wordIsInvalid(String wrongWordsString) 
@@ -1288,17 +1316,21 @@ public class PlaystateController {
 		boolean isGood = false;
 		int counter = 0;
 		turn += 1;
+		System.out.println("meegegeven turn: " + turn);
 		while (!isGood) {
 			counter++;
 			if (databaseController.pingedBack()) {
 				String userEndQuery = "INSERT INTO beurt (id, spel_id, account_naam, score, aktie_type) VALUES (" + turn
 						+ ", " + game + ",'" + gsm.getUser().getOpponentName() + "'," + opponentScore + ", 'end');";
+				// because the database mysteriously disconnects before performing the query, connect again
+				databaseController.connect();
 				databaseController.queryUpdate(userEndQuery);
 				ResultSet rs = databaseController.query("SELECT * FROM beurt WHERE spel_id = " + game);
 				ArrayList<Integer> turns = new ArrayList<Integer>();
 				try {
 					while (rs.next()) {
 						turns.add(rs.getInt("id"));
+						System.out.println("opgehaalde turn: " + rs.getInt("id"));
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -1325,6 +1357,8 @@ public class PlaystateController {
 				String opponentEndQuery = "INSERT INTO beurt (id, spel_id, account_naam, score, aktie_type) VALUES ("
 						+ turn + ", " + game + ",'" + gsm.getUser().getChallengerName() + "'," + userScore
 						+ ", 'end');";
+				// because the database mysteriously disconnects before performing the query, connect again
+				databaseController.connect();
 				databaseController.queryUpdate(opponentEndQuery);
 				ResultSet rs = databaseController.query("SELECT * FROM beurt WHERE spel_id = " + game);
 				ArrayList<Integer> turns = new ArrayList<Integer>();
@@ -1347,6 +1381,7 @@ public class PlaystateController {
 				databaseController = new DatabaseController();
 			}
 		}
+		playstate.reloadPlaystate();
 		JOptionPane.showMessageDialog(null, "Het spel is geeindigd!\n" + gsm.getUser().getChallengerName() + " heeft "
 				+ gsm.getUser().getUserScore() + " punten.\n" + gsm.getUser().getOpponentName() + " heeft "
 				+ gsm.getUser().getOpponentScore() + " punten.\n" + gsm.getUser().getWinner() + " is de winnaar!");

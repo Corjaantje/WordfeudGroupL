@@ -32,7 +32,7 @@ public class DatabaseController
 		}
 	}
 
-	private void connect()
+	public void connect()
 	{
 		try
 		{
