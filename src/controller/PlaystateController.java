@@ -3,11 +3,8 @@ package controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.JOptionPane;
-
-import org.w3c.dom.css.Counter;
 
 import GameObjects.Letter;
 import GameObjects.LetterBox;
@@ -15,7 +12,6 @@ import GameObjects.PlayField;
 import GameObjects.Tile;
 import Gamestate.GamestateManager;
 import Gamestate.Playstate;
-import Main.GUI;
 
 public class PlaystateController {
 	

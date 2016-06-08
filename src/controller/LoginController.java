@@ -5,8 +5,8 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import Gamestate.GamestateManager;
 import model.User;
+import Gamestate.GamestateManager;
 
 public class LoginController {
 	

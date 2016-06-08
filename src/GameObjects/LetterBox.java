@@ -1,20 +1,15 @@
 package GameObjects;
 
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Random;
-
-import javax.swing.JOptionPane;
 
 import Gamestate.GamestateManager;
 import Main.Drawable;
 import controller.DatabaseController;
-import model.User;
 
 public class LetterBox implements Drawable {
 

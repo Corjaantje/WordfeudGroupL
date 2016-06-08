@@ -5,9 +5,9 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-import controller.DatabaseController;
 import Gamestate.GamestateManager;
 import Main.GUI;
+import controller.DatabaseController;
 
 @SuppressWarnings("serial")
 public class ChallengeFrame extends JFrame

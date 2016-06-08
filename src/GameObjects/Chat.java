@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Timestamp;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,17 +14,13 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//Maintained by Corne
-
-
-
-
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import controller.DatabaseController;
 import Gamestate.GamestateManager;
 import Main.GUI;
+import controller.DatabaseController;
+//Maintained by Corne
+import javax.swing.JOptionPane;
 
 @SuppressWarnings("serial")
 public class Chat extends JPanel implements ActionListener, KeyListener
