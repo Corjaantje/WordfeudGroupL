@@ -152,7 +152,7 @@ public class SpectatorState extends Gamestate {
 		next.setBackground(new Color(26, 142, 76));
 		Image nextImage = null;
 		try {
-			nextImage = ImageIO.read(this.getClass().getResource("resources/RightPointer.png"));
+			nextImage = ImageIO.read(this.getClass().getClassLoader().getResource("resources/RightPointer.png"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
